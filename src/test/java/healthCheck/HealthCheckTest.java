@@ -6,12 +6,13 @@ import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 
 public class HealthCheckTest {
 
     @Test
-    public void healthCheckTestResponse () {
+    public void healthCheckTest () {
         RestAssured.baseURI = "https://practice.expandtesting.com/notes/api";
         Response response = RestAssured
                 .given()
@@ -21,16 +22,15 @@ public class HealthCheckTest {
 //                .extract()
 //                .response();
 
-        System.out.println("Status Code: " + response.getStatusCode());
-        System.out.println("Response Body: " + response.asPrettyString());
-
-        assertThat(response.jsonPath().getBoolean("success"), is(true));
-        assertThat(response.jsonPath().getInt("status"), is(200));
-        assertThat(response.jsonPath().getString("message"), equalTo("Notes API is Running"));
+        assertAll("Health-check response validation",
+            () -> assertThat(response.jsonPath().getBoolean("success"), is(true)),
+            () -> assertThat(response.jsonPath().getInt("status"), is(200)),
+            () -> assertThat(response.jsonPath().getString("message"), equalTo("Notes API is Running"))
+        );
     }
 
     @Test
-    public void healthCheckTestResponse2() {
+    public void healthCheckTestII() {
         RestAssured.baseURI = "https://practice.expandtesting.com/notes/api";
 
         // Send a GET request to the API
@@ -43,9 +43,9 @@ public class HealthCheckTest {
     }
 
     @Test
-    public void healthCheckTestResponse3 () {
+    public void healthCheckTestIII () {
         RestAssured.baseURI = "https://practice.expandtesting.com/notes/api";
-        Response response = RestAssured
+        RestAssured
                 .given()
                 .when()
                 .get("/health-check")
