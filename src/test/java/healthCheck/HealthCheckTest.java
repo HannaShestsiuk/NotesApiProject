@@ -2,6 +2,8 @@ package healthCheck;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import notesApi.ApiConstants;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -10,10 +12,14 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 
 public class HealthCheckTest {
+    @BeforeAll
+    public static void setup() {
+        RestAssured.baseURI = ApiConstants.BASE_URI;
+    }
 
     @Test
     public void healthCheckTest () {
-        RestAssured.baseURI = "https://practice.expandtesting.com/notes/api";
+        //RestAssured.baseURI = "https://practice.expandtesting.com/notes/api";
         Response response = RestAssured
                 .given()
                 .when()
@@ -31,7 +37,7 @@ public class HealthCheckTest {
 
     @Test
     public void healthCheckTestII() {
-        RestAssured.baseURI = "https://practice.expandtesting.com/notes/api";
+        //RestAssured.baseURI = "https://practice.expandtesting.com/notes/api";
 
         // Send a GET request to the API
         Response response = RestAssured.get("/health-check");
@@ -44,7 +50,7 @@ public class HealthCheckTest {
 
     @Test
     public void healthCheckTestIII () {
-        RestAssured.baseURI = "https://practice.expandtesting.com/notes/api";
+        //RestAssured.baseURI = "https://practice.expandtesting.com/notes/api";
         RestAssured
                 .given()
                 .when()
