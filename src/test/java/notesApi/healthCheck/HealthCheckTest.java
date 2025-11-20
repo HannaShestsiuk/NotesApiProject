@@ -1,4 +1,4 @@
-package healthCheck;
+package notesApi.healthCheck;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
