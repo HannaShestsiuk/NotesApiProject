@@ -27,18 +27,12 @@ public class UserRegistrationTest {
         String email = System.currentTimeMillis() + "@mail.com";
         String password = "Strong123!";
 
-        Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("name", name);
-        requestBody.put("email", email);
-        requestBody.put("password", password);
-
         Response response = RestAssured
                 .given()
                 .contentType("application/x-www-form-urlencoded; charset=utf-8") // charset=utf-8 !!!
                 .formParam("name", name)
                 .formParam("email", email)
                 .formParam("password", password)
-                .params(requestBody)
                 .when()
                 .post("/users/register")
                 .then()
@@ -62,18 +56,12 @@ public class UserRegistrationTest {
         String email = registeredEmail;
         String password = "Strong123!";
 
-        Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("name", name);
-        requestBody.put("email", email);
-        requestBody.put("password", password);
-
         Response response = RestAssured
                 .given()
                 .contentType("application/x-www-form-urlencoded; charset=utf-8") // charset=utf-8 !!!
                 .formParam("name", name)
                 .formParam("email", email)
                 .formParam("password", password)
-                .params(requestBody)
                 .when()
                 .post("/users/register")
                 .then()
@@ -93,18 +81,12 @@ public class UserRegistrationTest {
         String email = System.currentTimeMillis() + "@mail.com";
         String password = "Strong123!";
 
-        Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("name", name);
-        requestBody.put("email", email);
-        requestBody.put("password", password);
-
         Response response = RestAssured
                 .given()
                 .contentType("application/x-www-form-urlencoded; charset=utf-8") // charset=utf-8 !!!
                 .formParam("name", name)
                 .formParam("email", email)
                 .formParam("password", password)
-                .params(requestBody)
                 .when()
                 .post("/users/register")
                 .then()
@@ -124,18 +106,12 @@ public class UserRegistrationTest {
         String email = System.currentTimeMillis() + "mail.com";
         String password = "Strong123!";
 
-        Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("name", name);
-        requestBody.put("email", email);
-        requestBody.put("password", password);
-
         Response response = RestAssured
                 .given()
                 .contentType("application/x-www-form-urlencoded; charset=utf-8") // charset=utf-8 !!!
                 .formParam("name", name)
                 .formParam("email", email)
                 .formParam("password", password)
-                .params(requestBody)
                 .when()
                 .post("/users/register")
                 .then()
