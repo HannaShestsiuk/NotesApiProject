@@ -1,6 +1,4 @@
-package notesApi;
-
-import requests.SimpleActions;
+package requests;
 
 public class BaseApiTest implements SimpleActions {
 }

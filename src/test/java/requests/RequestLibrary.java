@@ -5,9 +5,25 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import notesApi.ApiConstants;
+
+import static requests.ApiConstants.BASE_URI;
 
 public class RequestLibrary {
+    public static Response sendGetRequest(String url){
+        Response response = RestAssured.given()
+                .header("accept", "application/json")
+                //.queryParams(queryParams)
+                .log().all()
+                .when()
+                .get(BASE_URI + url)
+                .then()
+                .log().body()
+                .extract()
+                .response();
+
+        return response;
+    }
+
     public static Response sendPostRequest(Record record, String url){
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonBody = null;
@@ -25,7 +41,7 @@ public class RequestLibrary {
                 //.header("x-auth-token", authContent)
                 .log().all()
                 .when()
-                .post(ApiConstants.BASE_URI + url)
+                .post(BASE_URI + url)
                 .then()
                 .log().body()
                 .extract()

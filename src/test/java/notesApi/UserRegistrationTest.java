@@ -1,12 +1,12 @@
-package notesApi.users;
+package notesApi;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import notesApi.ApiConstants;
-import notesApi.BaseApiTest;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import records.User;
+import requests.ApiConstants;
+import requests.BaseApiTest;
 import requests.SimpleActions;
 
 import static org.hamcrest.MatcherAssert.assertThat;
