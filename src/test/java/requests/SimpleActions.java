@@ -14,7 +14,13 @@ public interface SimpleActions {
         return sendPostRequest(record, REGISTER_USER);
     }
 
-    static Response loginUser(Record record){
+    static Response loginUser(Record record) {
         return sendPostRequest(record, LOGIN_USER);
+    }
+
+    String authToken = "";
+
+    static Response createNote(Record record, String authToken) {
+        return sendPostRequestWithAuth(record, CREATE_NOTE, authToken);
     }
 }
