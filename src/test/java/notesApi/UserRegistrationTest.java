@@ -1,11 +1,8 @@
 package notesApi;
 
-import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import records.User;
-import requests.ApiConstants;
 import requests.BaseApiTest;
 import requests.SimpleActions;
 
@@ -13,12 +10,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class UserRegistrationTest  extends BaseApiTest {
-
-    @BeforeAll
-    public static void setup() {
-        RestAssured.baseURI = ApiConstants.BASE_URI;
-    }
+public class UserRegistrationTest extends BaseApiTest {
 
     @Test
     void registerUserWithValidData() {

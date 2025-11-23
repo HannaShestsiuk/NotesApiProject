@@ -24,7 +24,11 @@ public class RequestLibrary {
         return response;
     }
 
-    public static Response sendPostRequest(Record record, String url){
+    public static Response sendPostRequest(Record record, String url) {
+        return sendPostRequest(record, url, "");
+    }
+
+    public static Response sendPostRequest(Record record, String url, String authToken){
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonBody = null;
 
@@ -38,7 +42,7 @@ public class RequestLibrary {
                 .body(jsonBody)
                 .header("accept", "application/json")
                 .contentType("application/json")
-                //.header("x-auth-token", authContent)
+                .header("x-auth-token", authToken)
                 .log().all()
                 .when()
                 .post(BASE_URI + url)

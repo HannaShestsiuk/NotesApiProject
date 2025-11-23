@@ -13,4 +13,8 @@ public interface SimpleActions {
     static Response registerUser(Record record) {
         return sendPostRequest(record, REGISTER_USER);
     }
+
+    static Response loginUser(Record record){
+        return sendPostRequest(record, LOGIN_USER);
+    }
 }
