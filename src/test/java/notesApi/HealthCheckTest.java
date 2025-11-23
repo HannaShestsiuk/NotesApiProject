@@ -4,9 +4,8 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 import requests.SimpleActions;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class HealthCheckTest {
@@ -15,9 +14,9 @@ public class HealthCheckTest {
         Response response = SimpleActions.healthCheck();
 
         assertAll("Health-check response validation",
-            () -> assertThat(response.jsonPath().getBoolean("success"), is(true)),
-            () -> assertThat(response.jsonPath().getInt("status"), is(200)),
-            () -> assertThat(response.jsonPath().getString("message"), equalTo("Notes API is Running"))
+            () -> assertEquals(response.jsonPath().getBoolean("success"),true),
+            () -> assertEquals(response.jsonPath().getInt("status"),200),
+            () -> assertEquals(response.jsonPath().getString("message"), "Notes API is Running")
         );
     }
 }
