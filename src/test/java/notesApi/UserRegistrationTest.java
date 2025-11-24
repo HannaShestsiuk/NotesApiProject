@@ -7,6 +7,7 @@ import requests.BaseApiTest;
 import requests.SimpleActions;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static records.Messages.*;
 
 public class UserRegistrationTest extends BaseApiTest {
 
@@ -21,7 +22,7 @@ public class UserRegistrationTest extends BaseApiTest {
         Response response = SimpleActions.registerUser(user);
 
         assertAll("Successful user registration response validation",
-                () -> assertEquals("User account created successfully", response.jsonPath().getString("message")),
+                () -> assertEquals(ACCOUNT_CREATED.getLabel(), response.jsonPath().getString("message")),
                 () -> assertEquals(201, response.jsonPath().getInt("status")),
                 () -> assertNotNull(response.jsonPath().getString("data.id")),
                 () -> assertNotEquals("", response.jsonPath().getString("data.id")),
@@ -41,7 +42,7 @@ public class UserRegistrationTest extends BaseApiTest {
         Response response = SimpleActions.registerUser(user);
 
         assertAll("New user registration validation",
-                () -> assertEquals("User account created successfully", response.jsonPath().getString("message")),
+                () -> assertEquals(ACCOUNT_CREATED.getLabel(), response.jsonPath().getString("message")),
                 () -> assertEquals(201, response.jsonPath().getInt("status")),
                 () -> assertNotNull(response.jsonPath().getString("data.id")),
                 () -> assertNotEquals("", response.jsonPath().getString("data.id")),
@@ -52,7 +53,7 @@ public class UserRegistrationTest extends BaseApiTest {
         Response secondResponse = SimpleActions.registerUser(user);
 
         assertAll("Registration with existing email is failed",
-                () -> assertEquals("An account already exists with the same email address", secondResponse.jsonPath().getString("message")),
+                () -> assertEquals(UNIQUE_EMAIL_REQUIRED.getLabel(), secondResponse.jsonPath().getString("message")),
                 () -> assertEquals(409, secondResponse.jsonPath().getInt("status")),
                 () -> assertFalse(secondResponse.jsonPath().getBoolean("success"))
         );
@@ -69,7 +70,7 @@ public class UserRegistrationTest extends BaseApiTest {
         Response response = SimpleActions.registerUser(user);
 
         assertAll("Registration without email is failed",
-                () -> assertEquals("A valid email address is required", response.jsonPath().getString("message")),
+                () -> assertEquals(VALID_EMAIL_REQUIRED.getLabel(), response.jsonPath().getString("message")),
                 () -> assertEquals(400, response.jsonPath().getInt("status")),
                 () -> assertFalse(response.jsonPath().getBoolean("success"))
         );
@@ -86,7 +87,7 @@ public class UserRegistrationTest extends BaseApiTest {
         Response response = SimpleActions.registerUser(user);
 
         assertAll("Registration with empty or blank email is failed",
-                () -> assertEquals("A valid email address is required", response.jsonPath().getString("message")),
+                () -> assertEquals(VALID_EMAIL_REQUIRED.getLabel(), response.jsonPath().getString("message")),
                 () -> assertEquals(400, response.jsonPath().getInt("status")),
                 () -> assertFalse(response.jsonPath().getBoolean("success"))
         );
@@ -103,7 +104,7 @@ public class UserRegistrationTest extends BaseApiTest {
         Response response = SimpleActions.registerUser(user);
 
         assertAll("Registration with invalid email is failed",
-                () -> assertEquals("A valid email address is required", response.jsonPath().getString("message")),
+                () -> assertEquals(VALID_EMAIL_REQUIRED.getLabel(), response.jsonPath().getString("message")),
                 () -> assertEquals(400, response.jsonPath().getInt("status")),
                 () -> assertFalse(response.jsonPath().getBoolean("success"))
         );
@@ -120,7 +121,7 @@ public class UserRegistrationTest extends BaseApiTest {
         Response response = SimpleActions.registerUser(user);
 
         assertAll("Registration without name is failed",
-                () -> assertEquals("User name must be between 4 and 30 characters", response.jsonPath().getString("message")),
+                () -> assertEquals(VALID_USERNAME_REQUIRED.getLabel(), response.jsonPath().getString("message")),
                 () -> assertEquals(400, response.jsonPath().getInt("status")),
                 () -> assertFalse(response.jsonPath().getBoolean("success"))
         );
@@ -137,7 +138,7 @@ public class UserRegistrationTest extends BaseApiTest {
         Response response = SimpleActions.registerUser(user);
 
         assertAll("Registration with empty or blank name is failed",
-                () -> assertEquals("User name must be between 4 and 30 characters", response.jsonPath().getString("message")),
+                () -> assertEquals(VALID_USERNAME_REQUIRED.getLabel(), response.jsonPath().getString("message")),
                 () -> assertEquals(400, response.jsonPath().getInt("status")),
                 () -> assertFalse(response.jsonPath().getBoolean("success"))
         );
@@ -154,7 +155,7 @@ public class UserRegistrationTest extends BaseApiTest {
         Response response = SimpleActions.registerUser(user);
 
         assertAll("Registration with invalid name is failed",
-                () -> assertEquals("User name must be between 4 and 30 characters", response.jsonPath().getString("message")),
+                () -> assertEquals(VALID_USERNAME_REQUIRED.getLabel(), response.jsonPath().getString("message")),
                 () -> assertEquals(400, response.jsonPath().getInt("status")),
                 () -> assertFalse(response.jsonPath().getBoolean("success"))
         );
@@ -171,7 +172,7 @@ public class UserRegistrationTest extends BaseApiTest {
         Response response = SimpleActions.registerUser(user);
 
         assertAll("Registration without password is failed",
-                () -> assertEquals("Password must be between 6 and 30 characters", response.jsonPath().getString("message")),
+                () -> assertEquals(VALID_PASSWORD_REQUIRED.getLabel(), response.jsonPath().getString("message")),
                 () -> assertEquals(400, response.jsonPath().getInt("status")),
                 () -> assertFalse(response.jsonPath().getBoolean("success"))
         );
@@ -188,7 +189,7 @@ public class UserRegistrationTest extends BaseApiTest {
         Response response = SimpleActions.registerUser(user);
 
         assertAll("Registration without password is failed",
-                () -> assertEquals("Password must be between 6 and 30 characters", response.jsonPath().getString("message")),
+                () -> assertEquals(VALID_PASSWORD_REQUIRED.getLabel(), response.jsonPath().getString("message")),
                 () -> assertEquals(400, response.jsonPath().getInt("status")),
                 () -> assertFalse(response.jsonPath().getBoolean("success"))
         );
