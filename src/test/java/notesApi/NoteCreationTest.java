@@ -4,13 +4,13 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import records.Note;
-import records.NoteCategory;
 import records.RegisteredUser;
 import records.User;
 import requests.SimpleActions;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static records.NoteCategory.HOME;
+import static records.NoteCategory.*;
+
 
 public class NoteCreationTest {
     @Test
