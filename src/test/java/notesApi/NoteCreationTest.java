@@ -10,6 +10,7 @@ import records.User;
 import requests.SimpleActions;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static records.NoteCategory.HOME;
 
 public class NoteCreationTest {
     @Test
@@ -17,7 +18,7 @@ public class NoteCreationTest {
         Note note = new Note(
                 "Note Title " + System.currentTimeMillis(),
                 "Unregistered user is NOT able to create a note",
-                "Home"
+                HOME.getLabel()
         );
 
         Response response = SimpleActions.createNote(note, SimpleActions.authToken);
@@ -68,12 +69,12 @@ public class NoteCreationTest {
         Note note = new Note(
                 "Note Title " + System.currentTimeMillis(),
                 "This note should be created",
-                NoteCategory.HOME.getLabel()
+                HOME.getLabel()
         );
 
         Response response = SimpleActions.createNote(note, authToken);
 
-        assertAll("Note is NOT created by non-registered user",
+        assertAll("Note is created by registered user",
                 () -> assertEquals("Note successfully created", response.jsonPath().getString("message")),
                 () -> assertEquals(200, response.jsonPath().getInt("status")),
                 () -> assertTrue(response.jsonPath().getBoolean("success")),
@@ -82,6 +83,108 @@ public class NoteCreationTest {
                 () -> assertEquals(note.category(), response.jsonPath().getString("data.category")),
                 () -> assertFalse(response.jsonPath().getBoolean("data.completed")),
                 () -> assertEquals(userId, response.jsonPath().getString("data.user_id"))
+        );
+    }
+
+    @Test
+    void shouldNotCreateNoteWithoutTitle() {
+        Note note = new Note(
+                null,
+                "This note should NOT be created",
+                HOME.getLabel()
+        );
+
+        Response response = SimpleActions.createNote(note, authToken);
+
+        assertAll("Note is NOT created without title",
+                () -> assertEquals("Title must be between 4 and 100 characters", response.jsonPath().getString("message")),
+                () -> assertEquals(400, response.jsonPath().getInt("status")),
+                () -> assertFalse(response.jsonPath().getBoolean("success"))
+        );
+    }
+
+    @Test
+    void shouldNotCreateNoteWithInvalidTitle() {
+        Note note = new Note(
+                "Ups",
+                "This note should NOT be created",
+                HOME.getLabel()
+        );
+
+        Response response = SimpleActions.createNote(note, authToken);
+
+        assertAll("Note is NOT created with invalid title",
+                () -> assertEquals("Title must be between 4 and 100 characters", response.jsonPath().getString("message")),
+                () -> assertEquals(400, response.jsonPath().getInt("status")),
+                () -> assertFalse(response.jsonPath().getBoolean("success"))
+        );
+    }
+
+    @Test
+    void shouldNotCreateNoteWithoutDescription() {
+        Note note = new Note(
+                "Note Title " + System.currentTimeMillis(),
+                null,
+                HOME.getLabel()
+        );
+
+        Response response = SimpleActions.createNote(note, authToken);
+
+        assertAll("Note is NOT created without description",
+                () -> assertEquals("Description must be between 4 and 1000 characters", response.jsonPath().getString("message")),
+                () -> assertEquals(400, response.jsonPath().getInt("status")),
+                () -> assertFalse(response.jsonPath().getBoolean("success"))
+        );
+    }
+
+    @Test
+    void shouldNotCreateNoteWithInvalidDescription() {
+        Note note = new Note(
+                "Note Title " + System.currentTimeMillis(),
+                "foo",
+                HOME.getLabel()
+        );
+
+        Response response = SimpleActions.createNote(note, authToken);
+
+        assertAll("Note is NOT created with invalid description",
+                () -> assertEquals("Description must be between 4 and 1000 characters", response.jsonPath().getString("message")),
+                () -> assertEquals(400, response.jsonPath().getInt("status")),
+                () -> assertFalse(response.jsonPath().getBoolean("success"))
+        );
+    }
+
+    @Test
+    void shouldNotCreateNoteWithoutCategory() {
+        Note note = new Note(
+                "Note Title " + System.currentTimeMillis(),
+                "Note without category",
+                null
+        );
+
+        Response response = SimpleActions.createNote(note, authToken);
+
+        assertAll("Note is NOT created without category",
+                () -> assertEquals("Category must be one of the categories: Home, Work, Personal", response.jsonPath().getString("message")),
+                () -> assertEquals(400, response.jsonPath().getInt("status")),
+                () -> assertFalse(response.jsonPath().getBoolean("success"))
+        );
+    }
+
+    @Test
+    void shouldNotCreateNoteWithInvalidCategory() {
+        Note note = new Note(
+                "Note Title " + System.currentTimeMillis(),
+                "Note without category",
+                "NoHome"
+        );
+
+        Response response = SimpleActions.createNote(note, authToken);
+
+        assertAll("Note is NOT created with invalid category",
+                () -> assertEquals("Category must be one of the categories: Home, Work, Personal", response.jsonPath().getString("message")),
+                () -> assertEquals(400, response.jsonPath().getInt("status")),
+                () -> assertFalse(response.jsonPath().getBoolean("success"))
         );
     }
 }
