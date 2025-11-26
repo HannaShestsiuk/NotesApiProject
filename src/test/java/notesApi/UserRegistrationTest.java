@@ -22,12 +22,12 @@ public class UserRegistrationTest extends BaseApiTest {
         Response response = SimpleActions.registerUser(user);
 
         assertAll("Successful user registration response validation",
-                () -> assertEquals(ACCOUNT_CREATED.getLabel(), response.jsonPath().getString("message")),
-                () -> assertEquals(201, response.jsonPath().getInt("status")),
-                () -> assertNotNull(response.jsonPath().getString("data.id")),
-                () -> assertNotEquals("", response.jsonPath().getString("data.id")),
-                () -> assertEquals(user.name(), response.jsonPath().getString("data.name")),
-                () -> assertEquals(user.email(), response.jsonPath().getString("data.email"))
+                () -> assertEquals(ACCOUNT_CREATED.getLabel(), response.jsonPath().getString("message"),"Invalid message."),
+                () -> assertEquals(201, response.jsonPath().getInt("status"), "Invalid Status Code."),
+                () -> assertNotNull(response.jsonPath().getString("data.id"), "User id is set to NULL."),
+                () -> assertNotEquals("", response.jsonPath().getString("data.id"),"User id is set to empty string."),
+                () -> assertEquals(user.name(), response.jsonPath().getString("data.name"), "Invalid user name."),
+                () -> assertEquals(user.email(), response.jsonPath().getString("data.email"), "Invalid user email.")
         );
     }
 
@@ -42,20 +42,20 @@ public class UserRegistrationTest extends BaseApiTest {
         Response response = SimpleActions.registerUser(user);
 
         assertAll("New user registration validation",
-                () -> assertEquals(ACCOUNT_CREATED.getLabel(), response.jsonPath().getString("message")),
-                () -> assertEquals(201, response.jsonPath().getInt("status")),
-                () -> assertNotNull(response.jsonPath().getString("data.id")),
-                () -> assertNotEquals("", response.jsonPath().getString("data.id")),
-                () -> assertEquals(user.name(), response.jsonPath().getString("data.name")),
-                () -> assertEquals(user.email(), response.jsonPath().getString("data.email"))
+                () -> assertEquals(ACCOUNT_CREATED.getLabel(), response.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(201, response.jsonPath().getInt("status"), "Invalid Status Code."),
+                () -> assertNotNull(response.jsonPath().getString("data.id"), "User id is set to NULL."),
+                () -> assertNotEquals("", response.jsonPath().getString("data.id"), "User id is set to empty string."),
+                () -> assertEquals(user.name(), response.jsonPath().getString("data.name"), "Invalid user name."),
+                () -> assertEquals(user.email(), response.jsonPath().getString("data.email"), "Invalid user email.")
         );
 
         Response secondResponse = SimpleActions.registerUser(user);
 
         assertAll("Registration with existing email is failed",
-                () -> assertEquals(UNIQUE_EMAIL_REQUIRED.getLabel(), secondResponse.jsonPath().getString("message")),
-                () -> assertEquals(409, secondResponse.jsonPath().getInt("status")),
-                () -> assertFalse(secondResponse.jsonPath().getBoolean("success"))
+                () -> assertEquals(UNIQUE_EMAIL_REQUIRED.getLabel(), secondResponse.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(409, secondResponse.jsonPath().getInt("status"), "Invalid Status Code."),
+                () -> assertFalse(secondResponse.jsonPath().getBoolean("success"), "Invalid success status.")
         );
     }
 
@@ -70,9 +70,9 @@ public class UserRegistrationTest extends BaseApiTest {
         Response response = SimpleActions.registerUser(user);
 
         assertAll("Registration without email is failed",
-                () -> assertEquals(VALID_EMAIL_REQUIRED.getLabel(), response.jsonPath().getString("message")),
-                () -> assertEquals(400, response.jsonPath().getInt("status")),
-                () -> assertFalse(response.jsonPath().getBoolean("success"))
+                () -> assertEquals(VALID_EMAIL_REQUIRED.getLabel(), response.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(400, response.jsonPath().getInt("status"), "Invalid Status Code."),
+                () -> assertFalse(response.jsonPath().getBoolean("success"), "Invalid success status.")
         );
     }
 
@@ -87,9 +87,9 @@ public class UserRegistrationTest extends BaseApiTest {
         Response response = SimpleActions.registerUser(user);
 
         assertAll("Registration with empty or blank email is failed",
-                () -> assertEquals(VALID_EMAIL_REQUIRED.getLabel(), response.jsonPath().getString("message")),
-                () -> assertEquals(400, response.jsonPath().getInt("status")),
-                () -> assertFalse(response.jsonPath().getBoolean("success"))
+                () -> assertEquals(VALID_EMAIL_REQUIRED.getLabel(), response.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(400, response.jsonPath().getInt("status"), "Invalid Status Code."),
+                () -> assertFalse(response.jsonPath().getBoolean("success"), "Invalid success status.")
         );
     }
 
@@ -104,9 +104,9 @@ public class UserRegistrationTest extends BaseApiTest {
         Response response = SimpleActions.registerUser(user);
 
         assertAll("Registration with invalid email is failed",
-                () -> assertEquals(VALID_EMAIL_REQUIRED.getLabel(), response.jsonPath().getString("message")),
-                () -> assertEquals(400, response.jsonPath().getInt("status")),
-                () -> assertFalse(response.jsonPath().getBoolean("success"))
+                () -> assertEquals(VALID_EMAIL_REQUIRED.getLabel(), response.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(400, response.jsonPath().getInt("status"), "Invalid Status Code."),
+                () -> assertFalse(response.jsonPath().getBoolean("success"), "Invalid success status.")
         );
     }
 
@@ -121,9 +121,9 @@ public class UserRegistrationTest extends BaseApiTest {
         Response response = SimpleActions.registerUser(user);
 
         assertAll("Registration without name is failed",
-                () -> assertEquals(VALID_USERNAME_REQUIRED.getLabel(), response.jsonPath().getString("message")),
-                () -> assertEquals(400, response.jsonPath().getInt("status")),
-                () -> assertFalse(response.jsonPath().getBoolean("success"))
+                () -> assertEquals(VALID_USERNAME_REQUIRED.getLabel(), response.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(400, response.jsonPath().getInt("status"), "Invalid Status Code."),
+                () -> assertFalse(response.jsonPath().getBoolean("success"), "Invalid success status.")
         );
     }
 
@@ -138,9 +138,9 @@ public class UserRegistrationTest extends BaseApiTest {
         Response response = SimpleActions.registerUser(user);
 
         assertAll("Registration with empty or blank name is failed",
-                () -> assertEquals(VALID_USERNAME_REQUIRED.getLabel(), response.jsonPath().getString("message")),
-                () -> assertEquals(400, response.jsonPath().getInt("status")),
-                () -> assertFalse(response.jsonPath().getBoolean("success"))
+                () -> assertEquals(VALID_USERNAME_REQUIRED.getLabel(), response.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(400, response.jsonPath().getInt("status"), "Invalid Status Code."),
+                () -> assertFalse(response.jsonPath().getBoolean("success"), "Invalid success status.")
         );
     }
 
@@ -155,9 +155,9 @@ public class UserRegistrationTest extends BaseApiTest {
         Response response = SimpleActions.registerUser(user);
 
         assertAll("Registration with invalid name is failed",
-                () -> assertEquals(VALID_USERNAME_REQUIRED.getLabel(), response.jsonPath().getString("message")),
-                () -> assertEquals(400, response.jsonPath().getInt("status")),
-                () -> assertFalse(response.jsonPath().getBoolean("success"))
+                () -> assertEquals(VALID_USERNAME_REQUIRED.getLabel(), response.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(400, response.jsonPath().getInt("status"), "Invalid Status Code."),
+                () -> assertFalse(response.jsonPath().getBoolean("success"), "Invalid success status.")
         );
     }
 
@@ -172,9 +172,9 @@ public class UserRegistrationTest extends BaseApiTest {
         Response response = SimpleActions.registerUser(user);
 
         assertAll("Registration without password is failed",
-                () -> assertEquals(VALID_PASSWORD_REQUIRED.getLabel(), response.jsonPath().getString("message")),
-                () -> assertEquals(400, response.jsonPath().getInt("status")),
-                () -> assertFalse(response.jsonPath().getBoolean("success"))
+                () -> assertEquals(VALID_PASSWORD_REQUIRED.getLabel(), response.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(400, response.jsonPath().getInt("status"), "Invalid Status Code."),
+                () -> assertFalse(response.jsonPath().getBoolean("success"), "Invalid success status.")
         );
     }
 
@@ -189,9 +189,9 @@ public class UserRegistrationTest extends BaseApiTest {
         Response response = SimpleActions.registerUser(user);
 
         assertAll("Registration without password is failed",
-                () -> assertEquals(VALID_PASSWORD_REQUIRED.getLabel(), response.jsonPath().getString("message")),
-                () -> assertEquals(400, response.jsonPath().getInt("status")),
-                () -> assertFalse(response.jsonPath().getBoolean("success"))
+                () -> assertEquals(VALID_PASSWORD_REQUIRED.getLabel(), response.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(400, response.jsonPath().getInt("status"), "Invalid Status Code."),
+                () -> assertFalse(response.jsonPath().getBoolean("success"), "Invalid success status.")
         );
     }
 }

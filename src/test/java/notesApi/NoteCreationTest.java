@@ -24,9 +24,9 @@ public class NoteCreationTest {
         Response response = SimpleActions.createNote(note, SimpleActions.authToken);
 
         assertAll("Note is NOT created by non-registered user",
-                () -> assertEquals("No authentication token specified in x-auth-token header", response.jsonPath().getString("message")),
-                () -> assertEquals(401, response.jsonPath().getInt("status")),
-                () -> assertFalse(response.jsonPath().getBoolean("success"))
+                () -> assertEquals("No authentication token specified in x-auth-token header", response.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(401, response.jsonPath().getInt("status"), "Invalid Status Code."),
+                () -> assertFalse(response.jsonPath().getBoolean("success"), "Invalid success status.")
         );
     }
 
@@ -44,8 +44,8 @@ public class NoteCreationTest {
         Response registerUserResponse = SimpleActions.registerUser(user);
 
         assertAll("Successful user registration response validation",
-                () -> assertEquals(201, registerUserResponse.jsonPath().getInt("status")),
-                () -> assertTrue(registerUserResponse.jsonPath().getBoolean("success"))
+                () -> assertEquals(201, registerUserResponse.jsonPath().getInt("status"), "Invalid Status Code."),
+                () -> assertTrue(registerUserResponse.jsonPath().getBoolean("success"), "Invalid success status.")
         );
 
         RegisteredUser registeredUser = new RegisteredUser(
@@ -56,8 +56,8 @@ public class NoteCreationTest {
         Response loginResponse = SimpleActions.loginUser(registeredUser);
 
         assertAll("Registered user is logged in",
-                () -> assertEquals(200, loginResponse.jsonPath().getInt("status")),
-                () -> assertTrue(loginResponse.jsonPath().getBoolean("success"))
+                () -> assertEquals(200, loginResponse.jsonPath().getInt("status"), "Invalid Status Code."),
+                () -> assertTrue(loginResponse.jsonPath().getBoolean("success"), "Invalid success status.")
         );
 
         authToken = loginResponse.jsonPath().getString("data.token");
@@ -75,14 +75,14 @@ public class NoteCreationTest {
         Response response = SimpleActions.createNote(note, authToken);
 
         assertAll("Note is created by registered user",
-                () -> assertEquals("Note successfully created", response.jsonPath().getString("message")),
-                () -> assertEquals(200, response.jsonPath().getInt("status")),
-                () -> assertTrue(response.jsonPath().getBoolean("success")),
-                () -> assertEquals(note.title(), response.jsonPath().getString("data.title")),
-                () -> assertEquals(note.description(), response.jsonPath().getString("data.description")),
-                () -> assertEquals(note.category(), response.jsonPath().getString("data.category")),
-                () -> assertFalse(response.jsonPath().getBoolean("data.completed")),
-                () -> assertEquals(userId, response.jsonPath().getString("data.user_id"))
+                () -> assertEquals("Note successfully created", response.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(200, response.jsonPath().getInt("status"), "Invalid Status Code."),
+                () -> assertTrue(response.jsonPath().getBoolean("success"), "Invalid success status."),
+                () -> assertEquals(note.title(), response.jsonPath().getString("data.title"), "Invalid note title."),
+                () -> assertEquals(note.description(), response.jsonPath().getString("data.description"), "Invalid note description."),
+                () -> assertEquals(note.category(), response.jsonPath().getString("data.category"), "Invalid note category."),
+                () -> assertFalse(response.jsonPath().getBoolean("data.completed"), "Invalid note completion date."),
+                () -> assertEquals(userId, response.jsonPath().getString("data.user_id"), "Invalid user id.")
         );
     }
 
@@ -97,9 +97,9 @@ public class NoteCreationTest {
         Response response = SimpleActions.createNote(note, authToken);
 
         assertAll("Note is NOT created without title",
-                () -> assertEquals("Title must be between 4 and 100 characters", response.jsonPath().getString("message")),
-                () -> assertEquals(400, response.jsonPath().getInt("status")),
-                () -> assertFalse(response.jsonPath().getBoolean("success"))
+                () -> assertEquals("Title must be between 4 and 100 characters", response.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(400, response.jsonPath().getInt("status"), "Invalid Status Code."),
+                () -> assertFalse(response.jsonPath().getBoolean("success"), "Invalid success status.")
         );
     }
 
@@ -114,9 +114,9 @@ public class NoteCreationTest {
         Response response = SimpleActions.createNote(note, authToken);
 
         assertAll("Note is NOT created with invalid title",
-                () -> assertEquals("Title must be between 4 and 100 characters", response.jsonPath().getString("message")),
-                () -> assertEquals(400, response.jsonPath().getInt("status")),
-                () -> assertFalse(response.jsonPath().getBoolean("success"))
+                () -> assertEquals("Title must be between 4 and 100 characters", response.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(400, response.jsonPath().getInt("status"), "Invalid Status Code."),
+                () -> assertFalse(response.jsonPath().getBoolean("success"), "Invalid success status.")
         );
     }
 
@@ -131,9 +131,9 @@ public class NoteCreationTest {
         Response response = SimpleActions.createNote(note, authToken);
 
         assertAll("Note is NOT created without description",
-                () -> assertEquals("Description must be between 4 and 1000 characters", response.jsonPath().getString("message")),
-                () -> assertEquals(400, response.jsonPath().getInt("status")),
-                () -> assertFalse(response.jsonPath().getBoolean("success"))
+                () -> assertEquals("Description must be between 4 and 1000 characters", response.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(400, response.jsonPath().getInt("status"), "Invalid Status Code."),
+                () -> assertFalse(response.jsonPath().getBoolean("success"), "Invalid success status.")
         );
     }
 
@@ -148,9 +148,9 @@ public class NoteCreationTest {
         Response response = SimpleActions.createNote(note, authToken);
 
         assertAll("Note is NOT created with invalid description",
-                () -> assertEquals("Description must be between 4 and 1000 characters", response.jsonPath().getString("message")),
-                () -> assertEquals(400, response.jsonPath().getInt("status")),
-                () -> assertFalse(response.jsonPath().getBoolean("success"))
+                () -> assertEquals("Description must be between 4 and 1000 characters", response.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(400, response.jsonPath().getInt("status"), "Invalid Status Code."),
+                () -> assertFalse(response.jsonPath().getBoolean("success"), "Invalid success status.")
         );
     }
 
@@ -165,9 +165,9 @@ public class NoteCreationTest {
         Response response = SimpleActions.createNote(note, authToken);
 
         assertAll("Note is NOT created without category",
-                () -> assertEquals("Category must be one of the categories: Home, Work, Personal", response.jsonPath().getString("message")),
-                () -> assertEquals(400, response.jsonPath().getInt("status")),
-                () -> assertFalse(response.jsonPath().getBoolean("success"))
+                () -> assertEquals("Category must be one of the categories: Home, Work, Personal", response.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(400, response.jsonPath().getInt("status"), "Invalid Status Code."),
+                () -> assertFalse(response.jsonPath().getBoolean("success"), "Invalid success status.")
         );
     }
 
@@ -182,8 +182,8 @@ public class NoteCreationTest {
         Response response = SimpleActions.createNote(note, authToken);
 
         assertAll("Note is NOT created with invalid category",
-                () -> assertEquals("Category must be one of the categories: Home, Work, Personal", response.jsonPath().getString("message")),
-                () -> assertEquals(400, response.jsonPath().getInt("status")),
+                () -> assertEquals("Category must be one of the categories: Home, Work, Personal", response.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(400, response.jsonPath().getInt("status"), "Invalid Status Code."),
                 () -> assertFalse(response.jsonPath().getBoolean("success"))
         );
     }
