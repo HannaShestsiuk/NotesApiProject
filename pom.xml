@@ -29,12 +29,6 @@
     </dependency>
 
     <dependency>
-      <groupId>commons-codec</groupId>
-      <artifactId>commons-codec</artifactId>
-      <version>1.17.0</version>
-    </dependency>
-
-    <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
       <version>3.17.0</version>
@@ -46,13 +40,6 @@
       <version>5.5.2</version>
       <scope>test</scope>
     </dependency>
-
-      <dependency>
-          <groupId>org.hamcrest</groupId>
-          <artifactId>hamcrest</artifactId>
-          <version>2.2</version>
-          <scope>test</scope>
-      </dependency>
 
       <dependency>
           <groupId>com.fasterxml.jackson.core</groupId>
