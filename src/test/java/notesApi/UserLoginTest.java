@@ -7,6 +7,7 @@ import records.User;
 import requests.BaseApiTest;
 import requests.SimpleActions;
 
+import static enums.Messages.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class UserLoginTest extends BaseApiTest {
@@ -21,7 +22,7 @@ public class UserLoginTest extends BaseApiTest {
         Response registerUserResponse = SimpleActions.registerUser(user);
 
         assertAll("Successful user registration response validation",
-                () -> assertEquals("User account created successfully", registerUserResponse.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(ACCOUNT_CREATED.getLabel(), registerUserResponse.jsonPath().getString("message"), "Invalid message."),
                 () -> assertEquals(201, registerUserResponse.jsonPath().getInt("status"), "Invalid Status Code.")
         );
 
@@ -35,7 +36,7 @@ public class UserLoginTest extends BaseApiTest {
         Response response = SimpleActions.loginUser(registeredUser);
 
         assertAll("Registered user is logged in",
-                () -> assertEquals("Login successful", response.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(LOGIN_SUCCESS.getLabel(), response.jsonPath().getString("message"), "Invalid message."),
                 () -> assertEquals(200, response.jsonPath().getInt("status"), "Invalid Status Code."),
                 () -> assertTrue(response.jsonPath().getBoolean("success"), "Invalid success status."),
                 () -> assertEquals(registeredUser.email(), response.jsonPath().getString("data.email"), "Invalid user name."),
@@ -54,7 +55,7 @@ public class UserLoginTest extends BaseApiTest {
         Response registerUserResponse = SimpleActions.registerUser(user);
 
         assertAll("Successful user registration response validation",
-                () -> assertEquals("User account created successfully", registerUserResponse.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(ACCOUNT_CREATED.getLabel(), registerUserResponse.jsonPath().getString("message"), "Invalid message."),
                 () -> assertEquals(201, registerUserResponse.jsonPath().getInt("status"), "Invalid Status Code.")
         );
 
@@ -66,7 +67,7 @@ public class UserLoginTest extends BaseApiTest {
         Response response = SimpleActions.loginUser(registeredUser);
 
         assertAll("Failed login with invalid password",
-                () -> assertEquals("Incorrect email address or password", response.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(LOGIN_INVALID_EMAIL_OR_PASSWORD.getLabel(), response.jsonPath().getString("message"), "Invalid message."),
                 () -> assertEquals(401, response.jsonPath().getInt("status"), "Invalid Status Code."),
                 () -> assertFalse(response.jsonPath().getBoolean("success"), "Invalid success status.")
         );
@@ -83,7 +84,7 @@ public class UserLoginTest extends BaseApiTest {
         Response registerUserResponse = SimpleActions.registerUser(user);
 
         assertAll("Successful user registration response validation",
-                () -> assertEquals("User account created successfully", registerUserResponse.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(ACCOUNT_CREATED.getLabel(), registerUserResponse.jsonPath().getString("message"), "Invalid message."),
                 () -> assertEquals(201, registerUserResponse.jsonPath().getInt("status"), "Invalid Status Code.")
         );
 
@@ -95,7 +96,7 @@ public class UserLoginTest extends BaseApiTest {
         Response response = SimpleActions.loginUser(registeredUser);
 
         assertAll("Failed login with empty password",
-                () -> assertEquals("Password must be between 6 and 30 characters", response.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(VALID_PASSWORD_REQUIRED.getLabel(), response.jsonPath().getString("message"), "Invalid message."),
                 () -> assertEquals(400, response.jsonPath().getInt("status"), "Invalid Status Code."),
                 () -> assertFalse(response.jsonPath().getBoolean("success"), "Invalid success status.")
         );
@@ -112,7 +113,7 @@ public class UserLoginTest extends BaseApiTest {
         Response registerUserResponse = SimpleActions.registerUser(user);
 
         assertAll("Successful user registration response validation",
-                () -> assertEquals("User account created successfully", registerUserResponse.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(ACCOUNT_CREATED.getLabel(), registerUserResponse.jsonPath().getString("message"), "Invalid message."),
                 () -> assertEquals(201, registerUserResponse.jsonPath().getInt("status"), "Invalid Status Code.")
         );
 
@@ -124,7 +125,7 @@ public class UserLoginTest extends BaseApiTest {
         Response response = SimpleActions.loginUser(registeredUser);
 
         assertAll("Failed login without password",
-                () -> assertEquals("Password must be between 6 and 30 characters", response.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(VALID_PASSWORD_REQUIRED.getLabel(), response.jsonPath().getString("message"), "Invalid message."),
                 () -> assertEquals(400, response.jsonPath().getInt("status"), "Invalid Status Code."),
                 () -> assertFalse(response.jsonPath().getBoolean("success"), "Invalid success status.")
         );
@@ -140,7 +141,7 @@ public class UserLoginTest extends BaseApiTest {
         Response response = SimpleActions.loginUser(registeredUser);
 
         assertAll("Failed login with NON registered email",
-                () -> assertEquals("Incorrect email address or password", response.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(LOGIN_INVALID_EMAIL_OR_PASSWORD.getLabel(), response.jsonPath().getString("message"), "Invalid message."),
                 () -> assertEquals(401, response.jsonPath().getInt("status"), "Invalid Status Code."),
                 () -> assertFalse(response.jsonPath().getBoolean("success"), "Invalid success status.")
         );
@@ -156,7 +157,7 @@ public class UserLoginTest extends BaseApiTest {
         Response response = SimpleActions.loginUser(registeredUser);
 
         assertAll("Failed login with invalid email",
-                () -> assertEquals("A valid email address is required", response.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(VALID_EMAIL_REQUIRED.getLabel(), response.jsonPath().getString("message"), "Invalid message."),
                 () -> assertEquals(400, response.jsonPath().getInt("status"), "Invalid Status Code."),
                 () -> assertFalse(response.jsonPath().getBoolean("success"), "Invalid success status.")
         );
