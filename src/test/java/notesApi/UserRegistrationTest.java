@@ -12,7 +12,7 @@ import static enums.Messages.*;
 public class UserRegistrationTest extends BaseApiTest {
 
     @Test
-    void registerUserWithValidData() {
+    void registerUserTest() {
         User user = new User(
                 "Test User",
                 System.currentTimeMillis() + "@mail.com",
@@ -32,7 +32,7 @@ public class UserRegistrationTest extends BaseApiTest {
     }
 
     @Test
-    void shouldNotRegisterUserWithExistingEmail() {
+    void registerUserWithExistingEmailTest() {
         User user = new User(
                 "Test User",
                 System.currentTimeMillis() + "@mail.com",
@@ -60,7 +60,7 @@ public class UserRegistrationTest extends BaseApiTest {
     }
 
     @Test
-    void shouldNotRegisterUserWithoutEmail() {
+    void registerUserWithoutEmailTest() {
         User user = new User(
                 "Test User",
                 null,
@@ -77,7 +77,7 @@ public class UserRegistrationTest extends BaseApiTest {
     }
 
     @Test
-    void shouldNotRegisterUserWithEmptyOrBlankEmail() {
+    void registerUserWithEmptyEmailTest() {
         User user = new User(
                 "Test User",
                 " ",
@@ -94,7 +94,7 @@ public class UserRegistrationTest extends BaseApiTest {
     }
 
     @Test
-    void shouldNotRegisterUserWithInvalidEmail() {
+    void registerUserWithInvalidEmailTest() {
         User user = new User(
                 "Test User",
                 System.currentTimeMillis() + "mail.com",
@@ -111,7 +111,7 @@ public class UserRegistrationTest extends BaseApiTest {
     }
 
     @Test
-    void shouldNotRegisterUserWithoutName() {
+    void registerUserWithoutNameTest() {
         User user = new User(
                 null,
                 System.currentTimeMillis() + "@mail.com",
@@ -128,7 +128,7 @@ public class UserRegistrationTest extends BaseApiTest {
     }
 
     @Test
-    void shouldNotRegisterUserWithEmptyOrBlankName() {
+    void registerUserWithEmptyNameTest() {
         User user = new User(
                 " ",
                 System.currentTimeMillis() + "@mail.com",
@@ -145,7 +145,7 @@ public class UserRegistrationTest extends BaseApiTest {
     }
 
     @Test
-    void shouldNotRegisterUserWithInvalidName() {
+    void registerUserWithInvalidNameTest() {
         User user = new User(
                 "NameLength is more than MAX(30)",
                 System.currentTimeMillis() + "@mail.com",
@@ -162,7 +162,7 @@ public class UserRegistrationTest extends BaseApiTest {
     }
 
     @Test
-    void shouldNotRegisterUserWithoutPassword() {
+    void registerUserWithoutPasswordTest() {
         User user = new User(
                 "User Name",
                 System.currentTimeMillis() + "@mail.com",
@@ -179,7 +179,7 @@ public class UserRegistrationTest extends BaseApiTest {
     }
 
     @Test
-    void shouldNotRegisterUserWithInvalidPassword() {
+    void registerUserWithInvalidPasswordTest() {
         User user = new User(
                 "User Name",
                 System.currentTimeMillis() + "@mail.com",
