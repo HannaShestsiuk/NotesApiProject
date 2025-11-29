@@ -1,10 +1,10 @@
-package notesApi;
+package api_tests;
 
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
+import classes.LoginUser;
 import records.RegisteredUser;
 import records.User;
-import requests.BaseApiTest;
 import requests.SimpleActions;
 
 import static enums.Messages.*;
@@ -41,7 +41,7 @@ public class UserLoginTest extends BaseApiTest {
                 () -> assertTrue(response.jsonPath().getBoolean("success"), "Invalid success status."),
                 () -> assertEquals(registeredUser.email(), response.jsonPath().getString("data.email"), "Invalid user name."),
                 () -> assertEquals(userId, response.jsonPath().getString("data.id"), "Invalid user id.")
-        );
+       );
     }
 
     @Test
@@ -149,7 +149,7 @@ public class UserLoginTest extends BaseApiTest {
 
     @Test
     void loginWithInvalidEmailTest() {
-        RegisteredUser registeredUser = new RegisteredUser(
+        LoginUser registeredUser = new LoginUser(
                 System.currentTimeMillis() + "mail.com",
                 "Strong123!"
         );

@@ -1,12 +1,18 @@
 package requests;
 
 
+import classes.LoginUser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import records.RegisteredUser;
 
-import static requests.ApiConstants.BASE_URI;
+import java.util.HashMap;
+import java.util.Map;
+
+import static constants.ApiConstants.BASE_URI;
+import static io.restassured.http.ContentType.URLENC;
 
 public class RequestLibrary {
     public static Response sendGetRequest(String url){
@@ -48,6 +54,29 @@ public class RequestLibrary {
                 .response();
 
         return response;
+    }
+
+    public static Response sendPostRequest(LoginUser user, String url){
+        Response response = RestAssured.given()
+                //.header("accept", "application/json")
+                .contentType(URLENC)
+                .formParams(toForm(user))
+                .log().all()
+                .when()
+                .post(BASE_URI + url)
+                .then()
+                .log().body()
+                .extract()
+                .response();
+
+        return response;
+    }
+
+    private static Map<String, String> toForm(LoginUser user) {
+        Map<String, String> form = new HashMap<>();
+        form.put("email", user.getEmail());
+        form.put("password", user.getPassword());
+        return form;
     }
 
     public static Response sendPostRequestWithAuth(Record record, String url, String authToken){

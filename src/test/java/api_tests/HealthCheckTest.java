@@ -1,4 +1,4 @@
-package notesApi;
+package api_tests;
 
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
