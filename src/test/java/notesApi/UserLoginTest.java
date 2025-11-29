@@ -45,7 +45,7 @@ public class UserLoginTest extends BaseApiTest {
     }
 
     @Test
-    void shouldNotLoginWithInvalidPasswordTest() {
+    void loginWithInvalidPasswordTest() {
         User user = new User(
                 "Test User",
                 System.currentTimeMillis() + "@mail.com",
@@ -74,7 +74,7 @@ public class UserLoginTest extends BaseApiTest {
     }
 
     @Test
-    void shouldNotLoginWithEmptyPasswordTest() {
+    void loginWithEmptyPasswordTest() {
         User user = new User(
                 "Test User",
                 System.currentTimeMillis() + "@mail.com",
@@ -103,7 +103,7 @@ public class UserLoginTest extends BaseApiTest {
     }
 
     @Test
-    void shouldNotLoginWithoutPasswordTest() {
+    void loginWithoutPasswordTest() {
         User user = new User(
                 "Test User",
                 System.currentTimeMillis() + "@mail.com",
@@ -132,7 +132,7 @@ public class UserLoginTest extends BaseApiTest {
     }
 
     @Test
-    void shouldNotLoginWithNonRegisteredEmailTest() {
+    void loginWithNonRegisteredEmailTest() {
         RegisteredUser registeredUser = new RegisteredUser(
                 System.currentTimeMillis() + "@mail.com",
                 "Strong123!"
@@ -148,7 +148,7 @@ public class UserLoginTest extends BaseApiTest {
     }
 
     @Test
-    void shouldNotLoginWithInvalidEmailTest() {
+    void loginWithInvalidEmailTest() {
         RegisteredUser registeredUser = new RegisteredUser(
                 System.currentTimeMillis() + "mail.com",
                 "Strong123!"
