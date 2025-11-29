@@ -1,4 +1,4 @@
-package records;
+package enums;
 
 public enum NoteCategory {
     HOME("Home"),

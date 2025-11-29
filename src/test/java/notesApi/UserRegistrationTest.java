@@ -7,7 +7,7 @@ import requests.BaseApiTest;
 import requests.SimpleActions;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static records.Messages.*;
+import static enums.Messages.*;
 
 public class UserRegistrationTest extends BaseApiTest {
 
