@@ -2,7 +2,7 @@ package api_tests;
 
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
-import records.RegisteredUser;
+import records.UserLogin;
 import records.User;
 import requests.SimpleActions;
 
@@ -27,18 +27,18 @@ public class UserLoginTest {
 
         String userId = registerUserResponse.jsonPath().getString("data.id");
 
-        RegisteredUser registeredUser = new RegisteredUser(
+        UserLogin userLogin = new UserLogin(
                 user.email(),
                 user.password()
         );
 
-        Response response = SimpleActions.loginUser(registeredUser);
+        Response response = SimpleActions.loginUser(userLogin);
 
         assertAll("Registered user is logged in",
                 () -> assertEquals(LOGIN_SUCCESS, response.jsonPath().getString("message"), "Invalid message."),
                 () -> assertEquals(200, response.jsonPath().getInt("status"), "Invalid Status Code."),
                 () -> assertTrue(response.jsonPath().getBoolean("success"), "Invalid success status."),
-                () -> assertEquals(registeredUser.email(), response.jsonPath().getString("data.email"), "Invalid user name."),
+                () -> assertEquals(userLogin.email(), response.jsonPath().getString("data.email"), "Invalid user name."),
                 () -> assertEquals(userId, response.jsonPath().getString("data.id"), "Invalid user id.")
        );
     }
@@ -58,12 +58,12 @@ public class UserLoginTest {
                 () -> assertEquals(201, registerUserResponse.jsonPath().getInt("status"), "Invalid Status Code.")
         );
 
-        RegisteredUser registeredUser = new RegisteredUser(
+        UserLogin userLogin = new UserLogin(
                 user.email(),
                 user.password() + "invalid"
         );
 
-        Response response = SimpleActions.loginUser(registeredUser);
+        Response response = SimpleActions.loginUser(userLogin);
 
         assertAll("Failed login with invalid password",
                 () -> assertEquals(LOGIN_INVALID_EMAIL_OR_PASSWORD, response.jsonPath().getString("message"), "Invalid message."),
@@ -87,12 +87,12 @@ public class UserLoginTest {
                 () -> assertEquals(201, registerUserResponse.jsonPath().getInt("status"), "Invalid Status Code.")
         );
 
-        RegisteredUser registeredUser = new RegisteredUser(
+        UserLogin userLogin = new UserLogin(
                 user.email(),
                 ""
         );
 
-        Response response = SimpleActions.loginUser(registeredUser);
+        Response response = SimpleActions.loginUser(userLogin);
 
         assertAll("Failed login with empty password",
                 () -> assertEquals(VALID_PASSWORD_REQUIRED, response.jsonPath().getString("message"), "Invalid message."),
@@ -116,12 +116,12 @@ public class UserLoginTest {
                 () -> assertEquals(201, registerUserResponse.jsonPath().getInt("status"), "Invalid Status Code.")
         );
 
-        RegisteredUser registeredUser = new RegisteredUser(
+        UserLogin userLogin = new UserLogin(
                 user.email(),
                 null
         );
 
-        Response response = SimpleActions.loginUser(registeredUser);
+        Response response = SimpleActions.loginUser(userLogin);
 
         assertAll("Failed login without password",
                 () -> assertEquals(VALID_PASSWORD_REQUIRED, response.jsonPath().getString("message"), "Invalid message."),
@@ -132,12 +132,12 @@ public class UserLoginTest {
 
     @Test
     void loginWithNonRegisteredEmailTest() {
-        RegisteredUser registeredUser = new RegisteredUser(
+        UserLogin userLogin = new UserLogin(
                 System.currentTimeMillis() + "@mail.com",
                 "Strong123!"
         );
 
-        Response response = SimpleActions.loginUser(registeredUser);
+        Response response = SimpleActions.loginUser(userLogin);
 
         assertAll("Failed login with NON registered email",
                 () -> assertEquals(LOGIN_INVALID_EMAIL_OR_PASSWORD, response.jsonPath().getString("message"), "Invalid message."),
@@ -148,12 +148,12 @@ public class UserLoginTest {
 
     @Test
     void loginWithInvalidEmailTest() {
-        RegisteredUser registeredUser = new RegisteredUser(
+        UserLogin userLogin = new UserLogin(
                 System.currentTimeMillis() + "mail.com",
                 "Strong123!"
         );
 
-        Response response = SimpleActions.loginUser(registeredUser);
+        Response response = SimpleActions.loginUser(userLogin);
 
         assertAll("Failed login with invalid email",
                 () -> assertEquals(VALID_EMAIL_REQUIRED, response.jsonPath().getString("message"), "Invalid message."),

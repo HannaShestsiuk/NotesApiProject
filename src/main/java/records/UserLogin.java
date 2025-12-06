@@ -1,9 +1,9 @@
 package records;
 
-public record RegisteredUser(
+public record UserLogin(
         String email,
         String password) {
-    public RegisteredUser {
+    public UserLogin {
         email = email == null ? null : email.trim();
     }
 }
