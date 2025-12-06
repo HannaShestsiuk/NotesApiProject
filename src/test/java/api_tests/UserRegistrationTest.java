@@ -8,7 +8,7 @@ import requests.SimpleActions;
 import static org.junit.jupiter.api.Assertions.*;
 import static enums.Messages.*;
 
-public class UserRegistrationTest extends BaseApiTest {
+public class UserRegistrationTest{
 
     @Test
     void registerUserTest() {

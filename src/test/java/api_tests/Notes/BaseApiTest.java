@@ -1,16 +1,15 @@
-package api_tests;
+package api_tests.Notes;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeAll;
-import classes.LoginUser;
 import records.RegisteredUser;
 import requests.SimpleActions;
 
 import static io.restassured.config.EncoderConfig.encoderConfig;
 import static io.restassured.http.ContentType.URLENC;
 
-public class BaseApiTest implements SimpleActions {
+public class BaseApiTest {
     public static String authToken = "";
     public static String userId = "";
 

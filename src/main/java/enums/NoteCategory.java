@@ -1,5 +1,7 @@
 package enums;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum NoteCategory {
     HOME("Home"),
     WORK("Work"),
@@ -11,6 +13,7 @@ public enum NoteCategory {
         this.label = label;
     }
 
+    @JsonValue
     public String getLabel() {
         return label;
     }

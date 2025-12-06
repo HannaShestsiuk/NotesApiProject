@@ -10,7 +10,7 @@ import requests.SimpleActions;
 import static enums.Messages.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class UserLoginTest extends BaseApiTest {
+public class UserLoginTest {
     @Test
     void loginRegisteredUserTest() {
         User user = new User(
@@ -149,7 +149,7 @@ public class UserLoginTest extends BaseApiTest {
 
     @Test
     void loginWithInvalidEmailTest() {
-        LoginUser registeredUser = new LoginUser(
+        RegisteredUser registeredUser = new RegisteredUser(
                 System.currentTimeMillis() + "mail.com",
                 "Strong123!"
         );
