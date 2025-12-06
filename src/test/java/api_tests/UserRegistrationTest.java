@@ -6,7 +6,7 @@ import records.User;
 import requests.SimpleActions;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static enums.Messages.*;
+import static constants.Messages.*;
 
 public class UserRegistrationTest{
 
@@ -21,7 +21,7 @@ public class UserRegistrationTest{
         Response response = SimpleActions.registerUser(user);
 
         assertAll("Successful user registration response validation",
-                () -> assertEquals(ACCOUNT_CREATED.getLabel(), response.jsonPath().getString("message"),"Invalid message."),
+                () -> assertEquals(ACCOUNT_CREATED, response.jsonPath().getString("message"),"Invalid message."),
                 () -> assertEquals(201, response.jsonPath().getInt("status"), "Invalid Status Code."),
                 () -> assertNotNull(response.jsonPath().getString("data.id"), "User id is set to NULL."),
                 () -> assertNotEquals("", response.jsonPath().getString("data.id"),"User id is set to empty string."),
@@ -41,7 +41,7 @@ public class UserRegistrationTest{
         Response response = SimpleActions.registerUser(user);
 
         assertAll("New user registration validation",
-                () -> assertEquals(ACCOUNT_CREATED.getLabel(), response.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(ACCOUNT_CREATED, response.jsonPath().getString("message"), "Invalid message."),
                 () -> assertEquals(201, response.jsonPath().getInt("status"), "Invalid Status Code."),
                 () -> assertNotNull(response.jsonPath().getString("data.id"), "User id is set to NULL."),
                 () -> assertNotEquals("", response.jsonPath().getString("data.id"), "User id is set to empty string."),
@@ -52,7 +52,7 @@ public class UserRegistrationTest{
         Response secondResponse = SimpleActions.registerUser(user);
 
         assertAll("Registration with existing email is failed",
-                () -> assertEquals(UNIQUE_EMAIL_REQUIRED.getLabel(), secondResponse.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(UNIQUE_EMAIL_REQUIRED, secondResponse.jsonPath().getString("message"), "Invalid message."),
                 () -> assertEquals(409, secondResponse.jsonPath().getInt("status"), "Invalid Status Code."),
                 () -> assertFalse(secondResponse.jsonPath().getBoolean("success"), "Invalid success status.")
         );
@@ -69,7 +69,7 @@ public class UserRegistrationTest{
         Response response = SimpleActions.registerUser(user);
 
         assertAll("Registration without email is failed",
-                () -> assertEquals(VALID_EMAIL_REQUIRED.getLabel(), response.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(VALID_EMAIL_REQUIRED, response.jsonPath().getString("message"), "Invalid message."),
                 () -> assertEquals(400, response.jsonPath().getInt("status"), "Invalid Status Code."),
                 () -> assertFalse(response.jsonPath().getBoolean("success"), "Invalid success status.")
         );
@@ -86,7 +86,7 @@ public class UserRegistrationTest{
         Response response = SimpleActions.registerUser(user);
 
         assertAll("Registration with empty or blank email is failed",
-                () -> assertEquals(VALID_EMAIL_REQUIRED.getLabel(), response.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(VALID_EMAIL_REQUIRED, response.jsonPath().getString("message"), "Invalid message."),
                 () -> assertEquals(400, response.jsonPath().getInt("status"), "Invalid Status Code."),
                 () -> assertFalse(response.jsonPath().getBoolean("success"), "Invalid success status.")
         );
@@ -103,7 +103,7 @@ public class UserRegistrationTest{
         Response response = SimpleActions.registerUser(user);
 
         assertAll("Registration with invalid email is failed",
-                () -> assertEquals(VALID_EMAIL_REQUIRED.getLabel(), response.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(VALID_EMAIL_REQUIRED, response.jsonPath().getString("message"), "Invalid message."),
                 () -> assertEquals(400, response.jsonPath().getInt("status"), "Invalid Status Code."),
                 () -> assertFalse(response.jsonPath().getBoolean("success"), "Invalid success status.")
         );
@@ -120,7 +120,7 @@ public class UserRegistrationTest{
         Response response = SimpleActions.registerUser(user);
 
         assertAll("Registration without name is failed",
-                () -> assertEquals(VALID_USERNAME_REQUIRED.getLabel(), response.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(VALID_USERNAME_REQUIRED, response.jsonPath().getString("message"), "Invalid message."),
                 () -> assertEquals(400, response.jsonPath().getInt("status"), "Invalid Status Code."),
                 () -> assertFalse(response.jsonPath().getBoolean("success"), "Invalid success status.")
         );
@@ -137,7 +137,7 @@ public class UserRegistrationTest{
         Response response = SimpleActions.registerUser(user);
 
         assertAll("Registration with empty or blank name is failed",
-                () -> assertEquals(VALID_USERNAME_REQUIRED.getLabel(), response.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(VALID_USERNAME_REQUIRED, response.jsonPath().getString("message"), "Invalid message."),
                 () -> assertEquals(400, response.jsonPath().getInt("status"), "Invalid Status Code."),
                 () -> assertFalse(response.jsonPath().getBoolean("success"), "Invalid success status.")
         );
@@ -154,7 +154,7 @@ public class UserRegistrationTest{
         Response response = SimpleActions.registerUser(user);
 
         assertAll("Registration with invalid name is failed",
-                () -> assertEquals(VALID_USERNAME_REQUIRED.getLabel(), response.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(VALID_USERNAME_REQUIRED, response.jsonPath().getString("message"), "Invalid message."),
                 () -> assertEquals(400, response.jsonPath().getInt("status"), "Invalid Status Code."),
                 () -> assertFalse(response.jsonPath().getBoolean("success"), "Invalid success status.")
         );
@@ -171,7 +171,7 @@ public class UserRegistrationTest{
         Response response = SimpleActions.registerUser(user);
 
         assertAll("Registration without password is failed",
-                () -> assertEquals(VALID_PASSWORD_REQUIRED.getLabel(), response.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(VALID_PASSWORD_REQUIRED, response.jsonPath().getString("message"), "Invalid message."),
                 () -> assertEquals(400, response.jsonPath().getInt("status"), "Invalid Status Code."),
                 () -> assertFalse(response.jsonPath().getBoolean("success"), "Invalid success status.")
         );
@@ -188,7 +188,7 @@ public class UserRegistrationTest{
         Response response = SimpleActions.registerUser(user);
 
         assertAll("Registration without password is failed",
-                () -> assertEquals(VALID_PASSWORD_REQUIRED.getLabel(), response.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(VALID_PASSWORD_REQUIRED, response.jsonPath().getString("message"), "Invalid message."),
                 () -> assertEquals(400, response.jsonPath().getInt("status"), "Invalid Status Code."),
                 () -> assertFalse(response.jsonPath().getBoolean("success"), "Invalid success status.")
         );
