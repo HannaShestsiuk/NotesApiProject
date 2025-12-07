@@ -25,11 +25,27 @@ public class TestDataGenerator {
         return faker.name().fullName();
     }
 
+    public static String randomUserName(int length) {
+        return faker.lorem().characters(length);
+    }
+
     public static String randomEmail() {
         return faker.internet().emailAddress();
     }
 
     public static String randomPassword(int minLength, int maxLength) {
         return faker.internet().password(minLength, maxLength);
+    }
+
+    public static String randomPhone(int length) {
+        return faker.number().digits(length);
+    }
+
+    public static String randomCompany() {
+        return faker.company().name();
+    }
+
+    public static String randomCompany(int length) {
+        return faker.lorem().characters(length);
     }
 }

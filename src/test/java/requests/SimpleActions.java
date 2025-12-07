@@ -22,7 +22,11 @@ public interface SimpleActions {
         return sendGetRequest(GET_USER_PROFILE, authToken);
     }
 
+    static Response updateUserProfile(Record record, String authToken) {
+        return sendPatchRequest(record, UPDATE_USER_PROFILE, authToken);
+    }
+
     static Response createNote(Record record, String authToken) {
-        return sendPostRequestWithAuth(record, CREATE_NOTE, authToken);
+        return RequestLibrary.sendPostRequest(record, CREATE_NOTE, authToken);
     }
 }
