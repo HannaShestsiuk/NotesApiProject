@@ -26,6 +26,10 @@ public interface SimpleActions {
         return sendPatchRequest(record, UPDATE_USER_PROFILE, authToken);
     }
 
+    static Response sendPasswordResetLink(Record record) {
+        return sendPostRequest(record, FORGOT_PASSWORD);
+    }
+
     static Response createNote(Record record, String authToken) {
         return RequestLibrary.sendPostRequest(record, CREATE_NOTE, authToken);
     }

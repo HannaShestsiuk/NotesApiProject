@@ -17,6 +17,13 @@ public final class Messages {
     public static final String USER_PROFILE_UPDATED = "Profile updated successful";
     public static final String INVALID_PHONE = "Phone number should be between 8 and 20 digits";
     public static final String INVALID_COMPANY = "Company name must be between 4 and 30 characters";
+    public static final String PASSWORD_RESET_LINK_SENT = "Password reset link successfully sent to %s. Please verify by clicking on the given link";
+
+    public static String passwordResetLinkSent(String email) {
+        return String.format(PASSWORD_RESET_LINK_SENT, email);
+    }
+
+    public static final String NO_ACCOUNT_WITH_EMAIL = "No account found with the given email address";
     public static final String NOTE_CREATED = "Note successfully created";
     public static final String NOTE_INVALID_TITLE = "Title must be between 4 and 100 characters";
     public static final String NOTE_INVALID_DESCRIPTION = "Description must be between 4 and 1000 characters";
