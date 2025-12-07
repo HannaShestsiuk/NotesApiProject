@@ -1,5 +1,6 @@
 package api_tests;
 
+
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeAll;
@@ -10,6 +11,7 @@ import requests.SimpleActions;
 import static classes.TestDataGenerator.*;
 import static io.restassured.config.EncoderConfig.encoderConfig;
 import static io.restassured.http.ContentType.URLENC;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BaseApiTest {
     public static String authToken = "";
@@ -32,13 +34,15 @@ public class BaseApiTest {
         userPassword = randomPassword(6,7);
         User user = new User(userName, userEmail, userPassword);
 
-        SimpleActions.registerUser(user);
+        Response registerUserResponse = SimpleActions.registerUser(user);
+        assertEquals(201, registerUserResponse.statusCode(), "User registration failed");
 
         UserLogin userLogin = new UserLogin(userEmail, userPassword);
 
-        Response response = SimpleActions.loginUser(userLogin);
+        Response userLoginResponse = SimpleActions.loginUser(userLogin);
+        assertEquals(200, userLoginResponse.statusCode(), "User login failed");
 
-        authToken = response.jsonPath().getString("data.token");
-        userId    = response.jsonPath().getString("data.id");
+        authToken = userLoginResponse.jsonPath().getString("data.token");
+        userId    = userLoginResponse.jsonPath().getString("data.id");
     }
 }
