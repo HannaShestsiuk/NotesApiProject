@@ -13,6 +13,7 @@ public final class Messages {
     public static final String LOGIN_SUCCESS = "Login successful";
     public static final String LOGIN_INVALID_EMAIL_OR_PASSWORD = "Incorrect email address or password";
     public static final String NO_AUTH_HEADER = "No authentication token specified in x-auth-token header";
+    public static final String USER_PROFILE = "Profile successful";
     public static final String NOTE_CREATED = "Note successfully created";
     public static final String NOTE_INVALID_TITLE = "Title must be between 4 and 100 characters";
     public static final String NOTE_INVALID_DESCRIPTION = "Description must be between 4 and 1000 characters";

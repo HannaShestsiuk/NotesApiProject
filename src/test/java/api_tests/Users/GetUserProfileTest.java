@@ -1,4 +1,38 @@
 package api_tests.Users;
 
-public class GetUserProfileTest {
+import api_tests.BaseApiTest;
+import io.restassured.response.Response;
+import org.junit.jupiter.api.Test;
+import requests.SimpleActions;
+
+import static constants.Messages.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class GetUserProfileTest extends BaseApiTest {
+    @Test
+    void getUserProfile() {
+
+        Response response = SimpleActions.getUserProfile(authToken);
+
+        assertAll("Retrieve user profile",
+                () -> assertEquals(USER_PROFILE, response.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(200, response.jsonPath().getInt("status"), "Invalid Status Code."),
+                () -> assertTrue(response.jsonPath().getBoolean("success"), "Invalid success status."),
+                () -> assertEquals(userEmail, response.jsonPath().getString("data.email"), "Invalid user name."),
+                () -> assertEquals(userId, response.jsonPath().getString("data.id"), "Invalid user id.")
+        );
+    }
+
+    @Test
+    void getUnauthorizedUserProfile() {
+
+        Response response = SimpleActions.getUserProfile("");
+
+        assertAll("Retrieve user profile",
+                () -> assertEquals(NO_AUTH_HEADER, response.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(401, response.jsonPath().getInt("status"), "Invalid Status Code."),
+                () -> assertFalse(response.jsonPath().getBoolean("success"), "Invalid success status.")
+        );
+    }
 }
