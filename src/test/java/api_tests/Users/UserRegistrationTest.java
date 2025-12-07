@@ -1,4 +1,4 @@
-package api_tests;
+package api_tests.Users;
 
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;

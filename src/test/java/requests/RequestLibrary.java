@@ -11,13 +11,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static constants.ApiConstants.BASE_URI;
-import static io.restassured.http.ContentType.URLENC;
 
 public class RequestLibrary {
-    public static Response sendGetRequest(String url){
+    public static Response sendGetRequest(String url, String authToken){
         Response response = RestAssured.given()
                 .header("accept", "application/json")
-                //.queryParams(queryParams)
+                .header("x-auth-token", authToken)
                 .log().all()
                 .when()
                 .get(BASE_URI + url)
@@ -44,22 +43,6 @@ public class RequestLibrary {
                 .header("accept", "application/json")
                 .contentType("application/json")
                 //.header("x-auth-token", authToken)
-                .log().all()
-                .when()
-                .post(BASE_URI + url)
-                .then()
-                .log().body()
-                .extract()
-                .response();
-
-        return response;
-    }
-
-    public static Response sendPostRequest(LoginUser user, String url){
-        Response response = RestAssured.given()
-                //.header("accept", "application/json")
-                .contentType(URLENC)
-                .formParams(toForm(user))
                 .log().all()
                 .when()
                 .post(BASE_URI + url)

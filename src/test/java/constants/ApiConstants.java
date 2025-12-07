@@ -1,9 +1,17 @@
 package constants;
 
-public class ApiConstants {
-    public static final String BASE_URI = "https://practice.expandtesting.com/notes/api";
-    public static final String HEALTH_CHECK_URL = "/health-check";
-    public static final String REGISTER_USER_URL = "/users/register";
-    public static final String LOGIN_USER_URL = "/users/login";
-    public static final String CREATE_NOTE_URL = "/notes";
+public final class ApiConstants {
+    public static String BASE_URI = "https://practice.expandtesting.com/notes/api";
+    public static String HEALTH_CHECK = "/health-check";
+    public static String REGISTER_USER = "/users/register";
+    public static String LOGIN_USER = "/users/login";
+    public static String GET_USER_PROFILE = "/users/profile";
+    public static String UPDATE_USER_PROFILE = "/users/profile";
+    public static String FORGOT_PASSWORD = "/users/forgot-password";
+    public static String PASSWORD_RESET_TOKEN = "/users/verify-reset-password-token";
+    public static String RESET_PASSWORD = "/users/reset-password";
+    public static String CHANGE_PASSWORD = "/users/change-password";
+    public static String LOGOUT_USER = "/users/logout";
+    public static String DELETE_ACCOUNT = "/users/delete-account";
+    public static String CREATE_NOTE = "/notes";
 }

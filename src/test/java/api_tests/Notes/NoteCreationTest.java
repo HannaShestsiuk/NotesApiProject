@@ -1,5 +1,6 @@
 package api_tests.Notes;
 
+import api_tests.BaseApiTest;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;

@@ -21,11 +21,15 @@ public class TestDataGenerator {
         return faker.lorem().characters(length);
     }
 
+    public static String randomUserName() {
+        return faker.name().fullName();
+    }
+
     public static String randomEmail() {
         return faker.internet().emailAddress();
     }
 
-    public static String randomPassword() {
-        return faker.internet().password(8, 16, true, true);
+    public static String randomPassword(int minLength, int maxLength) {
+        return faker.internet().password(minLength, maxLength);
     }
 }

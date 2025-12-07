@@ -1,17 +1,24 @@
-package api_tests.Notes;
+package api_tests;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeAll;
+import records.User;
 import records.UserLogin;
 import requests.SimpleActions;
 
+import static classes.TestDataGenerator.*;
 import static io.restassured.config.EncoderConfig.encoderConfig;
 import static io.restassured.http.ContentType.URLENC;
 
 public class BaseApiTest {
     public static String authToken = "";
     public static String userId = "";
+    public static String userName = "";
+    public static String userEmail = "";
+    public static String userPassword = "";
+    public static String userPhone = "";
+    public static String userCompany = "";
 
     @BeforeAll
     public static void authUser(){
@@ -20,7 +27,14 @@ public class BaseApiTest {
                         .defaultContentCharset("UTF-8")
                         .encodeContentTypeAs("application/x-www-form-urlencoded", URLENC));
 
-        UserLogin userLogin = new UserLogin("automation@mail.com", "password1");
+        userName = randomUserName();
+        userEmail = randomEmail();
+        userPassword = randomPassword(6,7);
+        User user = new User(userName, userEmail, userPassword);
+
+        SimpleActions.registerUser(user);
+
+        UserLogin userLogin = new UserLogin(userEmail, userPassword);
 
         Response response = SimpleActions.loginUser(userLogin);
 
