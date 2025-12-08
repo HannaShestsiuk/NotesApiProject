@@ -23,6 +23,11 @@ public final class Messages {
         return String.format(PASSWORD_RESET_LINK_SENT, email);
     }
 
+    public static final String PASSWORD_CHANGED ="The password was successfully updated";
+    public static final String CURRENT_PASSWORD_INCORRECT = "The current password is incorrect";
+    public static final String VALID_CURRENT_PASSWORD_REQUIRED = "Current password must be between 6 and 30 characters";
+    public static final String VALID_NEW_PASSWORD_REQUIRED = "New password must be between 6 and 30 characters";
+    public static final String NEW_AND_CURRENT_PASSWORDS_EQUAL = "The new password should be different from the current password";
     public static final String NO_ACCOUNT_WITH_EMAIL = "No account found with the given email address";
     public static final String NOTE_CREATED = "Note successfully created";
     public static final String NOTE_INVALID_TITLE = "Title must be between 4 and 100 characters";

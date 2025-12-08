@@ -30,6 +30,10 @@ public interface SimpleActions {
         return sendPostRequest(record, FORGOT_PASSWORD);
     }
 
+    static Response changePassword(Record record, String authToken) {
+        return sendPostRequest(record, CHANGE_PASSWORD, authToken);
+    }
+
     static Response createNote(Record record, String authToken) {
         return RequestLibrary.sendPostRequest(record, CREATE_NOTE, authToken);
     }
