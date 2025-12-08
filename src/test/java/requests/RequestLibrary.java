@@ -111,4 +111,19 @@ public class RequestLibrary {
 
         return response;
     }
+
+    public static Response sendDeleteRequest(String url, String authToken){
+        Response response = RestAssured.given()
+                .header("accept", "application/json")
+                .header("x-auth-token", authToken)
+                .log().all()
+                .when()
+                .delete(BASE_URI + url)
+                .then()
+                .log().body()
+                .extract()
+                .response();
+
+        return response;
+    }
 }

@@ -34,6 +34,14 @@ public interface SimpleActions {
         return sendPostRequest(record, CHANGE_PASSWORD, authToken);
     }
 
+    static Response logout(String authToken) {
+        return sendDeleteRequest(LOGOUT_USER, authToken);
+    }
+
+    static Response deleteAccount(String authToken) {
+        return sendDeleteRequest(DELETE_ACCOUNT, authToken);
+    }
+
     static Response createNote(Record record, String authToken) {
         return RequestLibrary.sendPostRequest(record, CREATE_NOTE, authToken);
     }

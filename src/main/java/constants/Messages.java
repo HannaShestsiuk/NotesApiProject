@@ -29,6 +29,7 @@ public final class Messages {
     public static final String VALID_NEW_PASSWORD_REQUIRED = "New password must be between 6 and 30 characters";
     public static final String NEW_AND_CURRENT_PASSWORDS_EQUAL = "The new password should be different from the current password";
     public static final String NO_ACCOUNT_WITH_EMAIL = "No account found with the given email address";
+    public static final String USER_LOGOUT = "User has been successfully logged out";
     public static final String NOTE_CREATED = "Note successfully created";
     public static final String NOTE_INVALID_TITLE = "Title must be between 4 and 100 characters";
     public static final String NOTE_INVALID_DESCRIPTION = "Description must be between 4 and 1000 characters";
