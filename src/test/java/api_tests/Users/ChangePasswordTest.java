@@ -8,6 +8,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import records.Password;
+import records.UserLogin;
 import requests.SimpleActions;
 
 import java.util.stream.Stream;
@@ -35,6 +36,16 @@ public class ChangePasswordTest extends BaseApiTest {
         );
 
         userPassword = password.newPassword();
+
+        Response logoutResponse = SimpleActions.logout(authToken);
+
+        assertEquals(200, logoutResponse.statusCode(), "User login failed");
+
+        UserLogin userLogin = new UserLogin(userEmail, userPassword);
+
+        Response userLoginResponse = SimpleActions.loginUser(userLogin);
+
+        assertEquals(200, userLoginResponse.statusCode(), "User login failed");
     }
 
     static Stream<Arguments> invalidChangePasswordProvider() {
