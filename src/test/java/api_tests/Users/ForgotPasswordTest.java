@@ -31,32 +31,41 @@ public class ForgotPasswordTest extends BaseApiTest {
 
     static Stream<Arguments> invalidEmailProvider() {
         return Stream.of(
-                Arguments.of("Non existing email",
+                Arguments.of(
+                        "Non existing email",
                         new Email(randomEmail()),
                         NO_ACCOUNT_WITH_EMAIL,
-                        401),
-                Arguments.of("Invalid Email",
+                        401
+                ),
+                Arguments.of(
+                        "Invalid Email",
                         new Email("invalid.mail.com"),
                         VALID_EMAIL_REQUIRED,
-                        400),
-                Arguments.of("Empty Email",
+                        400
+                ),
+                Arguments.of(
+                        "Empty Email",
                         new Email("  "),
                         VALID_EMAIL_REQUIRED,
-                        400),
-                Arguments.of("Missing Email",
+                        400
+                ),
+                Arguments.of(
+                        "Missing Email",
                         new Email(null),
                         VALID_EMAIL_REQUIRED,
-                        400)
+                        400
+                )
         );
     }
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("invalidEmailProvider")
-    void updateUserProfileNegativeTests(String description,
-                                        Email email,
-                                        String expectedMessage,
-                                        int expectedStatus) {
-
+    void updateUserProfileNegativeTests(
+            String description,
+            Email email,
+            String expectedMessage,
+            int expectedStatus
+    ) {
         Response response = SimpleActions.sendPasswordResetLink(email);
 
         assertAll(description,
