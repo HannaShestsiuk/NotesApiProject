@@ -22,102 +22,153 @@ public class NoteCreationTest extends BaseApiTest {
 
     private Stream<Arguments> validNoteProvider(){
         return Stream.of(
-            Arguments.of("Note with valid values", new Note(
-                    randomTitle(),
-                    randomDescription(),
-                    HOME.getLabel())
+            Arguments.of(
+                    "Note with valid values",
+                    new Note(
+                        randomTitle(),
+                        randomDescription(),
+                        HOME.getLabel()
+                    )
             ),
-            Arguments.of("Title Length = MIN(4)", new Note(
-                    randomTitle(4),
-                    randomDescription(),
-                    WORK.getLabel())
+            Arguments.of(
+                    "Title Length = MIN(4)",
+                    new Note(
+                        randomTitle(4),
+                        randomDescription(),
+                        WORK.getLabel()
+                    )
             ),
-            Arguments.of("Title Length = MAX(100)", new Note(
-                    randomTitle(100),
-                    randomDescription(),
-                    PERSONAL.getLabel())
+            Arguments.of(
+                    "Title Length = MAX(100)",
+                    new Note(
+                        randomTitle(100),
+                        randomDescription(),
+                        PERSONAL.getLabel()
+                    )
             ),
-            Arguments.of("Description Length = MIN(4)", new Note(
-                    randomTitle(),
-                    randomDescription(4),
-                    WORK.getLabel())
+            Arguments.of(
+                    "Description Length = MIN(4)",
+                    new Note(
+                        randomTitle(),
+                        randomDescription(4),
+                        WORK.getLabel()
+                    )
             ),
-            Arguments.of("Description Length = MAX(1000)", new Note(
-                    randomTitle(),
-                    randomDescription(1000),
-                    HOME.getLabel())
+            Arguments.of(
+                    "Description Length = MAX(1000)",
+                    new Note(
+                        randomTitle(),
+                        randomDescription(1000),
+                        HOME.getLabel()
+                    )
             )
         );
     }
 
     static Stream<Arguments> invalidNoteProvider() {
         return Stream.of(
-                Arguments.of("No Auth",
-                        new Note(randomTitle(),
+                Arguments.of(
+                        "No Auth",
+                        new Note(
+                                randomTitle(),
                                 randomDescription(),
-                                HOME.getLabel()),
+                                HOME.getLabel()
+                        ),
                         "",
                         NO_AUTH_HEADER,
-                        401),
-                Arguments.of("Missing title",
-                        new Note(null,
+                        401
+                ),
+                Arguments.of(
+                        "Missing title",
+                        new Note(
+                                null,
                                 randomDescription(),
-                                HOME.getLabel()),
+                                HOME.getLabel()
+                        ),
                         authToken,
                         NOTE_INVALID_TITLE,
-                        400),
-                Arguments.of("Empty title",
+                        400
+                ),
+                Arguments.of(
+                        "Empty title",
                         new Note("",
                                 randomDescription(),
-                                HOME.getLabel()),
+                                HOME.getLabel()
+                        ),
                         authToken,
                         NOTE_INVALID_TITLE,
-                        400),
-                Arguments.of("Title Length < MIN(4)",
-                        new Note(randomTitle(3),
+                        400
+                ),
+                Arguments.of(
+                        "Title Length < MIN(4)",
+                        new Note(
+                                randomTitle(3),
                                 randomDescription(),
-                                HOME.getLabel()),
+                                HOME.getLabel()
+                        ),
                         authToken,
                         NOTE_INVALID_TITLE,
-                        400),
-                Arguments.of("Title Length > MAX(100)",
-                        new Note(randomTitle(101),
+                        400
+                ),
+                Arguments.of(
+                        "Title Length > MAX(100)",
+                        new Note(
+                                randomTitle(101),
                                 randomDescription(),
-                                HOME.getLabel()),
+                                HOME.getLabel()
+                        ),
                         authToken,
                         NOTE_INVALID_TITLE,
-                        400),
-                Arguments.of("Missing description",
-                        new Note(randomTitle(),
+                        400
+                ),
+                Arguments.of(
+                        "Missing description",
+                        new Note(
+                                randomTitle(),
                                 null,
-                                HOME.getLabel()),
+                                HOME.getLabel()
+                        ),
                         authToken,
                         NOTE_INVALID_DESCRIPTION,
-                        400),
-                Arguments.of("Empty description",
-                        new Note(randomTitle(),
+                        400
+                ),
+                Arguments.of(
+                        "Empty description",
+                        new Note(
+                                randomTitle(),
                                 "",
-                                HOME.getLabel()),
+                                HOME.getLabel()
+                        ),
                         authToken,
                         NOTE_INVALID_DESCRIPTION,
-                        400),
-                Arguments.of("Description Length < MIN(4)",
-                        new Note(randomTitle(),
+                        400
+                ),
+                Arguments.of(
+                        "Description Length < MIN(4)",
+                        new Note(
+                                randomTitle(),
                                 randomDescription(3),
-                                HOME.getLabel()),
+                                HOME.getLabel()
+                        ),
                         authToken,
                         NOTE_INVALID_DESCRIPTION,
-                        400),
-                Arguments.of("Description Length > MAX(1000)",
-                        new Note(randomTitle(),
+                        400
+                ),
+                Arguments.of(
+                        "Description Length > MAX(1000)",
+                        new Note(
+                                randomTitle(),
                                 randomDescription(1001),
-                                HOME.getLabel()),
+                                HOME.getLabel()
+                        ),
                         authToken,
                         NOTE_INVALID_DESCRIPTION,
-                        400),
+                        400
+                ),
                 Arguments.of(
                         "Missing category",
-                        new Note(randomTitle(),
+                        new Note(
+                                randomTitle(),
                                 randomDescription(),
                                 null),
                         authToken,
@@ -126,7 +177,8 @@ public class NoteCreationTest extends BaseApiTest {
                 ),
                 Arguments.of(
                         "Invalid category",
-                        new Note(randomTitle(),
+                        new Note(
+                                randomTitle(),
                                 randomDescription(),
                                 "invalid"),
                         authToken,
@@ -155,12 +207,13 @@ public class NoteCreationTest extends BaseApiTest {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("invalidNoteProvider")
-    void createNoteNegativeTests(String description,
-                                 Note note,
-                                 String token,
-                                 String expectedMessage,
-                                 int expectedStatus) {
-
+    void createNoteNegativeTests(
+            String description,
+            Note note,
+            String token,
+            String expectedMessage,
+            int expectedStatus
+    ) {
         Response response = SimpleActions.createNote(note, token);
 
         assertAll(description,
