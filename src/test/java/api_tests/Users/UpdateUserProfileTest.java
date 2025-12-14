@@ -21,135 +21,199 @@ public class UpdateUserProfileTest extends BaseApiTest {
 
     private Stream<Arguments> validUserProfileProvider(){
         return Stream.of(
-                Arguments.of("User Profile updated", new UserProfile(
-                        randomUserName(),
-                        randomPhone(10),
-                        randomCompany())
+                Arguments.of(
+                        "User Profile updated",
+                        new UserProfile(
+                            randomUserName(),
+                            randomPhone(10),
+                            randomCompany()
+                        )
                 ),
-                Arguments.of("Name Length = MIN(4)", new UserProfile(
-                        randomUserName(4),
-                        randomPhone(10),
-                        randomCompany())
+                Arguments.of(
+                        "Name Length = MIN(4)",
+                        new UserProfile(
+                            randomUserName(4),
+                            randomPhone(10),
+                            randomCompany()
+                        )
                 ),
-                Arguments.of("Name Length = MAX(30)", new UserProfile(
-                        randomUserName(30),
-                        randomPhone(10),
-                        randomCompany())
+                Arguments.of(
+                        "Name Length = MAX(30)",
+                        new UserProfile(
+                            randomUserName(30),
+                            randomPhone(10),
+                            randomCompany()
+                        )
                 ),
-                Arguments.of("Phone Length = MIN(8)", new UserProfile(
-                        randomUserName(),
-                        randomPhone(8),
-                        randomCompany())
+                Arguments.of(
+                        "Phone Length = MIN(8)",
+                        new UserProfile(
+                            randomUserName(),
+                            randomPhone(8),
+                            randomCompany()
+                        )
                 ),
-                Arguments.of("Phone Length = MAX(20)", new UserProfile(
-                        randomUserName(),
-                        randomPhone(20),
-                        randomCompany())
+                Arguments.of(
+                        "Phone Length = MAX(20)",
+                        new UserProfile(
+                            randomUserName(),
+                            randomPhone(20),
+                            randomCompany()
+                        )
                 ),
-                Arguments.of("Blank phone", new UserProfile(
-                        randomUserName(),
-                        " ",
-                        randomCompany())
+                Arguments.of(
+                        "Blank phone",
+                        new UserProfile(
+                            randomUserName(),
+                            " ",
+                            randomCompany()
+                        )
                 ),
-                Arguments.of("Company Length = MIN(4)", new UserProfile(
-                        randomUserName(),
-                        randomPhone(11),
-                        randomCompany(4))
+                Arguments.of(
+                        "Company Length = MIN(4)",
+                        new UserProfile(
+                            randomUserName(),
+                            randomPhone(11),
+                            randomCompany(4)
+                        )
                 ),
-                Arguments.of("Company Length = MAX(20)", new UserProfile(
-                        randomUserName(),
-                        randomPhone(11),
-                        randomCompany(20))
+                Arguments.of(
+                        "Company Length = MAX(20)",
+                        new UserProfile(
+                            randomUserName(),
+                            randomPhone(11),
+                            randomCompany(20)
+                        )
                 ),
-                Arguments.of("Blank Company", new UserProfile(
-                        randomUserName(),
-                        randomPhone(11),
-                        " ")
+                Arguments.of(
+                        "Blank Company",
+                        new UserProfile(
+                            randomUserName(),
+                            randomPhone(11),
+                            " ")
                 )
         );
     }
 
     static Stream<Arguments> invalidUserProfileProvider() {
         return Stream.of(
-                Arguments.of("No Auth",
-                        new UserProfile(randomUserName(),
+                Arguments.of(
+                        "No Auth",
+                        new UserProfile(
+                                randomUserName(),
                                 randomPhone(10),
-                                randomCompany()),
+                                randomCompany()
+                        ),
                         "",
                         NO_AUTH_HEADER,
-                        401),
-                Arguments.of("Missing name",
-                        new UserProfile(null,
-                                randomPhone(10),
-                                randomCompany()),
-                        authToken,
-                        VALID_USERNAME_REQUIRED,
-                        400),
-                Arguments.of("Empty name",
-                        new UserProfile("",
-                                randomPhone(10),
-                                randomCompany()),
-                        authToken,
-                        VALID_USERNAME_REQUIRED,
-                        400),
-                Arguments.of("Name Length < MIN(4)",
-                        new UserProfile(randomUserName(3),
-                                randomPhone(10),
-                                randomCompany()),
-                        authToken,
-                        VALID_USERNAME_REQUIRED,
-                        400),
-                Arguments.of("Title Length > MAX(30)",
-                        new UserProfile(randomUserName(31),
-                                randomPhone(10),
-                                randomCompany()),
-                        authToken,
-                        VALID_USERNAME_REQUIRED,
-                        400),
-                Arguments.of("Missing phone",
-                        new UserProfile(randomUserName(),
+                        401
+                ),
+                Arguments.of(
+                        "Missing name",
+                        new UserProfile(
                                 null,
-                                randomCompany()),
+                                randomPhone(10),
+                                randomCompany()
+                        ),
+                        authToken,
+                        VALID_USERNAME_REQUIRED,
+                        400
+                ),
+                Arguments.of(
+                        "Empty name",
+                        new UserProfile(
+                                "",
+                                randomPhone(10),
+                                randomCompany()
+                        ),
+                        authToken,
+                        VALID_USERNAME_REQUIRED,
+                        400
+                ),
+                Arguments.of(
+                        "Name Length < MIN(4)",
+                        new UserProfile(
+                                randomUserName(3),
+                                randomPhone(10),
+                                randomCompany()
+                        ),
+                        authToken,
+                        VALID_USERNAME_REQUIRED,
+                        400
+                ),
+                Arguments.of(
+                        "Title Length > MAX(30)",
+                        new UserProfile(
+                                randomUserName(31),
+                                randomPhone(10),
+                                randomCompany()
+                        ),
+                        authToken,
+                        VALID_USERNAME_REQUIRED,
+                        400
+                ),
+                Arguments.of(
+                        "Missing phone",
+                        new UserProfile(
+                                randomUserName(),
+                                null,
+                                randomCompany()
+                        ),
                         authToken,
                         INVALID_REQUEST,
-                        400),
-                Arguments.of("Phone Length < MIN(8)",
-                        new UserProfile(randomUserName(),
+                        400
+                ),
+                Arguments.of(
+                        "Phone Length < MIN(8)",
+                        new UserProfile(
+                                randomUserName(),
                                 randomPhone(7),
-                                randomCompany()),
+                                randomCompany()
+                        ),
                         authToken,
                         INVALID_PHONE,
-                        400),
-                Arguments.of("Phone Length > MAX(20)",
-                        new UserProfile(randomUserName(),
+                        400
+                ),
+                Arguments.of(
+                        "Phone Length > MAX(20)",
+                        new UserProfile(
+                                randomUserName(),
                                 randomPhone(21),
-                                randomCompany()),
+                                randomCompany()
+                        ),
                         authToken,
                         INVALID_PHONE,
-                        400),
+                        400
+                ),
                 Arguments.of(
                         "Missing company",
-                        new UserProfile(randomUserName(),
+                        new UserProfile(
+                                randomUserName(),
                                 randomPhone(10),
-                                null),
+                                null
+                        ),
                         authToken,
                         INVALID_REQUEST,
                         400
                 ),
                 Arguments.of(
                         "Company Length < MIN(4)",
-                        new UserProfile(randomUserName(),
+                        new UserProfile(
+                                randomUserName(),
                                 randomPhone(10),
-                                randomCompany(3)),
+                                randomCompany(3)
+                        ),
                         authToken,
                         INVALID_COMPANY,
                         400
                 ),
                 Arguments.of(
                         "Company Length > MAX(30)",
-                        new UserProfile(randomUserName(),
+                        new UserProfile(
+                                randomUserName(),
                                 randomPhone(10),
-                                randomCompany(31)),
+                                randomCompany(31)
+                        ),
                         authToken,
                         INVALID_COMPANY,
                         400
@@ -183,12 +247,13 @@ public class UpdateUserProfileTest extends BaseApiTest {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("invalidUserProfileProvider")
-    void updateUserProfileNegativeTests(String description,
-                                 UserProfile userProfile,
-                                 String token,
-                                 String expectedMessage,
-                                 int expectedStatus) {
-
+    void updateUserProfileNegativeTests(
+            String description,
+            UserProfile userProfile,
+            String token,
+            String expectedMessage,
+            int expectedStatus
+    ) {
         Response response = SimpleActions.updateUserProfile(userProfile, token);
 
         assertAll(description,
