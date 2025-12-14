@@ -50,72 +50,116 @@ public class ChangePasswordTest extends BaseApiTest {
 
     static Stream<Arguments> invalidChangePasswordProvider() {
         return Stream.of(
-                Arguments.of("No Auth",
-                        new Password(userPassword,
-                                randomPassword(8, 10)),
+                Arguments.of(
+                        "No Auth",
+                        new Password(
+                                userPassword,
+                                randomPassword(8, 10)
+                        ),
                         "",
                         NO_AUTH_HEADER,
-                        401),
-                Arguments.of("Missing current password",
-                        new Password(null,
-                                randomPassword(8, 10)),
+                        401
+                ),
+                Arguments.of(
+                        "Missing current password",
+                        new Password(
+                                null,
+                                randomPassword(8, 10)
+                        ),
                         authToken,
                         VALID_CURRENT_PASSWORD_REQUIRED,
-                        400),
-                Arguments.of("Empty current password",
-                        new Password(" ",
-                                randomPassword(8, 10)),
+                        400
+                ),
+                Arguments.of(
+                        "Empty current password",
+                        new Password(
+                                " ",
+                                randomPassword(8, 10)
+                        ),
                         authToken,
                         VALID_CURRENT_PASSWORD_REQUIRED,
-                        400),
-                Arguments.of("Current Password Length < MIN(6)",
-                        new Password(randomPassword(6,7).substring(0,5),
-                                randomPassword(8, 10)),
+                        400
+                ),
+                Arguments.of(
+                        "Current Password Length < MIN(6)",
+                        new Password(
+                                randomPassword(6,7).substring(0,5),
+                                randomPassword(8, 10)
+                        ),
                         authToken,
                         VALID_CURRENT_PASSWORD_REQUIRED,
-                        400),
-                Arguments.of("Current Password Length > MAX(30)",
-                        new Password(randomPassword(32, 33).substring(0,31),
-                                randomPassword(8, 10)),
+                        400
+                ),
+                Arguments.of(
+                        "Current Password Length > MAX(30)",
+                        new Password(
+                                randomPassword(32, 33).substring(0,31),
+                                randomPassword(8, 10)
+                        ),
                         authToken,
                         VALID_CURRENT_PASSWORD_REQUIRED,
-                        400),
-                Arguments.of("Current Password does NOT match",
-                        new Password(randomPassword(8, 10),
-                                randomPassword(8, 10)),
+                        400
+                ),
+                Arguments.of(
+                        "Current Password does NOT match",
+                        new Password(
+                                randomPassword(8, 10),
+                                randomPassword(8, 10)
+                        ),
                         authToken,
                         CURRENT_PASSWORD_INCORRECT,
-                        400),
-                Arguments.of("Missing new password",
-                        new Password(userPassword,
-                                null),
+                        400
+                ),
+                Arguments.of(
+                        "Missing new password",
+                        new Password(
+                                userPassword,
+                                null
+                        ),
                         authToken,
                         VALID_NEW_PASSWORD_REQUIRED,
-                        400),
-                Arguments.of("Empty new password",
-                        new Password(userPassword,
-                                " "),
+                        400
+                ),
+                Arguments.of(
+                        "Empty new password",
+                        new Password(
+                                userPassword,
+                                " "
+                        ),
                         authToken,
                         VALID_NEW_PASSWORD_REQUIRED,
-                        400),
-                Arguments.of("New Password Length < MIN(6)",
-                        new Password(userPassword,
-                                randomPassword(6,7).substring(0,5)),
+                        400
+                ),
+                Arguments.of(
+                        "New Password Length < MIN(6)",
+                        new Password(
+                                userPassword,
+                                randomPassword(6,7).substring(0,5)
+                        ),
                         authToken,
                         VALID_NEW_PASSWORD_REQUIRED,
-                        400),
-                Arguments.of("New Password Length > MAX(30)",
-                        new Password(userPassword,
-                                randomPassword(32,33).substring(0,31)),
+                        400
+                ),
+                Arguments.of(
+                        "New Password Length > MAX(30)",
+                        new Password(
+                                userPassword,
+                                randomPassword(32,33).substring(0,31)
+                        ),
                         authToken,
                         VALID_NEW_PASSWORD_REQUIRED,
-                        400),
-                Arguments.of("New Password matches Current Password)",
-                        new Password(userPassword,
-                                userPassword),
+                        400
+                ),
+                Arguments.of(
+                        "New Password matches Current Password)",
+                        new Password(
+                                userPassword,
+                                userPassword
+                        ),
                         authToken,
                         NEW_AND_CURRENT_PASSWORDS_EQUAL,
-                        400)
+                        400
+                )
         );
     }
 
@@ -125,8 +169,8 @@ public class ChangePasswordTest extends BaseApiTest {
                                         Password password,
                                         String token,
                                         String expectedMessage,
-                                        int expectedStatus) {
-
+                                        int expectedStatus
+    ) {
         Response response = SimpleActions.changePassword(password, token);
 
         assertAll(description,
