@@ -1,34 +1,68 @@
 package api_tests.Users;
 
+import api_tests.BaseApiTest;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.params.provider.Arguments;
 import records.User;
+import records.UserProfile;
 import requests.SimpleActions;
 
+import java.util.stream.Stream;
+
+import static classes.TestDataGenerator.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static constants.Messages.*;
 
-public class UserRegistrationTest{
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+public class UserRegistrationTest extends BaseApiTest {
 
-    @Test
-    void registerUserTest() {
-        User user = new User(
-                "Test User",
-                System.currentTimeMillis() + "@mail.com",
-                "Strong123!"
-        );
-
-        Response response = SimpleActions.registerUser(user);
-
-        assertAll("Successful user registration response validation",
-                () -> assertEquals(ACCOUNT_CREATED, response.jsonPath().getString("message"),"Invalid message."),
-                () -> assertEquals(201, response.jsonPath().getInt("status"), "Invalid Status Code."),
-                () -> assertNotNull(response.jsonPath().getString("data.id"), "User id is set to NULL."),
-                () -> assertNotEquals("", response.jsonPath().getString("data.id"),"User id is set to empty string."),
-                () -> assertEquals(user.name(), response.jsonPath().getString("data.name"), "Invalid user name."),
-                () -> assertEquals(user.email(), response.jsonPath().getString("data.email"), "Invalid user email.")
+    private Stream<Arguments> validUserProfileProvider(){
+        return Stream.of(
+                Arguments.of(
+                        "Valid User Profile",
+                        new User(
+                                randomUserName(),
+                                randomEmail(),
+                                randomPassword(8, 10)
+                        )
+                ),
+                Arguments.of(
+                        "Name Length = MIN(4)",
+                        new User(
+                                randomUserName(4),
+                                randomEmail(),
+                                randomPassword(8, 10)
+                        )
+                ),
+                Arguments.of(
+                        "Name Length = MAX(30)",
+                        new User(
+                                randomUserName(30),
+                                randomEmail(),
+                                randomPassword(8, 10)
+                        )
+                ),
+                Arguments.of(
+                        "Password Length = MIN(6)",
+                        new User(
+                                randomUserName(),
+                                randomEmail(),
+                                randomPassword(6, 7).substring(0,6)
+                        )
+                ),
+                Arguments.of(
+                        "Password Length = MAX(30)",
+                        new User(
+                                randomUserName(),
+                                randomEmail(),
+                                randomPassword(30, 31).substring(0,30)
+                        )
+                )
         );
     }
+
 
     @Test
     void registerUserWithExistingEmailTest() {

@@ -165,11 +165,12 @@ public class ChangePasswordTest extends BaseApiTest {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("invalidChangePasswordProvider")
-    void changePasswordNegativeTests(String description,
-                                        Password password,
-                                        String token,
-                                        String expectedMessage,
-                                        int expectedStatus
+    void changePasswordNegativeTests(
+            String description,
+            Password password,
+            String token,
+            String expectedMessage,
+            int expectedStatus
     ) {
         Response response = SimpleActions.changePassword(password, token);
 
