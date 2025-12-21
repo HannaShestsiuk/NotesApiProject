@@ -39,5 +39,6 @@ public final class Messages {
     public static final String NOTE_RETRIEVED = "Note successfully retrieved";
     public static final String NOTE_NOT_FOUND = "No note was found with the provided ID, Maybe it was deleted";
     public static final String NOTE_INVALID_ID = "Note ID must be a valid ID";
+    public static final String NOTE_UPDATED = "Note successfully Updated";
     public static final String INVALID_REQUEST = "Invalid Request";
 }

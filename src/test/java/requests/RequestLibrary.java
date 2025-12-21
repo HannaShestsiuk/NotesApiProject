@@ -91,6 +91,33 @@ public class RequestLibrary {
         return response;
     }
 
+
+    public static Response sendPutRequestWithParam(Record record, String url, String parameter, String authToken){
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonBody = null;
+
+        try{
+            jsonBody = objectMapper.writeValueAsString(record);
+        } catch (JsonProcessingException e){
+            throw new RuntimeException(e);
+        }
+
+        Response response = RestAssured.given()
+                .body(jsonBody)
+                .header("accept", "application/json")
+                .contentType("application/json")
+                .header("x-auth-token", authToken)
+                .log().all()
+                .when()
+                .put(BASE_URI + url + parameter)
+                .then()
+                .log().body()
+                .extract()
+                .response();
+
+        return response;
+    }
+
     public static Response sendPatchRequest(Record record, String url, String authToken){
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonBody = null;
