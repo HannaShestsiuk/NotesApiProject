@@ -45,4 +45,8 @@ public interface SimpleActions {
     static Response createNote(Record record, String authToken) {
         return RequestLibrary.sendPostRequest(record, CREATE_NOTE, authToken);
     }
+
+    static Response getNotes(String authToken) {
+        return RequestLibrary.sendGetRequest(GET_NOTES, authToken);
+    }
 }

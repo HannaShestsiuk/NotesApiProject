@@ -35,5 +35,6 @@ public final class Messages {
     public static final String NOTE_INVALID_TITLE = "Title must be between 4 and 100 characters";
     public static final String NOTE_INVALID_DESCRIPTION = "Description must be between 4 and 1000 characters";
     public static final String NOTE_INVALID_CATEGORY = "Category must be one of the categories: Home, Work, Personal";
+    public static final String NOTES_RETRIEVED = "Notes successfully retrieved";
     public static final String INVALID_REQUEST = "Invalid Request";
 }
