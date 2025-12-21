@@ -59,7 +59,11 @@ public interface SimpleActions {
     }
 
     static Response completeNote(String noteId, Record record, String authToken) {
-        return RequestLibrary.sendPatchRequestWithParam(record, UPDATE_NOTE, noteId, authToken);
+        return RequestLibrary.sendPatchRequestWithParam(record, COMPLETE_NOTE, noteId, authToken);
+    }
+
+    static Response deleteNote(String noteId, String authToken) {
+        return RequestLibrary.sendDeleteRequestWithParam(DELETE_NOTE, noteId, authToken);
     }
 
 }

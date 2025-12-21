@@ -18,4 +18,5 @@ public final class ApiConstants {
     public static String GET_NOTE_BY_ID = "/notes/";
     public static String UPDATE_NOTE = "/notes/";
     public static String COMPLETE_NOTE = "/notes/";
+    public static String DELETE_NOTE = "/notes/";
 }
