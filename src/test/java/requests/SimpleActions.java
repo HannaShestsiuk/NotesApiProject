@@ -57,4 +57,9 @@ public interface SimpleActions {
     static Response updateNote(String noteId, Record record, String authToken) {
         return RequestLibrary.sendPutRequestWithParam(record, UPDATE_NOTE, noteId, authToken);
     }
+
+    static Response completeNote(String noteId, Record record, String authToken) {
+        return RequestLibrary.sendPatchRequestWithParam(record, UPDATE_NOTE, noteId, authToken);
+    }
+
 }

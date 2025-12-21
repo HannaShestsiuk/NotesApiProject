@@ -144,6 +144,32 @@ public class RequestLibrary {
         return response;
     }
 
+    public static Response sendPatchRequestWithParam(Record record, String url, String parameter, String authToken){
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonBody = null;
+
+        try{
+            jsonBody = objectMapper.writeValueAsString(record);
+        } catch (JsonProcessingException e){
+            throw new RuntimeException(e);
+        }
+
+        Response response = RestAssured.given()
+                .body(jsonBody)
+                .header("accept", "application/json")
+                .contentType("application/json")
+                .header("x-auth-token", authToken)
+                .log().all()
+                .when()
+                .patch(BASE_URI + url + parameter)
+                .then()
+                .log().body()
+                .extract()
+                .response();
+
+        return response;
+    }
+
     public static Response sendDeleteRequest(String url, String authToken){
         Response response = RestAssured.given()
                 .header("accept", "application/json")
