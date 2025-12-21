@@ -15,4 +15,5 @@ public final class ApiConstants {
     public static String DELETE_ACCOUNT = "/users/delete-account";
     public static String CREATE_NOTE = "/notes";
     public static String GET_NOTES = "/notes";
+    public static String GET_NOTE_BY_ID = "/notes/";
 }

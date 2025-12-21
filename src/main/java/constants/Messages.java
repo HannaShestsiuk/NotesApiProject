@@ -36,5 +36,8 @@ public final class Messages {
     public static final String NOTE_INVALID_DESCRIPTION = "Description must be between 4 and 1000 characters";
     public static final String NOTE_INVALID_CATEGORY = "Category must be one of the categories: Home, Work, Personal";
     public static final String NOTES_RETRIEVED = "Notes successfully retrieved";
+    public static final String NOTE_RETRIEVED = "Note successfully retrieved";
+    public static final String NOTE_NOT_FOUND = "No note was found with the provided ID, Maybe it was deleted";
+    public static final String NOTE_INVALID_ID = "Note ID must be a valid ID";
     public static final String INVALID_REQUEST = "Invalid Request";
 }

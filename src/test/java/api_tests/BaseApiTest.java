@@ -19,8 +19,6 @@ public class BaseApiTest {
     public static String userName;
     public static String userEmail;
     public static String userPassword;
-    public static String userPhone;
-    public static String userCompany;
 
     @BeforeAll
     public static void authUser(){

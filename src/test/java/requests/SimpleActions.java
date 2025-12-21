@@ -49,4 +49,8 @@ public interface SimpleActions {
     static Response getNotes(String authToken) {
         return RequestLibrary.sendGetRequest(GET_NOTES, authToken);
     }
+
+    static Response getNoteById(String noteId, String authToken) {
+        return RequestLibrary.sendGetRequestWithParam(GET_NOTE_BY_ID, authToken, noteId);
+    }
 }

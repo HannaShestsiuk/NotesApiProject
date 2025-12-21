@@ -24,6 +24,21 @@ public class RequestLibrary {
         return response;
     }
 
+    public static Response sendGetRequestWithParam(String url, String authToken, String parameter){
+        Response response = RestAssured.given()
+                .header("accept", "application/json")
+                .header("x-auth-token", authToken)
+                .log().all()
+                .when()
+                .get(BASE_URI + url + parameter)
+                .then()
+                .log().body()
+                .extract()
+                .response();
+
+        return response;
+    }
+
     public static Response sendPostRequest(Record record, String url){
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonBody = null;
@@ -49,16 +64,6 @@ public class RequestLibrary {
 
         return response;
     }
-
-    //  IF No usage, to be deleted
-    /*
-    private static Map<String, String> toForm(LoginUser user) {
-        Map<String, String> form = new HashMap<>();
-        form.put("email", user.getEmail());
-        form.put("password", user.getPassword());
-        return form;
-    }
-    */
 
     public static Response sendPostRequest(Record record, String url, String authToken){
         ObjectMapper objectMapper = new ObjectMapper();
