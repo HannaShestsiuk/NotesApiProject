@@ -1,7 +1,9 @@
 package api_tests.Users;
 
 import api_tests.BaseApiTest;
+import io.qameta.allure.Description;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import records.User;
 import records.UserLogin;
@@ -12,6 +14,14 @@ import static constants.Messages.USER_LOGOUT;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class UserLogoutTest extends BaseApiTest {
+
+    @DisplayName("[API. User]. DELETE Method. Logout user")
+    @Description("""
+            1. Register a new user.
+            2. Login user.
+            3. Logout user.
+            4. Assert the response.
+            """)
     @Test
     void logoutUserTest() {
 

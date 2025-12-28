@@ -1,7 +1,9 @@
 package api_tests.Notes;
 
 import api_tests.BaseApiTest;
+import io.qameta.allure.Description;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -21,7 +23,41 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class NotePatchStatusTest extends BaseApiTest {
 
-    @ParameterizedTest(name = "{0}")
+    private Stream<Arguments> validPatchProvider() {
+        return Stream.of(
+                Arguments.of("Mark note as completed", true),
+                Arguments.of("Mark note as not completed", false)
+        );
+    }
+
+    private Stream<Arguments> invalidPatchProvider() {
+        return Stream.of(
+                Arguments.of(
+                        "No Auth",
+                        "69483980294a09029728a4bd",
+                        new NoteStatus(true),
+                        "",
+                        NO_AUTH_HEADER,
+                        401
+                ),
+                Arguments.of(
+                        "Invalid ID",
+                        "invalid-id",
+                        new NoteStatus(true),
+                        authToken,
+                        NOTE_INVALID_ID,
+                        400
+                )
+        );
+    }
+
+    @DisplayName("[API. Notes]. PATCH Method. Update Note's completed status")
+    @Description("""
+            1. Create a note.
+            2. Update note status
+            3. Assert the response.
+            """)
+    @ParameterizedTest(name = "with {0}")
     @MethodSource("validPatchProvider")
     void patchNoteStatusPositiveTests(
             String description,
@@ -51,7 +87,12 @@ public class NotePatchStatusTest extends BaseApiTest {
         );
     }
 
-    @ParameterizedTest(name = "{0}")
+    @DisplayName("[API. Notes]. PATCH Method. Update Note's completed status")
+    @Description("""
+            1. Update Note Status.
+            2. Assert the response.
+            """)
+    @ParameterizedTest(name = "with {0}")
     @MethodSource("invalidPatchProvider")
     void patchNoteStatusNegativeTests(
             String description,
@@ -67,34 +108,6 @@ public class NotePatchStatusTest extends BaseApiTest {
                 () -> assertEquals(expectedMessage, response.jsonPath().getString("message")),
                 () -> assertEquals(expectedStatus, response.jsonPath().getInt("status")),
                 () -> assertFalse(response.jsonPath().getBoolean("success"))
-        );
-    }
-
-    private Stream<Arguments> validPatchProvider() {
-        return Stream.of(
-                Arguments.of("Mark note as completed", true),
-                Arguments.of("Mark note as not completed", false)
-        );
-    }
-
-    private Stream<Arguments> invalidPatchProvider() {
-        return Stream.of(
-                Arguments.of(
-                        "No Auth",
-                        "69483980294a09029728a4bd",
-                        new NoteStatus(true),
-                        "",
-                        NO_AUTH_HEADER,
-                        401
-                ),
-                Arguments.of(
-                        "Invalid ID",
-                        "invalid-id",
-                        new NoteStatus(true),
-                        authToken,
-                        NOTE_INVALID_ID,
-                        400
-                )
         );
     }
 }

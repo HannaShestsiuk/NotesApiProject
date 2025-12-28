@@ -1,6 +1,8 @@
 package api_tests.Users;
 
+import io.qameta.allure.Description;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import records.UserLogin;
 import records.User;
@@ -10,6 +12,14 @@ import static constants.Messages.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class UserLoginTest {
+
+    @DisplayName("[API. User]. POST Method. User login")
+    @Description("""
+            1. Register a new user.
+            2. Assert the response.
+            3. Login user.
+            4. Assert the response.
+            """)
     @Test
     void loginRegisteredUserTest() {
         User user = new User(
@@ -43,6 +53,13 @@ public class UserLoginTest {
        );
     }
 
+    @DisplayName("[API. User]. POST Method. User login with Invalid password")
+    @Description("""
+            1. Register a new user.
+            2. Assert the response.
+            3. Login user with invalid password.
+            4. Assert the response.
+            """)
     @Test
     void loginWithInvalidPasswordTest() {
         User user = new User(
@@ -72,6 +89,13 @@ public class UserLoginTest {
         );
     }
 
+    @DisplayName("[API. User]. POST Method. User login with Empty password")
+    @Description("""
+            1. Register a new user.
+            2. Assert the response.
+            3. Login user with empty password.
+            4. Assert the response.
+            """)
     @Test
     void loginWithEmptyPasswordTest() {
         User user = new User(
@@ -101,6 +125,13 @@ public class UserLoginTest {
         );
     }
 
+    @DisplayName("[API. User]. POST Method. User login without password")
+    @Description("""
+            1. Register a new user.
+            2. Assert the response.
+            3. Login user without password.
+            4. Assert the response.
+            """)
     @Test
     void loginWithoutPasswordTest() {
         User user = new User(
@@ -130,6 +161,13 @@ public class UserLoginTest {
         );
     }
 
+    @DisplayName("[API. User]. POST Method. User login with non-registered email")
+    @Description("""
+            1. Register a new user.
+            2. Assert the response.
+            3. Login user with non-registered email.
+            4. Assert the response.
+            """)
     @Test
     void loginWithNonRegisteredEmailTest() {
         UserLogin userLogin = new UserLogin(
@@ -146,6 +184,13 @@ public class UserLoginTest {
         );
     }
 
+    @DisplayName("[API. User]. POST Method. User login with Invalid email")
+    @Description("""
+            1. Register a new user.
+            2. Assert the response.
+            3. Login user with invalid email.
+            4. Assert the response.
+            """)
     @Test
     void loginWithInvalidEmailTest() {
         UserLogin userLogin = new UserLogin(

@@ -1,7 +1,9 @@
 package api_tests.Notes;
 
 import api_tests.BaseApiTest;
+import io.qameta.allure.Description;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -20,74 +22,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class NoteUpdateTest extends BaseApiTest {
-
-    @ParameterizedTest(name = "{0}")
-    @MethodSource("validUpdateProvider")
-    void updateNotePositiveTests(String description, Note originalNote, NoteWithStatus updatedNote) {
-
-        Response createResponse = SimpleActions.createNote(originalNote, authToken);
-        String noteId = createResponse.jsonPath().getString("data.id");
-
-        Response updateResponse = SimpleActions.updateNote(noteId, updatedNote, authToken);
-
-        assertAll(description,
-                () -> assertEquals(NOTE_UPDATED, updateResponse.jsonPath().getString("message")),
-                () -> assertEquals(200, updateResponse.jsonPath().getInt("status")),
-                () -> assertTrue(updateResponse.jsonPath().getBoolean("success")),
-                () -> assertEquals(updatedNote.title(), updateResponse.jsonPath().getString("data.title")),
-                () -> assertEquals(updatedNote.description(), updateResponse.jsonPath().getString("data.description")),
-                () -> assertEquals(updatedNote.category(), updateResponse.jsonPath().getString("data.category")),
-                () -> assertEquals(updatedNote.completed(), updateResponse.jsonPath().getBoolean("data.completed")),
-                () -> assertEquals(userId, updateResponse.jsonPath().getString("data.user_id"))
-        );
-    }
-
-    @ParameterizedTest(name = "{0}")
-    @MethodSource("invalidUpdateWithExistingNoteProvider")
-    void updateNoteNegativeTestsExistingNote(
-            String description,
-            NoteWithStatus updatedNote,
-            String authToken,
-            String expectedMessage,
-            int expectedStatus
-    ) {
-        Note originalNote = new Note(
-                randomTitle(),
-                randomDescription(),
-                HOME.getLabel()
-        );
-
-        Response createResponse = SimpleActions.createNote(originalNote, authToken);
-        String noteId = createResponse.jsonPath().getString("data.id");
-
-        Response response = SimpleActions.updateNote(noteId, updatedNote, authToken);
-
-        assertAll(description,
-                () -> assertEquals(expectedMessage, response.jsonPath().getString("message")),
-                () -> assertEquals(expectedStatus, response.jsonPath().getInt("status")),
-                () -> assertFalse(response.jsonPath().getBoolean("success"))
-        );
-    }
-
-    @ParameterizedTest(name = "{0}")
-    @MethodSource("invalidUpdateNoNoteProvider")
-    void updateNoteNegativeTestsNoExistingNote(
-            String description,
-            String noteId,
-            NoteWithStatus updatedNote,
-            String authToken,
-            String expectedMessage,
-            int expectedStatus
-    ) {
-        Response response = SimpleActions.updateNote(noteId, updatedNote, authToken);
-
-        assertAll(description,
-                () -> assertEquals(expectedMessage, response.jsonPath().getString("message")),
-                () -> assertEquals(expectedStatus, response.jsonPath().getInt("status")),
-                () -> assertFalse(response.jsonPath().getBoolean("success"))
-        );
-    }
-
 
     private Stream<Arguments> validUpdateProvider() {
         return Stream.of(
@@ -140,6 +74,90 @@ public class NoteUpdateTest extends BaseApiTest {
                         NOTE_NOT_FOUND,
                         404
                 )
+        );
+    }
+
+    @DisplayName("[API. Notes]. PUT Method. Update a Note")
+    @Description("""
+            1. Create a Note.
+            2. Update Note.
+            3. Assert the response.
+            """)
+    @ParameterizedTest(name = "with {0}")
+    @MethodSource("validUpdateProvider")
+    void updateNotePositiveTests(String description, Note originalNote, NoteWithStatus updatedNote) {
+
+        Response createResponse = SimpleActions.createNote(originalNote, authToken);
+        String noteId = createResponse.jsonPath().getString("data.id");
+
+        Response updateResponse = SimpleActions.updateNote(noteId, updatedNote, authToken);
+
+        assertAll(description,
+                () -> assertEquals(NOTE_UPDATED, updateResponse.jsonPath().getString("message")),
+                () -> assertEquals(200, updateResponse.jsonPath().getInt("status")),
+                () -> assertTrue(updateResponse.jsonPath().getBoolean("success")),
+                () -> assertEquals(updatedNote.title(), updateResponse.jsonPath().getString("data.title")),
+                () -> assertEquals(updatedNote.description(), updateResponse.jsonPath().getString("data.description")),
+                () -> assertEquals(updatedNote.category(), updateResponse.jsonPath().getString("data.category")),
+                () -> assertEquals(updatedNote.completed(), updateResponse.jsonPath().getBoolean("data.completed")),
+                () -> assertEquals(userId, updateResponse.jsonPath().getString("data.user_id"))
+        );
+    }
+
+    @DisplayName("[API. Notes]. PUT Method. Update a Note")
+    @Description("""
+            1. Create a Note.
+            2. Update Note.
+            3. Assert the response.
+            """)
+    @ParameterizedTest(name = "with {0}")
+    @MethodSource("invalidUpdateWithExistingNoteProvider")
+    void updateNoteNegativeTestsExistingNote(
+            String description,
+            NoteWithStatus updatedNote,
+            String authToken,
+            String expectedMessage,
+            int expectedStatus
+    ) {
+        Note originalNote = new Note(
+                randomTitle(),
+                randomDescription(),
+                HOME.getLabel()
+        );
+
+        Response createResponse = SimpleActions.createNote(originalNote, authToken);
+        String noteId = createResponse.jsonPath().getString("data.id");
+
+        Response response = SimpleActions.updateNote(noteId, updatedNote, authToken);
+
+        assertAll(description,
+                () -> assertEquals(expectedMessage, response.jsonPath().getString("message")),
+                () -> assertEquals(expectedStatus, response.jsonPath().getInt("status")),
+                () -> assertFalse(response.jsonPath().getBoolean("success"))
+        );
+    }
+
+    @DisplayName("[API. Notes]. PUT Method. Update a Note")
+    @Description("""
+            1. Update non-existing Note.
+            2. Assert the response.
+            """)
+    @ParameterizedTest(name = "with {0}")
+    @MethodSource("invalidUpdateNoNoteProvider")
+    void updateNoteNegativeTestsNoExistingNote(
+            String description,
+            String noteId,
+            NoteWithStatus updatedNote,
+            String authToken,
+            String expectedMessage,
+            int expectedStatus
+    ) {
+        Response response = SimpleActions.updateNote(noteId, updatedNote, authToken);
+
+        assertAll(description,
+                () -> assertEquals(expectedMessage, response.jsonPath().getString("message")),
+                () -> assertEquals(expectedStatus, response.jsonPath().getInt("status")),
+                () -> assertFalse(response.jsonPath().getBoolean("success"))
         );
     }
 }

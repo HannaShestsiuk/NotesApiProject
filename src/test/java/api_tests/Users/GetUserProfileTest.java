@@ -1,7 +1,9 @@
 package api_tests.Users;
 
 import api_tests.BaseApiTest;
+import io.qameta.allure.Description;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import requests.SimpleActions;
 
@@ -10,6 +12,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class GetUserProfileTest extends BaseApiTest {
+    @DisplayName("[API. User]. GET Method. Get user's profile")
+    @Description("""
+            1. Get user profile.
+            2. Assert the response.
+            """)
     @Test
     void getUserProfile() {
 
@@ -24,6 +31,11 @@ public class GetUserProfileTest extends BaseApiTest {
         );
     }
 
+    @DisplayName("[API. User]. GET Method. Get user's profile without auth")
+    @Description("""
+            1. Get user profile.
+            2. Assert the response.
+            """)
     @Test
     void getUnauthorizedUserProfile() {
 

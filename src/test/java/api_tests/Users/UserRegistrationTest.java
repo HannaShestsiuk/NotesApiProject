@@ -1,10 +1,14 @@
 package api_tests.Users;
 
 import api_tests.BaseApiTest;
+import io.qameta.allure.Description;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import records.User;
 import records.UserProfile;
 import requests.SimpleActions;
@@ -63,7 +67,31 @@ public class UserRegistrationTest extends BaseApiTest {
         );
     }
 
+    @DisplayName("[API. User]. POST Method. Register user")
+    @Description("""
+            1. Register a new user.
+            2. Assert the response.
+            """)
+    @ParameterizedTest(name = "with {0}")
+    @MethodSource("validUserProfileProvider")
+    void registerUserPositiveTests(String description, User user) {
+        Response response = SimpleActions.registerUser(user);
 
+        assertAll(description,
+                () -> assertEquals(ACCOUNT_CREATED, response.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(201, response.jsonPath().getInt("status"), "Invalid Status Code."),
+                () -> assertTrue(response.jsonPath().getBoolean("success"), "Invalid success status."),
+                () -> assertEquals(user.name(), response.jsonPath().getString("data.name"), "Invalid name."),
+                () -> assertEquals(user.email(), response.jsonPath().getString("data.email"), "Invalid email.")
+        );
+    }
+
+    @DisplayName("[API. User]. POST Method. Register user with existing email")
+    @Description("""
+            1. Register a new user.
+            2. Register one more user with the same email address.
+            3. Assert the response.
+            """)
     @Test
     void registerUserWithExistingEmailTest() {
         User user = new User(
@@ -92,6 +120,11 @@ public class UserRegistrationTest extends BaseApiTest {
         );
     }
 
+    @DisplayName("[API. User]. POST Method. Register user without email")
+    @Description("""
+            1. Register a new user without email address.
+            2. Assert the response.
+            """)
     @Test
     void registerUserWithoutEmailTest() {
         User user = new User(
@@ -109,6 +142,11 @@ public class UserRegistrationTest extends BaseApiTest {
         );
     }
 
+    @DisplayName("[API. User]. POST Method. Register user with empty email")
+    @Description("""
+            1. Register a new user with empty email address.
+            2. Assert the response.
+            """)
     @Test
     void registerUserWithEmptyEmailTest() {
         User user = new User(
@@ -126,6 +164,11 @@ public class UserRegistrationTest extends BaseApiTest {
         );
     }
 
+    @DisplayName("[API. User]. POST Method. Register user with invalid email")
+    @Description("""
+            1. Register a new user with invalid email address.
+            2. Assert the response.
+            """)
     @Test
     void registerUserWithInvalidEmailTest() {
         User user = new User(
@@ -143,6 +186,11 @@ public class UserRegistrationTest extends BaseApiTest {
         );
     }
 
+    @DisplayName("[API. User]. POST Method. Register user without Name")
+    @Description("""
+            1. Register a new user without name.
+            2. Assert the response.
+            """)
     @Test
     void registerUserWithoutNameTest() {
         User user = new User(
@@ -160,6 +208,11 @@ public class UserRegistrationTest extends BaseApiTest {
         );
     }
 
+    @DisplayName("[API. User]. POST Method. Register user with empty Name")
+    @Description("""
+            1. Register a new user with empty name.
+            2. Assert the response.
+            """)
     @Test
     void registerUserWithEmptyNameTest() {
         User user = new User(
@@ -177,6 +230,11 @@ public class UserRegistrationTest extends BaseApiTest {
         );
     }
 
+    @DisplayName("[API. User]. POST Method. Register user with invalid Name length")
+    @Description("""
+            1. Register a new user with name length more than MAX(30).
+            2. Assert the response.
+            """)
     @Test
     void registerUserWithInvalidNameTest() {
         User user = new User(
@@ -194,6 +252,11 @@ public class UserRegistrationTest extends BaseApiTest {
         );
     }
 
+    @DisplayName("[API. User]. POST Method. Register user without password")
+    @Description("""
+            1. Register a new user without password.
+            2. Assert the response.
+            """)
     @Test
     void registerUserWithoutPasswordTest() {
         User user = new User(
@@ -211,6 +274,11 @@ public class UserRegistrationTest extends BaseApiTest {
         );
     }
 
+    @DisplayName("[API. User]. POST Method. Register user with invalid password")
+    @Description("""
+            1. Register a new user with invalid password.
+            2. Assert the response.
+            """)
     @Test
     void registerUserWithInvalidPasswordTest() {
         User user = new User(

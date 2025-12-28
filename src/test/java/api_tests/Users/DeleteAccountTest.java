@@ -1,7 +1,9 @@
 package api_tests.Users;
 
 import api_tests.BaseApiTest;
+import io.qameta.allure.Description;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import records.User;
 import records.UserLogin;
@@ -13,6 +15,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class DeleteAccountTest extends BaseApiTest {
 
+    @DisplayName("[API. User]. DELETE Method. Delete user's account")
+    @Description("""
+            1. Register new user.
+            2. Login user.
+            3. Delete user account.
+            4. Assert the response.
+            5. Attempt to login as a user with deleted account.
+            6. Assert the response.
+            """)
     @Test
     void deleteAccountTest() {
 
@@ -50,6 +61,14 @@ public class DeleteAccountTest extends BaseApiTest {
         );
     }
 
+    @DisplayName("[API. User]. DELETE Method. Delete user's account without login")
+    @Description("""
+            1. Register new user.
+            2. Delete user account without login.
+            3. Assert the response.
+            4. Login user.
+            5. Assert the response.
+            """)
     @Test
     void deleteAccountFailedTest() {
 
@@ -60,11 +79,6 @@ public class DeleteAccountTest extends BaseApiTest {
 
         Response registerUserResponse = SimpleActions.registerUser(user);
         assertEquals(201, registerUserResponse.statusCode(), "User registration failed");
-
-        UserLogin userLogin = new UserLogin(userEmail, userPassword);
-
-        Response userLoginResponse = SimpleActions.loginUser(userLogin);
-        assertEquals(200, userLoginResponse.statusCode(), "User login failed");
 
         Response response = SimpleActions.deleteAccount("");
 

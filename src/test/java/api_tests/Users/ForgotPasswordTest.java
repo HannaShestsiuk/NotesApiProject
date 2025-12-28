@@ -1,7 +1,9 @@
 package api_tests.Users;
 
 import api_tests.BaseApiTest;
+import io.qameta.allure.Description;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -16,18 +18,6 @@ import static constants.Messages.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ForgotPasswordTest extends BaseApiTest {
-    @Test
-    void resetPassword() {
-        Email email = new Email(userEmail);
-
-        Response response = SimpleActions.sendPasswordResetLink(email);
-
-        assertAll("Reset password link is sent",
-                () -> assertEquals(passwordResetLinkSent(userEmail), response.jsonPath().getString("message"), "Invalid message."),
-                () -> assertEquals(200, response.jsonPath().getInt("status"), "Invalid Status Code."),
-                () -> assertTrue(response.jsonPath().getBoolean("success"), "Invalid success status.")
-        );
-    }
 
     static Stream<Arguments> invalidEmailProvider() {
         return Stream.of(
@@ -58,7 +48,30 @@ public class ForgotPasswordTest extends BaseApiTest {
         );
     }
 
-    @ParameterizedTest(name = "{0}")
+    @DisplayName("[API. User]. POST Method. Send reset password link")
+    @Description("""
+            1. Send reset password link.
+            2. Assert the response.
+            """)
+    @Test
+    void resetPassword() {
+        Email email = new Email(userEmail);
+
+        Response response = SimpleActions.sendPasswordResetLink(email);
+
+        assertAll("Reset password link is sent",
+                () -> assertEquals(passwordResetLinkSent(userEmail), response.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(200, response.jsonPath().getInt("status"), "Invalid Status Code."),
+                () -> assertTrue(response.jsonPath().getBoolean("success"), "Invalid success status.")
+        );
+    }
+
+    @DisplayName("[API. User]. POST Method. Send reset password link")
+    @Description("""
+            1. Send reset password link.
+            2. Assert the response.
+            """)
+    @ParameterizedTest(name = "with {0}")
     @MethodSource("invalidEmailProvider")
     void updateUserProfileNegativeTests(
             String description,

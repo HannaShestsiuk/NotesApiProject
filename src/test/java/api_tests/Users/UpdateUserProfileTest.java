@@ -1,7 +1,9 @@
 package api_tests.Users;
 
 import api_tests.BaseApiTest;
+import io.qameta.allure.Description;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -221,7 +223,14 @@ public class UpdateUserProfileTest extends BaseApiTest {
         );
     }
 
-    @ParameterizedTest(name = "{0}")
+    @DisplayName("[API. User]. PATCH Method. Update user's profile")
+    @Description("""
+            1. Update user profile.
+            2. Assert the response.
+            3. Get updated user profile.
+            4. Assert the response.
+            """)
+    @ParameterizedTest(name = "with {0}")
     @MethodSource("validUserProfileProvider")
     void updateUserProfilePositiveTests(String description, UserProfile userProfile) {
         Response response = SimpleActions.updateUserProfile(userProfile, authToken);
@@ -245,7 +254,12 @@ public class UpdateUserProfileTest extends BaseApiTest {
         );
     }
 
-    @ParameterizedTest(name = "{0}")
+    @DisplayName("[API. User]. PATCH Method. Update user's profile")
+    @Description("""
+            1. Update user profile.
+            2. Assert the response.
+            """)
+    @ParameterizedTest(name = "with {0}")
     @MethodSource("invalidUserProfileProvider")
     void updateUserProfileNegativeTests(
             String description,

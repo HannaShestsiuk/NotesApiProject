@@ -2,6 +2,8 @@ package api_tests.Users;
 
 import api_tests.BaseApiTest;
 import io.restassured.response.Response;
+import io.qameta.allure.Description;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -20,33 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ChangePasswordTest extends BaseApiTest {
-    @Test
-    void changePassword() {
-        Password password = new Password(
-                userPassword,
-                randomPassword(6,30)
-        );
-
-        Response response = SimpleActions.changePassword(password, authToken);
-
-        assertAll("Password is changed",
-                () -> assertEquals(PASSWORD_CHANGED, response.jsonPath().getString("message"), "Invalid message."),
-                () -> assertEquals(200, response.jsonPath().getInt("status"), "Invalid Status Code."),
-                () -> assertTrue(response.jsonPath().getBoolean("success"), "Invalid success status.")
-        );
-
-        userPassword = password.newPassword();
-
-        Response logoutResponse = SimpleActions.logout(authToken);
-
-        assertEquals(200, logoutResponse.statusCode(), "User login failed");
-
-        UserLogin userLogin = new UserLogin(userEmail, userPassword);
-
-        Response userLoginResponse = SimpleActions.loginUser(userLogin);
-
-        assertEquals(200, userLoginResponse.statusCode(), "User login failed");
-    }
 
     static Stream<Arguments> invalidChangePasswordProvider() {
         return Stream.of(
@@ -163,7 +138,48 @@ public class ChangePasswordTest extends BaseApiTest {
         );
     }
 
-    @ParameterizedTest(name = "{0}")
+    @DisplayName("[API. User]. POST Method. Change Password")
+    @Description("""
+            1. Update password.
+            2. Assert the response.
+            3. Logout user.
+            4. Login user with the new password.
+            5. Assert the response.
+            """)
+    @Test
+    void changePassword() {
+        Password password = new Password(
+                userPassword,
+                randomPassword(6,30)
+        );
+
+        Response response = SimpleActions.changePassword(password, authToken);
+
+        assertAll("Password is changed",
+                () -> assertEquals(PASSWORD_CHANGED, response.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(200, response.jsonPath().getInt("status"), "Invalid Status Code."),
+                () -> assertTrue(response.jsonPath().getBoolean("success"), "Invalid success status.")
+        );
+
+        userPassword = password.newPassword();
+
+        Response logoutResponse = SimpleActions.logout(authToken);
+
+        assertEquals(200, logoutResponse.statusCode(), "User login failed");
+
+        UserLogin userLogin = new UserLogin(userEmail, userPassword);
+
+        Response userLoginResponse = SimpleActions.loginUser(userLogin);
+
+        assertEquals(200, userLoginResponse.statusCode(), "User login failed");
+    }
+
+    @DisplayName("[API. User]. POST Method. Change Password")
+    @Description("""
+            1. Update password.
+            2. Assert the response.
+            """)
+    @ParameterizedTest(name = "with {0}")
     @MethodSource("invalidChangePasswordProvider")
     void changePasswordNegativeTests(
             String description,

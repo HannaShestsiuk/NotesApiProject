@@ -1,7 +1,9 @@
 package api_tests.Notes;
 
 import api_tests.BaseApiTest;
+import io.qameta.allure.Description;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -188,7 +190,12 @@ public class NoteCreationTest extends BaseApiTest {
         );
     }
 
-    @ParameterizedTest(name = "{0}")
+    @DisplayName("[API. Notes]. POST Method. Create a Note")
+    @Description("""
+            1. Create a note.
+            2. Assert the response.
+            """)
+    @ParameterizedTest(name = "with {0}")
     @MethodSource("validNoteProvider")
     void createNewNotePositiveTests(String description, Note note) {
         Response response = SimpleActions.createNote(note, authToken);
@@ -205,7 +212,12 @@ public class NoteCreationTest extends BaseApiTest {
         );
     }
 
-    @ParameterizedTest(name = "{0}")
+    @DisplayName("[API. Notes]. POST Method. Create a Note")
+    @Description("""
+            1. Create a note.
+            2. Assert the response.
+            """)
+    @ParameterizedTest(name = "with {0}")
     @MethodSource("invalidNoteProvider")
     void createNoteNegativeTests(
             String description,
