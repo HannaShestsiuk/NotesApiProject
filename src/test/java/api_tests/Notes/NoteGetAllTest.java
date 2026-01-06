@@ -19,8 +19,7 @@ import static classes.TestDataGenerator.randomTitle;
 import static constants.Messages.NOTES_RETRIEVED;
 import static constants.Messages.NO_AUTH_HEADER;
 import static enums.NoteCategory.*;
-import static junit.framework.Assert.*;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class NoteGetAllTest extends BaseApiTest {

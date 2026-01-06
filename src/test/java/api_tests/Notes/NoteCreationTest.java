@@ -2,6 +2,7 @@ package api_tests.Notes;
 
 import api_tests.BaseApiTest;
 import io.qameta.allure.Description;
+import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.TestInstance;
