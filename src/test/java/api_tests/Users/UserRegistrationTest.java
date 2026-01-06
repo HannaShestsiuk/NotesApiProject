@@ -22,10 +22,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static constants.Messages.*;
 import static utils.TestUtils.assertResponseSchema;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class UserRegistrationTest extends BaseApiTest {
 
-    private Stream<Arguments> validUserProfileProvider(){
+    private static Stream<Arguments> validUserProfileProvider(){
         return Stream.of(
                 Arguments.of(
                         "Valid User Profile",

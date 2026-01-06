@@ -5,6 +5,7 @@ import io.qameta.allure.Description;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -19,9 +20,10 @@ import static constants.Messages.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static utils.TestUtils.assertResponseSchema;
 
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class ForgotPasswordTest extends BaseApiTest {
 
-    static Stream<Arguments> invalidEmailProvider() {
+    private static Stream<Arguments> invalidEmailProvider() {
         return Stream.of(
                 Arguments.of(
                         "Non existing email",

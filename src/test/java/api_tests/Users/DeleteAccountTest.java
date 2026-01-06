@@ -5,6 +5,7 @@ import io.qameta.allure.Description;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import records.User;
 import records.UserLogin;
 import requests.SimpleActions;
@@ -15,6 +16,7 @@ import static constants.Messages.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static utils.TestUtils.assertResponseSchema;
 
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class DeleteAccountTest extends BaseApiTest {
 
     @DisplayName("[API. User]. DELETE Method. Delete user's account")

@@ -22,10 +22,10 @@ import static enums.NoteCategory.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static utils.TestUtils.assertResponseSchema;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class NoteGetByIdTest extends BaseApiTest {
 
-    private Stream<Arguments> validNoteByIdProvider() {
+    private static Stream<Arguments> validNoteByIdProvider() {
         return Stream.of(
                 Arguments.of(
                         "Valid note by ID",
@@ -38,7 +38,7 @@ public class NoteGetByIdTest extends BaseApiTest {
         );
     }
 
-    private Stream<Arguments> invalidNoteByIdProvider() {
+    private static Stream<Arguments> invalidNoteByIdProvider() {
         return Stream.of(
                 Arguments.of(
                         "No Auth",

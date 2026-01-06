@@ -5,9 +5,13 @@ import io.qameta.allure.Description;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import records.User;
+import records.UserLogin;
 import records.UserProfile;
 import requests.SimpleActions;
 
@@ -20,10 +24,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static utils.TestUtils.assertResponseSchema;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class UpdateUserProfileTest extends BaseApiTest {
 
-    private Stream<Arguments> validUserProfileProvider(){
+    private static Stream<Arguments> validUserProfileProvider(){
         return Stream.of(
                 Arguments.of(
                         "User Profile updated",
@@ -99,7 +103,7 @@ public class UpdateUserProfileTest extends BaseApiTest {
         );
     }
 
-    static Stream<Arguments> invalidUserProfileProvider() {
+    private static Stream<Arguments> invalidUserProfileProvider() {
         return Stream.of(
                 Arguments.of(
                         "No Auth",
@@ -232,6 +236,7 @@ public class UpdateUserProfileTest extends BaseApiTest {
             3. Get updated user profile.
             4. Assert the response.
             """)
+    @Execution(ExecutionMode.SAME_THREAD)
     @ParameterizedTest(name = "with {0}")
     @MethodSource("validUserProfileProvider")
     void updateUserProfilePositiveTests(String description, UserProfile userProfile) {

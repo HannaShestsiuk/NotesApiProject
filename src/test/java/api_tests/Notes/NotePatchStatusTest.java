@@ -23,17 +23,17 @@ import static enums.NoteCategory.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static utils.TestUtils.assertResponseSchema;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class NotePatchStatusTest extends BaseApiTest {
 
-    private Stream<Arguments> validPatchProvider() {
+    private static Stream<Arguments> validPatchProvider() {
         return Stream.of(
                 Arguments.of("Mark note as completed", true),
                 Arguments.of("Mark note as not completed", false)
         );
     }
 
-    private Stream<Arguments> invalidPatchProvider() {
+    private static Stream<Arguments> invalidPatchProvider() {
         return Stream.of(
                 Arguments.of(
                         "No Auth",

@@ -4,15 +4,18 @@ import io.qameta.allure.Description;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import records.UserLogin;
 import records.User;
 import requests.SimpleActions;
 
+import static classes.TestDataGenerator.*;
 import static constants.ApiConstants.*;
 import static constants.Messages.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static utils.TestUtils.assertResponseSchema;
 
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class UserLoginTest {
 
     @DisplayName("[API. User]. POST Method. User login")
@@ -25,9 +28,9 @@ public class UserLoginTest {
     @Test
     void loginRegisteredUserTest() {
         User user = new User(
-                "Test User",
-                System.currentTimeMillis() + "@mail.com",
-                "Strong123!"
+                randomUserName(),
+                randomEmail(),
+                randomPassword(8,10)
         );
 
         Response registerUserResponse = SimpleActions.registerUser(user);
@@ -67,9 +70,9 @@ public class UserLoginTest {
     @Test
     void loginWithInvalidPasswordTest() {
         User user = new User(
-                "Test User",
-                System.currentTimeMillis() + "@mail.com",
-                "Strong123!"
+                randomUserName(),
+                randomEmail(),
+                randomPassword(8,10)
         );
 
         Response registerUserResponse = SimpleActions.registerUser(user);
@@ -105,9 +108,9 @@ public class UserLoginTest {
     @Test
     void loginWithEmptyPasswordTest() {
         User user = new User(
-                "Test User",
-                System.currentTimeMillis() + "@mail.com",
-                "Strong123!"
+                randomUserName(),
+                randomEmail(),
+                randomPassword(8,10)
         );
 
         Response registerUserResponse = SimpleActions.registerUser(user);
@@ -141,9 +144,9 @@ public class UserLoginTest {
     @Test
     void loginWithoutPasswordTest() {
         User user = new User(
-                "Test User",
-                System.currentTimeMillis() + "@mail.com",
-                "Strong123!"
+                randomUserName(),
+                randomEmail(),
+                randomPassword(8,10)
         );
 
         Response registerUserResponse = SimpleActions.registerUser(user);
@@ -177,8 +180,8 @@ public class UserLoginTest {
     @Test
     void loginWithNonRegisteredEmailTest() {
         UserLogin userLogin = new UserLogin(
-                System.currentTimeMillis() + "@mail.com",
-                "Strong123!"
+                randomEmail(),
+                randomPassword(8,10)
         );
 
         Response response = SimpleActions.loginUser(userLogin);
@@ -201,7 +204,7 @@ public class UserLoginTest {
     void loginWithInvalidEmailTest() {
         UserLogin userLogin = new UserLogin(
                 System.currentTimeMillis() + "mail.com",
-                "Strong123!"
+                randomPassword(8,10)
         );
 
         Response response = SimpleActions.loginUser(userLogin);

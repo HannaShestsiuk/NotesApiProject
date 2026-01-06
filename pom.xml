@@ -134,6 +134,8 @@
                         -Dfile.encoding=UTF-8
                         --add-opens java.base/sun.misc=ALL-UNNAMED
                     </argLine>
+                    <parallel>all</parallel>
+                    <threadCount>4</threadCount>
                     <systemPropertyVariables>
                         <allure.results.directory>target/allure-results</allure.results.directory>
                     </systemPropertyVariables>

@@ -5,6 +5,7 @@ import io.qameta.allure.Description;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import requests.SimpleActions;
 
 import static constants.ApiConstants.BASE_SCHEMA;
@@ -14,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static utils.TestUtils.assertResponseSchema;
 
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class GetUserProfileTest extends BaseApiTest {
     @DisplayName("[API. User]. GET Method. Get user's profile")
     @Description("""

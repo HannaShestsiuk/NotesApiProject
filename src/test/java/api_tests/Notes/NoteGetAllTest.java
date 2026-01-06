@@ -24,7 +24,7 @@ import static enums.NoteCategory.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static utils.TestUtils.assertResponseSchema;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class NoteGetAllTest extends BaseApiTest {
 
     private static Stream<Arguments> invalidGetNotesProvider() {
@@ -33,7 +33,7 @@ public class NoteGetAllTest extends BaseApiTest {
         );
     }
 
-    private Stream<Arguments> notesListProvider() {
+    private static Stream<Arguments> notesListProvider() {
         return Stream.of(
                 Arguments.of(
                         "User with multiple notes",

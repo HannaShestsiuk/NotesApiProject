@@ -21,10 +21,10 @@ import static enums.NoteCategory.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static utils.TestUtils.assertResponseSchema;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class NoteDeleteTest extends BaseApiTest {
 
-    private Stream<Arguments> validDeleteProvider() {
+    private static Stream<Arguments> validDeleteProvider() {
         return Stream.of(
                 Arguments.of(
                         "Delete existing note",
@@ -37,7 +37,7 @@ public class NoteDeleteTest extends BaseApiTest {
         );
     }
 
-    private Stream<Arguments> invalidDeleteProvider() {
+    private static Stream<Arguments> invalidDeleteProvider() {
         return Stream.of(
                 Arguments.of(
                         "No Auth",

@@ -22,10 +22,10 @@ import static enums.NoteCategory.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static utils.TestUtils.assertResponseSchema;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class NoteUpdateTest extends BaseApiTest {
 
-    private Stream<Arguments> validUpdateProvider() {
+    private static Stream<Arguments> validUpdateProvider() {
         return Stream.of(
                 Arguments.of(
                         "Update all fields",
@@ -40,7 +40,7 @@ public class NoteUpdateTest extends BaseApiTest {
         );
     }
 
-    private Stream<Arguments> invalidUpdateWithExistingNoteProvider() {
+    private static Stream<Arguments> invalidUpdateWithExistingNoteProvider() {
         return Stream.of(
                 Arguments.of(
                         "No Auth",
@@ -66,7 +66,7 @@ public class NoteUpdateTest extends BaseApiTest {
         );
     }
 
-    private Stream<Arguments> invalidUpdateNoNoteProvider() {
+    private static Stream<Arguments> invalidUpdateNoNoteProvider() {
         return Stream.of(
                 Arguments.of(
                         "Non existing Note",

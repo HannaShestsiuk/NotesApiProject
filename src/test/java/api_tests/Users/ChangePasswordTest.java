@@ -22,10 +22,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static utils.TestUtils.assertResponseSchema;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class ChangePasswordTest extends BaseApiTest {
 
-    static Stream<Arguments> invalidChangePasswordProvider() {
+    private static Stream<Arguments> invalidChangePasswordProvider() {
         return Stream.of(
                 Arguments.of(
                         "No Auth",
