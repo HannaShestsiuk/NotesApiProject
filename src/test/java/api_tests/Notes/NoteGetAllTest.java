@@ -16,10 +16,13 @@ import java.util.stream.Stream;
 
 import static classes.TestDataGenerator.randomDescription;
 import static classes.TestDataGenerator.randomTitle;
+import static constants.ApiConstants.BASE_SCHEMA;
+import static constants.ApiConstants.NOTE_GET_ALL_SCHEMA;
 import static constants.Messages.NOTES_RETRIEVED;
 import static constants.Messages.NO_AUTH_HEADER;
 import static enums.NoteCategory.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static utils.TestUtils.assertResponseSchema;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class NoteGetAllTest extends BaseApiTest {
@@ -59,6 +62,8 @@ public class NoteGetAllTest extends BaseApiTest {
 
         Response response = SimpleActions.getNotes(authToken);
 
+        assertResponseSchema(NOTE_GET_ALL_SCHEMA, response);
+
         assertAll(description,
                 () -> assertEquals(NOTES_RETRIEVED, response.jsonPath().getString("message")),
                 () -> assertEquals(200, response.jsonPath().getInt("status")),
@@ -80,6 +85,8 @@ public class NoteGetAllTest extends BaseApiTest {
             int expectedStatus
     ) {
         Response response = SimpleActions.getNotes(token);
+
+        assertResponseSchema(BASE_SCHEMA, response);
 
         assertAll(description,
                 () -> assertEquals(expectedMessage, response.jsonPath().getString("message")),

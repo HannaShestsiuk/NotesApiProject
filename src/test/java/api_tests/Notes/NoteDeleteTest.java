@@ -15,9 +15,11 @@ import java.util.stream.Stream;
 
 import static classes.TestDataGenerator.randomDescription;
 import static classes.TestDataGenerator.randomTitle;
+import static constants.ApiConstants.BASE_SCHEMA;
 import static constants.Messages.*;
 import static enums.NoteCategory.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static utils.TestUtils.assertResponseSchema;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class NoteDeleteTest extends BaseApiTest {
@@ -78,6 +80,8 @@ public class NoteDeleteTest extends BaseApiTest {
 
         Response deleteResponse = SimpleActions.deleteNote(noteId, authToken);
 
+        assertResponseSchema(BASE_SCHEMA, deleteResponse);
+
         assertAll(description,
                 () -> assertEquals(NOTE_DELETED, deleteResponse.jsonPath().getString("message")),
                 () -> assertEquals(200, deleteResponse.jsonPath().getInt("status")),
@@ -108,6 +112,8 @@ public class NoteDeleteTest extends BaseApiTest {
             int expectedStatus
     ) {
         Response response = SimpleActions.deleteNote(noteId, authToken);
+
+        assertResponseSchema(BASE_SCHEMA, response);
 
         assertAll(description,
                 () -> assertEquals(expectedMessage, response.jsonPath().getString("message")),

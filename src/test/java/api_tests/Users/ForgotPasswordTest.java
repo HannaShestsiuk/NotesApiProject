@@ -14,8 +14,10 @@ import requests.SimpleActions;
 import java.util.stream.Stream;
 
 import static classes.TestDataGenerator.*;
+import static constants.ApiConstants.BASE_SCHEMA;
 import static constants.Messages.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static utils.TestUtils.assertResponseSchema;
 
 public class ForgotPasswordTest extends BaseApiTest {
 
@@ -59,6 +61,8 @@ public class ForgotPasswordTest extends BaseApiTest {
 
         Response response = SimpleActions.sendPasswordResetLink(email);
 
+        assertResponseSchema(BASE_SCHEMA, response);
+
         assertAll("Reset password link is sent",
                 () -> assertEquals(passwordResetLinkSent(userEmail), response.jsonPath().getString("message"), "Invalid message."),
                 () -> assertEquals(200, response.jsonPath().getInt("status"), "Invalid Status Code."),
@@ -80,6 +84,8 @@ public class ForgotPasswordTest extends BaseApiTest {
             int expectedStatus
     ) {
         Response response = SimpleActions.sendPasswordResetLink(email);
+
+        assertResponseSchema(BASE_SCHEMA, response);
 
         assertAll(description,
                 () -> assertEquals(expectedMessage, response.jsonPath().getString("message"), "Invalid message."),

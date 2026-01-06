@@ -16,9 +16,12 @@ import java.util.stream.Stream;
 
 import static classes.TestDataGenerator.randomDescription;
 import static classes.TestDataGenerator.randomTitle;
+import static constants.ApiConstants.BASE_SCHEMA;
+import static constants.ApiConstants.NOTE_CREATE_SCHEMA;
 import static constants.Messages.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static enums.NoteCategory.*;
+import static utils.TestUtils.assertResponseSchema;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class NoteCreationTest extends BaseApiTest {
@@ -201,6 +204,8 @@ public class NoteCreationTest extends BaseApiTest {
     void createNewNotePositiveTests(String description, Note note) {
         Response response = SimpleActions.createNote(note, authToken);
 
+        assertResponseSchema(NOTE_CREATE_SCHEMA, response);
+
         assertAll(description,
                 () -> assertEquals(NOTE_CREATED, response.jsonPath().getString("message"), "Invalid message."),
                 () -> assertEquals(200, response.jsonPath().getInt("status"), "Invalid Status Code."),
@@ -228,6 +233,8 @@ public class NoteCreationTest extends BaseApiTest {
             int expectedStatus
     ) {
         Response response = SimpleActions.createNote(note, token);
+
+        assertResponseSchema(BASE_SCHEMA, response);
 
         assertAll(description,
                 () -> assertEquals(expectedMessage, response.jsonPath().getString("message"), "Invalid message."),

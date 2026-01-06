@@ -16,9 +16,12 @@ import java.util.stream.Stream;
 
 import static classes.TestDataGenerator.randomDescription;
 import static classes.TestDataGenerator.randomTitle;
+import static constants.ApiConstants.BASE_SCHEMA;
+import static constants.ApiConstants.NOTE_PATCH_STATUS_SCHEMA;
 import static constants.Messages.*;
 import static enums.NoteCategory.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static utils.TestUtils.assertResponseSchema;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class NotePatchStatusTest extends BaseApiTest {
@@ -75,6 +78,8 @@ public class NotePatchStatusTest extends BaseApiTest {
         NoteStatus statusUpdate = new NoteStatus(newStatus);
         Response patchResponse = SimpleActions.completeNote(noteId, statusUpdate, authToken);
 
+        assertResponseSchema(NOTE_PATCH_STATUS_SCHEMA, patchResponse);
+
         assertAll(description,
                 () -> assertEquals(NOTE_UPDATED, patchResponse.jsonPath().getString("message")),
                 () -> assertEquals(200, patchResponse.jsonPath().getInt("status")),
@@ -103,6 +108,8 @@ public class NotePatchStatusTest extends BaseApiTest {
             int expectedStatus
     ) {
         Response response = SimpleActions.completeNote(noteId, statusUpdate, token);
+
+        assertResponseSchema(BASE_SCHEMA, response);
 
         assertAll(description,
                 () -> assertEquals(expectedMessage, response.jsonPath().getString("message")),

@@ -8,8 +8,10 @@ import records.UserLogin;
 import records.User;
 import requests.SimpleActions;
 
+import static constants.ApiConstants.*;
 import static constants.Messages.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static utils.TestUtils.assertResponseSchema;
 
 public class UserLoginTest {
 
@@ -44,6 +46,8 @@ public class UserLoginTest {
 
         Response response = SimpleActions.loginUser(userLogin);
 
+        assertResponseSchema(USER_LOGIN_SCHEMA, response);
+
         assertAll("Registered user is logged in",
                 () -> assertEquals(LOGIN_SUCCESS, response.jsonPath().getString("message"), "Invalid message."),
                 () -> assertEquals(200, response.jsonPath().getInt("status"), "Invalid Status Code."),
@@ -69,6 +73,8 @@ public class UserLoginTest {
         );
 
         Response registerUserResponse = SimpleActions.registerUser(user);
+
+        assertResponseSchema(BASE_SCHEMA, registerUserResponse);
 
         assertAll("Successful user registration response validation",
                 () -> assertEquals(ACCOUNT_CREATED, registerUserResponse.jsonPath().getString("message"), "Invalid message."),

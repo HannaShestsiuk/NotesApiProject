@@ -16,8 +16,11 @@ import requests.SimpleActions;
 import java.util.stream.Stream;
 
 import static classes.TestDataGenerator.*;
+import static constants.ApiConstants.BASE_SCHEMA;
+import static constants.ApiConstants.USER_REGISTER_SCHEMA;
 import static org.junit.jupiter.api.Assertions.*;
 import static constants.Messages.*;
+import static utils.TestUtils.assertResponseSchema;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UserRegistrationTest extends BaseApiTest {
@@ -77,6 +80,8 @@ public class UserRegistrationTest extends BaseApiTest {
     void registerUserPositiveTests(String description, User user) {
         Response response = SimpleActions.registerUser(user);
 
+        assertResponseSchema(USER_REGISTER_SCHEMA, response);
+
         assertAll(description,
                 () -> assertEquals(ACCOUNT_CREATED, response.jsonPath().getString("message"), "Invalid message."),
                 () -> assertEquals(201, response.jsonPath().getInt("status"), "Invalid Status Code."),
@@ -112,6 +117,8 @@ public class UserRegistrationTest extends BaseApiTest {
         );
 
         Response secondResponse = SimpleActions.registerUser(user);
+
+        assertResponseSchema(BASE_SCHEMA, secondResponse);
 
         assertAll("Registration with existing email is failed",
                 () -> assertEquals(UNIQUE_EMAIL_REQUIRED, secondResponse.jsonPath().getString("message"), "Invalid message."),

@@ -7,9 +7,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import requests.SimpleActions;
 
+import static constants.ApiConstants.BASE_SCHEMA;
+import static constants.ApiConstants.USER_GET_PROFILE_SCHEMA;
 import static constants.Messages.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static utils.TestUtils.assertResponseSchema;
 
 public class GetUserProfileTest extends BaseApiTest {
     @DisplayName("[API. User]. GET Method. Get user's profile")
@@ -21,6 +24,8 @@ public class GetUserProfileTest extends BaseApiTest {
     void getUserProfile() {
 
         Response response = SimpleActions.getUserProfile(authToken);
+
+        assertResponseSchema(USER_GET_PROFILE_SCHEMA, response);
 
         assertAll("Retrieve user profile",
                 () -> assertEquals(USER_PROFILE, response.jsonPath().getString("message"), "Invalid message."),
@@ -40,6 +45,8 @@ public class GetUserProfileTest extends BaseApiTest {
     void getUnauthorizedUserProfile() {
 
         Response response = SimpleActions.getUserProfile("");
+
+        assertResponseSchema(BASE_SCHEMA, response);
 
         assertAll("Retrieve user profile",
                 () -> assertEquals(NO_AUTH_HEADER, response.jsonPath().getString("message"), "Invalid message."),

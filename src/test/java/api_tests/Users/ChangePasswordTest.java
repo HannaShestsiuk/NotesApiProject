@@ -16,9 +16,11 @@ import requests.SimpleActions;
 import java.util.stream.Stream;
 
 import static classes.TestDataGenerator.*;
+import static constants.ApiConstants.BASE_SCHEMA;
 import static constants.Messages.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static utils.TestUtils.assertResponseSchema;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ChangePasswordTest extends BaseApiTest {
@@ -155,6 +157,8 @@ public class ChangePasswordTest extends BaseApiTest {
 
         Response response = SimpleActions.changePassword(password, authToken);
 
+        assertResponseSchema(BASE_SCHEMA, response);
+
         assertAll("Password is changed",
                 () -> assertEquals(PASSWORD_CHANGED, response.jsonPath().getString("message"), "Invalid message."),
                 () -> assertEquals(200, response.jsonPath().getInt("status"), "Invalid Status Code."),
@@ -189,6 +193,8 @@ public class ChangePasswordTest extends BaseApiTest {
             int expectedStatus
     ) {
         Response response = SimpleActions.changePassword(password, token);
+
+        assertResponseSchema(BASE_SCHEMA, response);
 
         assertAll(description,
                 () -> assertEquals(expectedMessage, response.jsonPath().getString("message"), "Invalid message."),

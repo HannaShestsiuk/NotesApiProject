@@ -10,8 +10,10 @@ import records.UserLogin;
 import requests.SimpleActions;
 
 import static classes.TestDataGenerator.*;
+import static constants.ApiConstants.BASE_SCHEMA;
 import static constants.Messages.USER_LOGOUT;
 import static org.junit.jupiter.api.Assertions.*;
+import static utils.TestUtils.assertResponseSchema;
 
 public class UserLogoutTest extends BaseApiTest {
 
@@ -41,6 +43,8 @@ public class UserLogoutTest extends BaseApiTest {
         authToken = userLoginResponse.jsonPath().getString("data.token");
 
         Response response = SimpleActions.logout(authToken);
+
+        assertResponseSchema(BASE_SCHEMA, registerUserResponse);
 
         assertAll("User is logged out",
                 () -> assertEquals(USER_LOGOUT, response.jsonPath().getString("message"), "Invalid message."),

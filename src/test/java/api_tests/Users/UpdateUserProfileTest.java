@@ -14,9 +14,11 @@ import requests.SimpleActions;
 import java.util.stream.Stream;
 
 import static classes.TestDataGenerator.*;
+import static constants.ApiConstants.*;
 import static constants.Messages.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static utils.TestUtils.assertResponseSchema;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UpdateUserProfileTest extends BaseApiTest {
@@ -235,6 +237,8 @@ public class UpdateUserProfileTest extends BaseApiTest {
     void updateUserProfilePositiveTests(String description, UserProfile userProfile) {
         Response response = SimpleActions.updateUserProfile(userProfile, authToken);
 
+        assertResponseSchema(USER_UPDATE_PROFILE_SCHEMA, response);
+
         assertAll(description,
                 () -> assertEquals(USER_PROFILE_UPDATED, response.jsonPath().getString("message"), "Invalid message."),
                 () -> assertEquals(200, response.jsonPath().getInt("status"), "Invalid Status Code."),
@@ -269,6 +273,8 @@ public class UpdateUserProfileTest extends BaseApiTest {
             int expectedStatus
     ) {
         Response response = SimpleActions.updateUserProfile(userProfile, token);
+
+        assertResponseSchema(BASE_SCHEMA, response);
 
         assertAll(description,
                 () -> assertEquals(expectedMessage, response.jsonPath().getString("message"), "Invalid message."),
