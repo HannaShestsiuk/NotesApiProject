@@ -2,9 +2,11 @@ name: Run API Tests
 
 on:
   push:
-    branches: ['*']
+    branches:
+      - add-schema-parrallel-tests-and-git-actions
   pull_request:
-    branches: ['*']
+    branches:
+      - add-schema-parrallel-tests-and-git-actions
 
 jobs:
   test:
