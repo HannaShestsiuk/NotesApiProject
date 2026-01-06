@@ -42,7 +42,7 @@ public class TestDataGenerator {
     }
 
     public static String randomCompany() {
-        return faker.company().name();
+        return faker.company().industry();
     }
 
     public static String randomCompany(int length) {
