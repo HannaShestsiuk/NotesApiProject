@@ -3,6 +3,7 @@ package api_tests.Notes;
 import api_tests.BaseApiTest;
 import io.qameta.allure.Description;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -21,8 +22,12 @@ import static enums.NoteCategory.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static utils.TestUtils.assertResponseSchema;
 
-@TestInstance(TestInstance.Lifecycle.PER_METHOD)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class NoteDeleteTest extends BaseApiTest {
+
+    {
+        enableGlobalUser = true;
+    }
 
     private static Stream<Arguments> validDeleteProvider() {
         return Stream.of(
@@ -49,14 +54,14 @@ public class NoteDeleteTest extends BaseApiTest {
                 Arguments.of(
                         "Non existing Note",
                         "69483cee294a09029728a111",
-                        authToken,
+                        "USE_VALID_TOKEN",
                         NOTE_NOT_FOUND,
                         404
                 ),
                 Arguments.of(
                         "Invalid ID format",
                         "invalid-id",
-                        authToken,
+                        "USE_VALID_TOKEN",
                         NOTE_INVALID_ID,
                         400
                 )
@@ -76,6 +81,9 @@ public class NoteDeleteTest extends BaseApiTest {
     void deleteNotePositiveTests(String description, Note note) {
 
         Response createResponse = SimpleActions.createNote(note, authToken);
+
+        registerNoteId(createResponse);
+
         String noteId = createResponse.jsonPath().getString("data.id");
 
         Response deleteResponse = SimpleActions.deleteNote(noteId, authToken);
@@ -107,11 +115,14 @@ public class NoteDeleteTest extends BaseApiTest {
     void deleteNoteNegativeTests(
             String description,
             String noteId,
-            String authToken,
+            String token,
             String expectedMessage,
             int expectedStatus
     ) {
-        Response response = SimpleActions.deleteNote(noteId, authToken);
+        // Replace placeholders
+        String tokenToUse = token.equals("USE_VALID_TOKEN") ? authToken : token;
+
+        Response response = SimpleActions.deleteNote(noteId, tokenToUse);
 
         assertResponseSchema(BASE_SCHEMA, response);
 

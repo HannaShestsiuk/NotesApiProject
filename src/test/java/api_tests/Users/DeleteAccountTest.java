@@ -16,7 +16,7 @@ import static constants.Messages.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static utils.TestUtils.assertResponseSchema;
 
-@TestInstance(TestInstance.Lifecycle.PER_METHOD)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class DeleteAccountTest extends BaseApiTest {
 
     @DisplayName("[API. User]. DELETE Method. Delete user's account")
@@ -31,22 +31,22 @@ public class DeleteAccountTest extends BaseApiTest {
     @Test
     void deleteAccountTest() {
 
-        userName = randomUserName();
-        userEmail = randomEmail();
-        userPassword = randomPassword(6,7);
-        User user = new User(userName, userEmail, userPassword);
+        // Create isolated local User
+        String name = randomUserName();
+        String email = randomEmail();
+        String password = randomPassword(6,7);
+        User user = new User(name, email, password);
 
         Response registerUserResponse = SimpleActions.registerUser(user);
         assertEquals(201, registerUserResponse.statusCode(), "User registration failed");
 
-        UserLogin userLogin = new UserLogin(userEmail, userPassword);
+        UserLogin userLogin = new UserLogin(email, password);
 
         Response userLoginResponse = SimpleActions.loginUser(userLogin);
         assertEquals(200, userLoginResponse.statusCode(), "User login failed");
 
-        authToken = userLoginResponse.jsonPath().getString("data.token");
-
-        Response response = SimpleActions.deleteAccount(authToken);
+        String token = userLoginResponse.jsonPath().getString("data.token");
+        Response response = SimpleActions.deleteAccount(token);
 
         assertResponseSchema(BASE_SCHEMA, response);
 
@@ -56,7 +56,8 @@ public class DeleteAccountTest extends BaseApiTest {
                 () -> assertTrue(response.jsonPath().getBoolean("success"), "Invalid success status.")
         );
 
-        UserLogin deletedUserLogin = new UserLogin(userEmail, userPassword);
+        // Attempt to login after deletion
+        UserLogin deletedUserLogin = new UserLogin(email, password);
 
         Response deletedUserLoginResponse = SimpleActions.loginUser(deletedUserLogin);
 
@@ -76,12 +77,13 @@ public class DeleteAccountTest extends BaseApiTest {
             5. Assert the response.
             """)
     @Test
-    void deleteAccountFailedTest() {
+    void deleteAccountByNonRegisteredUserTest() {
 
-        userName = randomUserName();
-        userEmail = randomEmail();
-        userPassword = randomPassword(6,7);
-        User user = new User(userName, userEmail, userPassword);
+        // Create isolated local User
+        String name = randomUserName();
+        String email = randomEmail();
+        String password = randomPassword(6,7);
+        User user = new User(name, email, password);
 
         Response registerUserResponse = SimpleActions.registerUser(user);
         assertEquals(201, registerUserResponse.statusCode(), "User registration failed");
@@ -96,7 +98,7 @@ public class DeleteAccountTest extends BaseApiTest {
                 () -> assertFalse(response.jsonPath().getBoolean("success"), "Invalid success status.")
         );
 
-        UserLogin existingUserLogin = new UserLogin(userEmail, userPassword);
+        UserLogin existingUserLogin = new UserLogin(email, password);
 
         Response existingUserLoginResponse = SimpleActions.loginUser(existingUserLogin);
 

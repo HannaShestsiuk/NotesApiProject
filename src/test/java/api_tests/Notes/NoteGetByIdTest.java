@@ -3,6 +3,7 @@ package api_tests.Notes;
 import api_tests.BaseApiTest;
 import io.qameta.allure.Description;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -22,8 +23,12 @@ import static enums.NoteCategory.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static utils.TestUtils.assertResponseSchema;
 
-@TestInstance(TestInstance.Lifecycle.PER_METHOD)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class NoteGetByIdTest extends BaseApiTest {
+
+    {
+        enableGlobalUser = true;
+    }
 
     private static Stream<Arguments> validNoteByIdProvider() {
         return Stream.of(
@@ -50,14 +55,14 @@ public class NoteGetByIdTest extends BaseApiTest {
                 Arguments.of(
                         "Invalid ID format",
                         "invalid-id",
-                        authToken,
+                        "USE_VALID_TOKEN",
                         NOTE_INVALID_ID,
                         400
                 ),
                 Arguments.of(
                         "Non-existing ID",
                         "694820b1294a090297281241",
-                        authToken,
+                        "USE_VALID_TOKEN",
                         NOTE_NOT_FOUND,
                         404
                 )
@@ -107,7 +112,10 @@ public class NoteGetByIdTest extends BaseApiTest {
             String expectedMessage,
             int expectedStatus
     ) {
-        Response response = SimpleActions.getNoteById(noteId, token);
+        // Replace placeholders
+        String tokenToUse = token.equals("USE_VALID_TOKEN") ? authToken : token;
+
+        Response response = SimpleActions.getNoteById(noteId, tokenToUse);
 
         assertResponseSchema(BASE_SCHEMA, response);
 

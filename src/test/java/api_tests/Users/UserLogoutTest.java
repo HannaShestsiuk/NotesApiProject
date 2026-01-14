@@ -16,7 +16,7 @@ import static constants.Messages.USER_LOGOUT;
 import static org.junit.jupiter.api.Assertions.*;
 import static utils.TestUtils.assertResponseSchema;
 
-@TestInstance(TestInstance.Lifecycle.PER_METHOD)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UserLogoutTest extends BaseApiTest {
 
     @DisplayName("[API. User]. DELETE Method. Logout user")
@@ -29,29 +29,30 @@ public class UserLogoutTest extends BaseApiTest {
     @Test
     void logoutUserTest() {
 
-        userName = randomUserName();
-        userEmail = randomEmail();
-        userPassword = randomPassword(6,7);
-        User user = new User(userName, userEmail, userPassword);
+        // Create isolated user
+        String name = randomUserName();
+        String email = randomEmail();
+        String password = randomPassword(6,7);
+        User user = new User(name, email, password);
 
         Response registerUserResponse = SimpleActions.registerUser(user);
         assertEquals(201, registerUserResponse.statusCode(), "User registration failed");
 
-        UserLogin userLogin = new UserLogin(userEmail, userPassword);
+        UserLogin userLogin = new UserLogin(email, password);
 
         Response userLoginResponse = SimpleActions.loginUser(userLogin);
         assertEquals(200, userLoginResponse.statusCode(), "User login failed");
 
-        authToken = userLoginResponse.jsonPath().getString("data.token");
+        String token = userLoginResponse.jsonPath().getString("data.token");
 
-        Response response = SimpleActions.logout(authToken);
+        Response userLogout = SimpleActions.logout(token);
 
-        assertResponseSchema(BASE_SCHEMA, registerUserResponse);
+        assertResponseSchema(BASE_SCHEMA, userLogout);
 
         assertAll("User is logged out",
-                () -> assertEquals(USER_LOGOUT, response.jsonPath().getString("message"), "Invalid message."),
-                () -> assertEquals(200, response.jsonPath().getInt("status"), "Invalid Status Code."),
-                () -> assertTrue(response.jsonPath().getBoolean("success"), "Invalid success status.")
+                () -> assertEquals(USER_LOGOUT, userLogout.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(200, userLogout.jsonPath().getInt("status"), "Invalid Status Code."),
+                () -> assertTrue(userLogout.jsonPath().getBoolean("success"), "Invalid success status.")
         );
     }
 }

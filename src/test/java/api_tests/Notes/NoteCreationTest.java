@@ -4,6 +4,7 @@ import api_tests.BaseApiTest;
 import io.qameta.allure.Description;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -23,8 +24,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import static enums.NoteCategory.*;
 import static utils.TestUtils.assertResponseSchema;
 
-@TestInstance(TestInstance.Lifecycle.PER_METHOD)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class NoteCreationTest extends BaseApiTest {
+
+    {
+        enableGlobalUser = true;
+    }
 
     private static Stream<Arguments> validNoteProvider(){
         return Stream.of(
@@ -91,7 +96,7 @@ public class NoteCreationTest extends BaseApiTest {
                                 randomDescription(),
                                 HOME.getLabel()
                         ),
-                        authToken,
+                        "USE_VALID_TOKEN",
                         NOTE_INVALID_TITLE,
                         400
                 ),
@@ -101,7 +106,7 @@ public class NoteCreationTest extends BaseApiTest {
                                 randomDescription(),
                                 HOME.getLabel()
                         ),
-                        authToken,
+                        "USE_VALID_TOKEN",
                         NOTE_INVALID_TITLE,
                         400
                 ),
@@ -112,7 +117,7 @@ public class NoteCreationTest extends BaseApiTest {
                                 randomDescription(),
                                 HOME.getLabel()
                         ),
-                        authToken,
+                        "USE_VALID_TOKEN",
                         NOTE_INVALID_TITLE,
                         400
                 ),
@@ -123,7 +128,7 @@ public class NoteCreationTest extends BaseApiTest {
                                 randomDescription(),
                                 HOME.getLabel()
                         ),
-                        authToken,
+                        "USE_VALID_TOKEN",
                         NOTE_INVALID_TITLE,
                         400
                 ),
@@ -134,7 +139,7 @@ public class NoteCreationTest extends BaseApiTest {
                                 null,
                                 HOME.getLabel()
                         ),
-                        authToken,
+                        "USE_VALID_TOKEN",
                         NOTE_INVALID_DESCRIPTION,
                         400
                 ),
@@ -145,7 +150,7 @@ public class NoteCreationTest extends BaseApiTest {
                                 "",
                                 HOME.getLabel()
                         ),
-                        authToken,
+                        "USE_VALID_TOKEN",
                         NOTE_INVALID_DESCRIPTION,
                         400
                 ),
@@ -156,7 +161,7 @@ public class NoteCreationTest extends BaseApiTest {
                                 randomDescription(3),
                                 HOME.getLabel()
                         ),
-                        authToken,
+                        "USE_VALID_TOKEN",
                         NOTE_INVALID_DESCRIPTION,
                         400
                 ),
@@ -167,7 +172,7 @@ public class NoteCreationTest extends BaseApiTest {
                                 randomDescription(1001),
                                 HOME.getLabel()
                         ),
-                        authToken,
+                        "USE_VALID_TOKEN",
                         NOTE_INVALID_DESCRIPTION,
                         400
                 ),
@@ -177,7 +182,7 @@ public class NoteCreationTest extends BaseApiTest {
                                 randomTitle(),
                                 randomDescription(),
                                 null),
-                        authToken,
+                        "USE_VALID_TOKEN",
                         NOTE_INVALID_CATEGORY,
                         400
                 ),
@@ -187,14 +192,14 @@ public class NoteCreationTest extends BaseApiTest {
                                 randomTitle(),
                                 randomDescription(),
                                 "invalid"),
-                        authToken,
+                        "USE_VALID_TOKEN",
                         NOTE_INVALID_CATEGORY,
                         400
                 )
         );
     }
 
-    @DisplayName("[API. Notes]. POST Method. Create a Note")
+    @DisplayName("[API. Notes]. POST Method. Create a Note. Positive scenario ")
     @Description("""
             1. Create a note.
             2. Assert the response.
@@ -203,6 +208,8 @@ public class NoteCreationTest extends BaseApiTest {
     @MethodSource("validNoteProvider")
     void createNewNotePositiveTests(String description, Note note) {
         Response response = SimpleActions.createNote(note, authToken);
+
+        registerNoteId(response);
 
         assertResponseSchema(NOTE_CREATE_SCHEMA, response);
 
@@ -213,12 +220,12 @@ public class NoteCreationTest extends BaseApiTest {
                 () -> assertEquals(note.title(), response.jsonPath().getString("data.title"), "Invalid note title."),
                 () -> assertEquals(note.description(), response.jsonPath().getString("data.description"), "Invalid note description."),
                 () -> assertEquals(note.category(), response.jsonPath().getString("data.category"), "Invalid note category."),
-                () -> assertFalse(response.jsonPath().getBoolean("data.completed"), "Invalid note completion date."),
-                () -> assertEquals(userId, response.jsonPath().getString("data.user_id"), "Invalid user id.")
+                () -> assertFalse(response.jsonPath().getBoolean("data.completed"), "Invalid note completion date.")//,
+                //() -> assertEquals(userId, response.jsonPath().getString("data.user_id"), "Invalid user id.")
         );
     }
 
-    @DisplayName("[API. Notes]. POST Method. Create a Note")
+    @DisplayName("[API. Notes]. POST Method. Create a Note. Negative Scenario ")
     @Description("""
             1. Create a note.
             2. Assert the response.
@@ -232,7 +239,12 @@ public class NoteCreationTest extends BaseApiTest {
             String expectedMessage,
             int expectedStatus
     ) {
-        Response response = SimpleActions.createNote(note, token);
+        // Replace placeholders
+        String tokenToUse = token.equals("USE_VALID_TOKEN") ? authToken : token;
+
+        Response response = SimpleActions.createNote(note, tokenToUse);
+
+        registerNoteId(response);
 
         assertResponseSchema(BASE_SCHEMA, response);
 

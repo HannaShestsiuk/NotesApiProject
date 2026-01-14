@@ -10,6 +10,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import records.Email;
+import records.User;
 import requests.SimpleActions;
 
 import java.util.stream.Stream;
@@ -20,7 +21,7 @@ import static constants.Messages.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static utils.TestUtils.assertResponseSchema;
 
-@TestInstance(TestInstance.Lifecycle.PER_METHOD)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ForgotPasswordTest extends BaseApiTest {
 
     private static Stream<Arguments> invalidEmailProvider() {
@@ -59,14 +60,23 @@ public class ForgotPasswordTest extends BaseApiTest {
             """)
     @Test
     void resetPassword() {
-        Email email = new Email(userEmail);
 
-        Response response = SimpleActions.sendPasswordResetLink(email);
+        // Create isolated local user
+        String name = randomUserName();
+        String email = randomEmail();
+        String password = randomPassword(6,7);
+        User user = new User(name, email, password);
+
+        Response registerUser = SimpleActions.registerUser(user);
+        assertEquals(201, registerUser.statusCode(), "User registration failed");
+
+        Email emailRequest = new Email(email);
+        Response response = SimpleActions.sendPasswordResetLink(emailRequest);
 
         assertResponseSchema(BASE_SCHEMA, response);
 
         assertAll("Reset password link is sent",
-                () -> assertEquals(passwordResetLinkSent(userEmail), response.jsonPath().getString("message"), "Invalid message."),
+                () -> assertEquals(passwordResetLinkSent(email), response.jsonPath().getString("message"), "Invalid message."),
                 () -> assertEquals(200, response.jsonPath().getInt("status"), "Invalid Status Code."),
                 () -> assertTrue(response.jsonPath().getBoolean("success"), "Invalid success status.")
         );

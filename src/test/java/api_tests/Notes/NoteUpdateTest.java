@@ -3,6 +3,7 @@ package api_tests.Notes;
 import api_tests.BaseApiTest;
 import io.qameta.allure.Description;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -22,8 +23,12 @@ import static enums.NoteCategory.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static utils.TestUtils.assertResponseSchema;
 
-@TestInstance(TestInstance.Lifecycle.PER_METHOD)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class NoteUpdateTest extends BaseApiTest {
+
+    {
+        enableGlobalUser = true;
+    }
 
     private static Stream<Arguments> validUpdateProvider() {
         return Stream.of(
@@ -52,14 +57,14 @@ public class NoteUpdateTest extends BaseApiTest {
                 Arguments.of(
                         "Missing title",
                         new NoteWithStatus(null, "Valid Desc", true, HOME.getLabel()),
-                        authToken,
+                        "USE_VALID_TOKEN",
                         NOTE_INVALID_TITLE,
                         400
                 ),
                 Arguments.of(
                         "Missing description",
                         new NoteWithStatus("Valid Title", null, true, HOME.getLabel()),
-                        authToken,
+                        "USE_VALID_TOKEN",
                         NOTE_INVALID_DESCRIPTION,
                         400
                 )
@@ -72,7 +77,7 @@ public class NoteUpdateTest extends BaseApiTest {
                         "Non existing Note",
                         "69483547294a09029728a111",
                         new NoteWithStatus("New Title", "New Desc", true, HOME.getLabel()),
-                        authToken,
+                        "USE_VALID_TOKEN",
                         NOTE_NOT_FOUND,
                         404
                 )
@@ -119,7 +124,7 @@ public class NoteUpdateTest extends BaseApiTest {
     void updateNoteNegativeTestsExistingNote(
             String description,
             NoteWithStatus updatedNote,
-            String authToken,
+            String token,
             String expectedMessage,
             int expectedStatus
     ) {
@@ -129,10 +134,15 @@ public class NoteUpdateTest extends BaseApiTest {
                 HOME.getLabel()
         );
 
-        Response createResponse = SimpleActions.createNote(originalNote, authToken);
-        String noteId = createResponse.jsonPath().getString("data.id");
+        Response createNoteResponse = SimpleActions.createNote(originalNote, authToken);
 
-        Response response = SimpleActions.updateNote(noteId, updatedNote, authToken);
+        registerNoteId(createNoteResponse);
+
+        String noteId = createNoteResponse.jsonPath().getString("data.id");
+
+        String tokenToUse = token.equals("USE_VALID_TOKEN") ? authToken : token;
+
+        Response response = SimpleActions.updateNote(noteId, updatedNote, tokenToUse);
 
         assertResponseSchema(BASE_SCHEMA, response);
 
@@ -154,11 +164,14 @@ public class NoteUpdateTest extends BaseApiTest {
             String description,
             String noteId,
             NoteWithStatus updatedNote,
-            String authToken,
+            String token,
             String expectedMessage,
             int expectedStatus
     ) {
-        Response response = SimpleActions.updateNote(noteId, updatedNote, authToken);
+        // Replace placeholders
+        String tokenToUse = token.equals("USE_VALID_TOKEN") ? authToken : token;
+
+        Response response = SimpleActions.updateNote(noteId, updatedNote, tokenToUse);
 
         assertResponseSchema(BASE_SCHEMA, response);
 

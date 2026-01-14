@@ -135,7 +135,7 @@
                         --add-opens java.base/sun.misc=ALL-UNNAMED
                     </argLine>
                     <parallel>all</parallel>
-                    <threadCount>4</threadCount>
+                    <threadCount>1</threadCount>
                     <systemPropertyVariables>
                         <allure.results.directory>target/allure-results</allure.results.directory>
                     </systemPropertyVariables>

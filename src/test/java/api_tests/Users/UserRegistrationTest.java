@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static constants.Messages.*;
 import static utils.TestUtils.assertResponseSchema;
 
-@TestInstance(TestInstance.Lifecycle.PER_METHOD)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UserRegistrationTest extends BaseApiTest {
 
     private static Stream<Arguments> validUserProfileProvider(){

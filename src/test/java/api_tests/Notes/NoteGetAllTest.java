@@ -3,6 +3,7 @@ package api_tests.Notes;
 import api_tests.BaseApiTest;
 import io.qameta.allure.Description;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -24,8 +25,12 @@ import static enums.NoteCategory.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static utils.TestUtils.assertResponseSchema;
 
-@TestInstance(TestInstance.Lifecycle.PER_METHOD)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class NoteGetAllTest extends BaseApiTest {
+
+    {
+        enableGlobalUser = true;
+    }
 
     private static Stream<Arguments> invalidGetNotesProvider() {
         return Stream.of(
