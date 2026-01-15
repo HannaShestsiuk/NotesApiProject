@@ -8,75 +8,43 @@ on:
     branches:
       - add-schema-parrallel-tests-and-git-actions
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 jobs:
-  test:
+  tests:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up JDK 21
+      - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '21'
-
-      - name: Cache Maven dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
+          java-version: '17'
 
       - name: Run tests
-        run: mvn clean test -Dfile.encoding=UTF-8
-
-      - name: Upload Allure results
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-results
-          path: target/allure-results
-
-  generate-allure:
-    needs: test
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Download Allure results
-        uses: actions/download-artifact@v4
-        with:
-          name: allure-results
-          path: allure-results
-
-      - name: Install Allure CLI
         run: |
-          sudo apt-get update
-          sudo apt-get install -y allure
+          mvn test
+          mvn surefire-report:report
 
-      - name: Generate Allure report
-        run: |
-          allure generate allure-results --clean -o allure-report
-
-      - name: Upload Allure report artifact for Pages
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: allure-report
+          path: target/site
 
-  deploy-allure-report:
-    needs: generate-allure
+  deploy:
+    needs: tests
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+
+    permissions:
+      pages: write
+      id-token: write
 
     steps:
       - name: Deploy to GitHub Pages
-        id: deployment
         uses: actions/deploy-pages@v4
