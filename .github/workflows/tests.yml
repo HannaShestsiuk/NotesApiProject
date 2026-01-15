@@ -32,6 +32,11 @@ jobs:
           mvn test
           mvn surefire-report:report
 
+      - name: Generate Surefire & Allure reports
+        run: |
+          mvn surefire-report:report
+          mvn allure:report
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
