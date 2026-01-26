@@ -62,7 +62,10 @@ public class NoteGetAllTest extends BaseApiTest {
     void getNotesPositiveTests(String description, List<Note> notesToCreate) {
 
         for (Note note : notesToCreate) {
-            SimpleActions.createNote(note, authToken);
+            Response createNoteResponse = SimpleActions.createNote(note, authToken);
+
+            String noteId = createNoteResponse.jsonPath().getString("data.id");
+            registerNoteId(noteId);
         }
 
         Response response = SimpleActions.getNotes(authToken);

@@ -136,8 +136,6 @@ public class NoteUpdateTest extends BaseApiTest {
 
         Response createNoteResponse = SimpleActions.createNote(originalNote, authToken);
 
-        registerNoteId(createNoteResponse);
-
         String noteId = createNoteResponse.jsonPath().getString("data.id");
 
         String tokenToUse = token.equals("USE_VALID_TOKEN") ? authToken : token;
@@ -151,6 +149,8 @@ public class NoteUpdateTest extends BaseApiTest {
                 () -> assertEquals(expectedStatus, response.jsonPath().getInt("status")),
                 () -> assertFalse(response.jsonPath().getBoolean("success"))
         );
+
+        registerNoteId(noteId);
     }
 
     @DisplayName("[API. Notes]. PUT Method. Update a Note")

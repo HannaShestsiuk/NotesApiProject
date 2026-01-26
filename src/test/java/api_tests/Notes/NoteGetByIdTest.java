@@ -95,6 +95,8 @@ public class NoteGetByIdTest extends BaseApiTest {
                 () -> assertEquals(note.category(), response.jsonPath().getString("data.category")),
                 () -> assertEquals(userId, response.jsonPath().getString("data.user_id"))
         );
+
+        registerNoteId(noteId);
     }
 
     @DisplayName("[API. Notes]. GET Method. GET a Note by Id")

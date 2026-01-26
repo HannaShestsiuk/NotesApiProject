@@ -79,8 +79,6 @@ public class NotePatchStatusTest extends BaseApiTest {
 
         Response createNoteResponse = SimpleActions.createNote(original, authToken);
 
-        registerNoteId(createNoteResponse);
-
         String noteId = createNoteResponse.jsonPath().getString("data.id");
 
         NoteStatus statusUpdate = new NoteStatus(newStatus);
@@ -98,6 +96,8 @@ public class NotePatchStatusTest extends BaseApiTest {
                 () -> assertEquals(original.category(), patchNoteResponse.jsonPath().getString("data.category")),
                 () -> assertEquals(userId, patchNoteResponse.jsonPath().getString("data.user_id"))
         );
+
+        registerNoteId(noteId);
     }
 
     @DisplayName("[API. Notes]. PATCH Method. Update Note's completed status")

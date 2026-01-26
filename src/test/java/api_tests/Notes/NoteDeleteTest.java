@@ -82,8 +82,6 @@ public class NoteDeleteTest extends BaseApiTest {
 
         Response createResponse = SimpleActions.createNote(note, authToken);
 
-        registerNoteId(createResponse);
-
         String noteId = createResponse.jsonPath().getString("data.id");
 
         Response deleteResponse = SimpleActions.deleteNote(noteId, authToken);

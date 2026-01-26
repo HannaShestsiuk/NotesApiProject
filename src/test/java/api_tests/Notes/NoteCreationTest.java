@@ -209,8 +209,6 @@ public class NoteCreationTest extends BaseApiTest {
     void createNewNotePositiveTests(String description, Note note) {
         Response response = SimpleActions.createNote(note, authToken);
 
-        registerNoteId(response);
-
         assertResponseSchema(NOTE_CREATE_SCHEMA, response);
 
         assertAll(description,
@@ -220,9 +218,12 @@ public class NoteCreationTest extends BaseApiTest {
                 () -> assertEquals(note.title(), response.jsonPath().getString("data.title"), "Invalid note title."),
                 () -> assertEquals(note.description(), response.jsonPath().getString("data.description"), "Invalid note description."),
                 () -> assertEquals(note.category(), response.jsonPath().getString("data.category"), "Invalid note category."),
-                () -> assertFalse(response.jsonPath().getBoolean("data.completed"), "Invalid note completion date.")//,
-                //() -> assertEquals(userId, response.jsonPath().getString("data.user_id"), "Invalid user id.")
+                () -> assertFalse(response.jsonPath().getBoolean("data.completed"), "Invalid note completion date."),
+                () -> assertEquals(userId, response.jsonPath().getString("data.user_id"), "Invalid user id.")
         );
+
+        String noteId = response.jsonPath().getString("data.id");
+        registerNoteId(noteId);
     }
 
     @DisplayName("[API. Notes]. POST Method. Create a Note. Negative Scenario ")
@@ -244,8 +245,6 @@ public class NoteCreationTest extends BaseApiTest {
 
         Response response = SimpleActions.createNote(note, tokenToUse);
 
-        registerNoteId(response);
-
         assertResponseSchema(BASE_SCHEMA, response);
 
         assertAll(description,
@@ -253,5 +252,8 @@ public class NoteCreationTest extends BaseApiTest {
                 () -> assertEquals(expectedStatus, response.jsonPath().getInt("status"), "Invalid Status Code."),
                 () -> assertFalse(response.jsonPath().getBoolean("success"), "Invalid success status.")
         );
+
+        String noteId = response.jsonPath().getString("data.id");
+        registerNoteId(noteId);
     }
 }
