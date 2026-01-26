@@ -198,6 +198,9 @@ public class ChangePasswordTest extends BaseApiTest {
 
         Response userNewLoginResponse = SimpleActions.loginUser(userNewLogin);
         assertEquals(200, userNewLoginResponse.statusCode(), "User login failed");
+
+        String token = userNewLoginResponse.jsonPath().getString("data.token");
+        registerLoggedInUser(token);
     }
 
     @DisplayName("[API. User]. POST Method. Change Password")
@@ -229,6 +232,8 @@ public class ChangePasswordTest extends BaseApiTest {
         assertEquals(200, loginUser.statusCode(), "User login failed");
 
         String authToken = loginUser.jsonPath().getString("data.token");
+
+        registerLoggedInUser(authToken);
 
         // Replace placeholders
         String tokenToUse = token.equals("USE_VALID_TOKEN") ? authToken : token;

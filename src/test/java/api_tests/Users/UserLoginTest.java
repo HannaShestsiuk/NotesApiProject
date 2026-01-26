@@ -1,5 +1,6 @@
 package api_tests.Users;
 
+import api_tests.BaseApiTest;
 import io.qameta.allure.Description;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
@@ -15,8 +16,8 @@ import static constants.Messages.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static utils.TestUtils.assertResponseSchema;
 
-@TestInstance(TestInstance.Lifecycle.PER_METHOD)
-public class UserLoginTest {
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+public class UserLoginTest extends BaseApiTest {
 
     @DisplayName("[API. User]. POST Method. User login")
     @Description("""
@@ -48,6 +49,7 @@ public class UserLoginTest {
         );
 
         Response response = SimpleActions.loginUser(userLogin);
+        String token = response.jsonPath().getString("data.token");
 
         assertResponseSchema(USER_LOGIN_SCHEMA, response);
 
@@ -58,6 +60,8 @@ public class UserLoginTest {
                 () -> assertEquals(userLogin.email(), response.jsonPath().getString("data.email"), "Invalid user name."),
                 () -> assertEquals(userId, response.jsonPath().getString("data.id"), "Invalid user id.")
        );
+
+        registerLoggedInUser(token);
     }
 
     @DisplayName("[API. User]. POST Method. User login with Invalid password")
@@ -76,6 +80,7 @@ public class UserLoginTest {
         );
 
         Response registerUserResponse = SimpleActions.registerUser(user);
+        registerLoggedOutUser(user.email(), user.password());
 
         assertResponseSchema(BASE_SCHEMA, registerUserResponse);
 

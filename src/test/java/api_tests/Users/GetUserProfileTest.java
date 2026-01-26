@@ -54,6 +54,8 @@ public class GetUserProfileTest extends BaseApiTest {
                 () -> assertEquals(email, response.jsonPath().getString("data.email"), "Invalid user name."),
                 () -> assertEquals(userId, response.jsonPath().getString("data.id"), "Invalid user id.")
         );
+
+        registerLoggedInUser(token);
     }
 
     @DisplayName("[API. User]. GET Method. Get user's profile without auth")

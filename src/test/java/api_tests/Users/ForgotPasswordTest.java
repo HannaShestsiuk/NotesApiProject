@@ -80,6 +80,8 @@ public class ForgotPasswordTest extends BaseApiTest {
                 () -> assertEquals(200, response.jsonPath().getInt("status"), "Invalid Status Code."),
                 () -> assertTrue(response.jsonPath().getBoolean("success"), "Invalid success status.")
         );
+
+        registerLoggedOutUser(user.email(), user.password());
     }
 
     @DisplayName("[API. User]. POST Method. Send reset password link")

@@ -54,5 +54,7 @@ public class UserLogoutTest extends BaseApiTest {
                 () -> assertEquals(200, userLogout.jsonPath().getInt("status"), "Invalid Status Code."),
                 () -> assertTrue(userLogout.jsonPath().getBoolean("success"), "Invalid success status.")
         );
+
+        registerLoggedOutUser(user.email(), user.password());
     }
 }

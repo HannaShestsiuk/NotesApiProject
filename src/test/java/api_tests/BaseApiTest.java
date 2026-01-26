@@ -12,6 +12,7 @@ import requests.SimpleActions;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static classes.TestDataGenerator.*;
 import static io.restassured.config.EncoderConfig.encoderConfig;
@@ -30,7 +31,17 @@ public class BaseApiTest {
     protected String userEmail;
     protected String userPassword;
 
+    // Create List to store notes
     protected List<String> createdNoteIds = new ArrayList<>();
+
+    // Create List to store local logged-in users
+    protected List<String> loggedInUserTokens = new ArrayList<>();
+
+    // Create Map to store local logged-out users
+    protected Map<String, UserCredentials> loggedOutUsers = new HashMap<>();
+
+    public record UserCredentials(String email, String password) {}
+
 
 
     @BeforeAll
@@ -63,49 +74,82 @@ public class BaseApiTest {
         userId    = userLoginResponse.jsonPath().getString("data.id");
     }
 
-    protected void registerNoteId(Response response) {
-        try {
-            String noteId = response.jsonPath().getString("data.id");
-            if (noteId != null) {
-                createdNoteIds.add(noteId);
-            }
-        } catch (Exception ignored) {}
+    protected void registerNoteId(String noteId) {
+        if (noteId != null && !noteId.isBlank()) {
+            createdNoteIds.add(noteId);
+        }
     }
 
+    protected void registerLoggedInUser(String token) {
+        if (token != null && !token.isBlank()) {
+            loggedInUserTokens.add(token);
+        }
+    }
+
+    protected void registerLoggedOutUser(String email, String password) {
+        if (email != null && password != null) {
+            loggedOutUsers.put(email, new UserCredentials(email, password));
+        }
+    }
+
+
     @AfterAll
-    void deleteUser() {
+    void cleanup() {
 
-//        if (!enableGlobalUser) {
-//            return;
-//        }
-
-        // Delete all created notes
-        for (String noteId : createdNoteIds) {
-            try {
-                SimpleActions.deleteNote(noteId, authToken);
-            } catch (Exception e) {
-                System.out.println("Failed to delete note " + noteId + ": " + e.getMessage());
+        // Delete all created notes of global user
+        if (enableGlobalUser) {
+            for (String noteId : createdNoteIds) {
+                try {
+                    SimpleActions.deleteNote(noteId, authToken);
+                } catch (Exception e) {
+                    System.out.println("Failed to delete note " + noteId + ": " + e.getMessage());
+                }
             }
         }
         createdNoteIds.clear();
 
-        // Delete the global user
-        try {
-            UserLogin userLogin = new UserLogin(userEmail, userPassword);
-            Response loginResponse = SimpleActions.loginUser(userLogin);
+        // Delete logged-in users directly
+        for (String token : loggedInUserTokens) {
+            try {
+                SimpleActions.deleteAccount(token);
+            } catch (Exception ignored) {}
 
-            if (loginResponse.statusCode() == 200) {
-                String freshToken = loginResponse.jsonPath().getString("data.token");
-                SimpleActions.deleteAccount(freshToken);
+        }
+        loggedInUserTokens.clear();
+
+        // Delete logged-out users by logging in again
+        for (UserCredentials creds : loggedOutUsers.values()) {
+            try {
+                Response loginResponse = SimpleActions.loginUser(
+                        new UserLogin(creds.email(), creds.password())
+                );
+                if (loginResponse.statusCode() == 200) {
+                    String token = loginResponse.jsonPath().getString("data.token");
+                    SimpleActions.deleteAccount(token);
+                }
+            } catch (Exception ignored) {}
+        }
+        loggedOutUsers.clear();
+
+        // Delete the global user
+        if (enableGlobalUser) {
+            try {
+                UserLogin userLogin = new UserLogin(userEmail, userPassword);
+                Response loginResponse = SimpleActions.loginUser(userLogin);
+
+                if (loginResponse.statusCode() == 200) {
+                    String freshToken = loginResponse.jsonPath().getString("data.token");
+                    SimpleActions.deleteAccount(freshToken);
+                }
+            } catch (Exception e) {
+                System.out.println("User deletion warning: " + e.getMessage());
             }
-        } catch (Exception e) {
-            System.out.println("User deletion warning: " + e.getMessage());
         }
 
-    userName = null;
-    userEmail = null;
-    userPassword = null;
-    authToken = null;
-    userId = null;
+        userName = null;
+        userEmail = null;
+        userPassword = null;
+        authToken = null;
+        userId = null;
     }
 }

@@ -278,6 +278,8 @@ public class UpdateUserProfileTest extends BaseApiTest {
                 () -> assertEquals(updateUserProfile.jsonPath().getString("data.phone"), getProfileResponse.jsonPath().getString("data.phone"),  "Invalid phone."),
                 () -> assertEquals(updateUserProfile.jsonPath().getString("data.company"), getProfileResponse.jsonPath().getString("data.company"), "Invalid company.")
         );
+
+        registerLoggedInUser(token);
     }
 
     @DisplayName("[API. User]. PATCH Method. Update user's profile")
@@ -324,5 +326,7 @@ public class UpdateUserProfileTest extends BaseApiTest {
                 () -> assertEquals(expectedStatus, response.jsonPath().getInt("status"), "Invalid Status Code."),
                 () -> assertFalse(response.jsonPath().getBoolean("success"), "Invalid success status.")
         );
+
+        registerLoggedInUser(tokenToUse);
     }
 }

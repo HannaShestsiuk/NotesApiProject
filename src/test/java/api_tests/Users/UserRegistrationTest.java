@@ -125,6 +125,8 @@ public class UserRegistrationTest extends BaseApiTest {
                 () -> assertEquals(409, secondResponse.jsonPath().getInt("status"), "Invalid Status Code."),
                 () -> assertFalse(secondResponse.jsonPath().getBoolean("success"), "Invalid success status.")
         );
+
+        registerLoggedOutUser(user.email(), user.password());
     }
 
     @DisplayName("[API. User]. POST Method. Register user without email")
