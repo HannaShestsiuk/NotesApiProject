@@ -92,15 +92,26 @@ public class BaseApiTest {
         }
     }
 
+    private void log(String message) {
+        System.out.println("CLEANUP: " + message);
+    }
 
     @AfterAll
     void cleanup() {
+
+        log("Start cleanup test artifacts.");
+
+        int deletedNotes = 0;
+        int deletedLoggedInUsers = 0;
+        int deletedLoggedOutUsers = 0;
+        boolean deletedGlobalUser = false;
 
         // Delete all created notes of global user
         if (enableGlobalUser) {
             for (String noteId : createdNoteIds) {
                 try {
                     SimpleActions.deleteNote(noteId, authToken);
+                    deletedNotes++;
                 } catch (Exception e) {
                     System.out.println("Failed to delete note " + noteId + ": " + e.getMessage());
                 }
@@ -112,6 +123,7 @@ public class BaseApiTest {
         for (String token : loggedInUserTokens) {
             try {
                 SimpleActions.deleteAccount(token);
+                deletedLoggedInUsers++;
             } catch (Exception ignored) {}
 
         }
@@ -126,6 +138,7 @@ public class BaseApiTest {
                 if (loginResponse.statusCode() == 200) {
                     String token = loginResponse.jsonPath().getString("data.token");
                     SimpleActions.deleteAccount(token);
+                    deletedLoggedOutUsers++;
                 }
             } catch (Exception ignored) {}
         }
@@ -140,11 +153,21 @@ public class BaseApiTest {
                 if (loginResponse.statusCode() == 200) {
                     String freshToken = loginResponse.jsonPath().getString("data.token");
                     SimpleActions.deleteAccount(freshToken);
+                    deletedGlobalUser = true;
                 }
             } catch (Exception e) {
                 System.out.println("User deletion warning: " + e.getMessage());
             }
         }
+
+        // Print cleanup result
+        log("Deleted notes: " + deletedNotes);
+        log("Deleted logged-in users: " + deletedLoggedInUsers);
+        log("Deleted logged-out users: " + deletedLoggedOutUsers);
+        if (enableGlobalUser) {
+            log("Deleted global user: " + (deletedGlobalUser ? "yes" : "no"));
+        }
+        log("Cleanup completed.");
 
         userName = null;
         userEmail = null;
