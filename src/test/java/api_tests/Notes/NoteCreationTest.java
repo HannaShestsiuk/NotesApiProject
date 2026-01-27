@@ -2,7 +2,6 @@ package api_tests.Notes;
 
 import api_tests.BaseApiTest;
 import io.qameta.allure.Description;
-import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.TestInstance;
@@ -14,8 +13,8 @@ import requests.SimpleActions;
 
 import java.util.stream.Stream;
 
-import static classes.TestDataGenerator.randomDescription;
-import static classes.TestDataGenerator.randomTitle;
+import static helpers.TestDataGenerator.randomDescription;
+import static helpers.TestDataGenerator.randomTitle;
 import static constants.Messages.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static enums.NoteCategory.*;

@@ -1,6 +1,6 @@
 package constants;
 
-public final class ApiConstants {
+public final class Constants {
     public static String BASE_URI = "https://practice.expandtesting.com/notes/api";
     public static String HEALTH_CHECK = "/health-check";
     public static String REGISTER_USER = "/users/register";

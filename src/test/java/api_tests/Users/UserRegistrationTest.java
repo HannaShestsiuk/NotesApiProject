@@ -10,12 +10,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import records.User;
-import records.UserProfile;
 import requests.SimpleActions;
 
 import java.util.stream.Stream;
 
-import static classes.TestDataGenerator.*;
+import static helpers.TestDataGenerator.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static constants.Messages.*;
 

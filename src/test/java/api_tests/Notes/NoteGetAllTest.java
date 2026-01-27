@@ -14,8 +14,8 @@ import requests.SimpleActions;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static classes.TestDataGenerator.randomDescription;
-import static classes.TestDataGenerator.randomTitle;
+import static helpers.TestDataGenerator.randomDescription;
+import static helpers.TestDataGenerator.randomTitle;
 import static constants.Messages.NOTES_RETRIEVED;
 import static constants.Messages.NO_AUTH_HEADER;
 import static enums.NoteCategory.*;

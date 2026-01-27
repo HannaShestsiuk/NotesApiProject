@@ -15,7 +15,7 @@ import requests.SimpleActions;
 
 import java.util.stream.Stream;
 
-import static classes.TestDataGenerator.*;
+import static helpers.TestDataGenerator.*;
 import static constants.Messages.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -8,7 +8,7 @@ import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import utils.AllureUtils;
 
-import static constants.ApiConstants.BASE_URI;
+import static constants.Constants.BASE_URI;
 
 public class RequestLibrary {
     @Step("Sending GET request on {url}")
