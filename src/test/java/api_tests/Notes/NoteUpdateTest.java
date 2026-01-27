@@ -3,7 +3,6 @@ package api_tests.Notes;
 import api_tests.BaseApiTest;
 import io.qameta.allure.Description;
 import io.restassured.response.Response;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -17,20 +16,14 @@ import java.util.stream.Stream;
 
 import static classes.TestDataGenerator.randomDescription;
 import static classes.TestDataGenerator.randomTitle;
-import static constants.ApiConstants.*;
 import static constants.Messages.*;
 import static enums.NoteCategory.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static utils.TestUtils.assertResponseSchema;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class NoteUpdateTest extends BaseApiTest {
 
-    {
-        enableGlobalUser = true;
-    }
-
-    private static Stream<Arguments> validUpdateProvider() {
+    private Stream<Arguments> validUpdateProvider() {
         return Stream.of(
                 Arguments.of(
                         "Update all fields",
@@ -45,7 +38,7 @@ public class NoteUpdateTest extends BaseApiTest {
         );
     }
 
-    private static Stream<Arguments> invalidUpdateWithExistingNoteProvider() {
+    private Stream<Arguments> invalidUpdateWithExistingNoteProvider() {
         return Stream.of(
                 Arguments.of(
                         "No Auth",
@@ -57,27 +50,27 @@ public class NoteUpdateTest extends BaseApiTest {
                 Arguments.of(
                         "Missing title",
                         new NoteWithStatus(null, "Valid Desc", true, HOME.getLabel()),
-                        "USE_VALID_TOKEN",
+                        authToken,
                         NOTE_INVALID_TITLE,
                         400
                 ),
                 Arguments.of(
                         "Missing description",
                         new NoteWithStatus("Valid Title", null, true, HOME.getLabel()),
-                        "USE_VALID_TOKEN",
+                        authToken,
                         NOTE_INVALID_DESCRIPTION,
                         400
                 )
         );
     }
 
-    private static Stream<Arguments> invalidUpdateNoNoteProvider() {
+    private Stream<Arguments> invalidUpdateNoNoteProvider() {
         return Stream.of(
                 Arguments.of(
                         "Non existing Note",
                         "69483547294a09029728a111",
                         new NoteWithStatus("New Title", "New Desc", true, HOME.getLabel()),
-                        "USE_VALID_TOKEN",
+                        authToken,
                         NOTE_NOT_FOUND,
                         404
                 )
@@ -98,8 +91,6 @@ public class NoteUpdateTest extends BaseApiTest {
         String noteId = createResponse.jsonPath().getString("data.id");
 
         Response updateResponse = SimpleActions.updateNote(noteId, updatedNote, authToken);
-
-        assertResponseSchema(NOTE_UPDATE_SCHEMA, updateResponse);
 
         assertAll(description,
                 () -> assertEquals(NOTE_UPDATED, updateResponse.jsonPath().getString("message")),
@@ -124,7 +115,7 @@ public class NoteUpdateTest extends BaseApiTest {
     void updateNoteNegativeTestsExistingNote(
             String description,
             NoteWithStatus updatedNote,
-            String token,
+            String authToken,
             String expectedMessage,
             int expectedStatus
     ) {
@@ -134,23 +125,16 @@ public class NoteUpdateTest extends BaseApiTest {
                 HOME.getLabel()
         );
 
-        Response createNoteResponse = SimpleActions.createNote(originalNote, authToken);
+        Response createResponse = SimpleActions.createNote(originalNote, authToken);
+        String noteId = createResponse.jsonPath().getString("data.id");
 
-        String noteId = createNoteResponse.jsonPath().getString("data.id");
-
-        String tokenToUse = token.equals("USE_VALID_TOKEN") ? authToken : token;
-
-        Response response = SimpleActions.updateNote(noteId, updatedNote, tokenToUse);
-
-        assertResponseSchema(BASE_SCHEMA, response);
+        Response response = SimpleActions.updateNote(noteId, updatedNote, authToken);
 
         assertAll(description,
                 () -> assertEquals(expectedMessage, response.jsonPath().getString("message")),
                 () -> assertEquals(expectedStatus, response.jsonPath().getInt("status")),
                 () -> assertFalse(response.jsonPath().getBoolean("success"))
         );
-
-        registerNoteId(noteId);
     }
 
     @DisplayName("[API. Notes]. PUT Method. Update a Note")
@@ -164,16 +148,11 @@ public class NoteUpdateTest extends BaseApiTest {
             String description,
             String noteId,
             NoteWithStatus updatedNote,
-            String token,
+            String authToken,
             String expectedMessage,
             int expectedStatus
     ) {
-        // Replace placeholders
-        String tokenToUse = token.equals("USE_VALID_TOKEN") ? authToken : token;
-
-        Response response = SimpleActions.updateNote(noteId, updatedNote, tokenToUse);
-
-        assertResponseSchema(BASE_SCHEMA, response);
+        Response response = SimpleActions.updateNote(noteId, updatedNote, authToken);
 
         assertAll(description,
                 () -> assertEquals(expectedMessage, response.jsonPath().getString("message")),

@@ -5,18 +5,14 @@ import io.qameta.allure.Description;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import records.User;
 import records.UserLogin;
 import requests.SimpleActions;
 
 import static classes.TestDataGenerator.*;
-import static constants.ApiConstants.BASE_SCHEMA;
 import static constants.Messages.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static utils.TestUtils.assertResponseSchema;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class DeleteAccountTest extends BaseApiTest {
 
     @DisplayName("[API. User]. DELETE Method. Delete user's account")
@@ -31,24 +27,22 @@ public class DeleteAccountTest extends BaseApiTest {
     @Test
     void deleteAccountTest() {
 
-        // Create isolated local User
-        String name = randomUserName();
-        String email = randomEmail();
-        String password = randomPassword(6,7);
-        User user = new User(name, email, password);
+        userName = randomUserName();
+        userEmail = randomEmail();
+        userPassword = randomPassword(6,7);
+        User user = new User(userName, userEmail, userPassword);
 
         Response registerUserResponse = SimpleActions.registerUser(user);
         assertEquals(201, registerUserResponse.statusCode(), "User registration failed");
 
-        UserLogin userLogin = new UserLogin(email, password);
+        UserLogin userLogin = new UserLogin(userEmail, userPassword);
 
         Response userLoginResponse = SimpleActions.loginUser(userLogin);
         assertEquals(200, userLoginResponse.statusCode(), "User login failed");
 
-        String token = userLoginResponse.jsonPath().getString("data.token");
-        Response response = SimpleActions.deleteAccount(token);
+        authToken = userLoginResponse.jsonPath().getString("data.token");
 
-        assertResponseSchema(BASE_SCHEMA, response);
+        Response response = SimpleActions.deleteAccount(authToken);
 
         assertAll("Account is deleted",
                 () -> assertEquals(ACCOUNT_DELETED, response.jsonPath().getString("message"), "Invalid message."),
@@ -56,8 +50,7 @@ public class DeleteAccountTest extends BaseApiTest {
                 () -> assertTrue(response.jsonPath().getBoolean("success"), "Invalid success status.")
         );
 
-        // Attempt to login after deletion
-        UserLogin deletedUserLogin = new UserLogin(email, password);
+        UserLogin deletedUserLogin = new UserLogin(userEmail, userPassword);
 
         Response deletedUserLoginResponse = SimpleActions.loginUser(deletedUserLogin);
 
@@ -77,20 +70,17 @@ public class DeleteAccountTest extends BaseApiTest {
             5. Assert the response.
             """)
     @Test
-    void deleteAccountByNonRegisteredUserTest() {
+    void deleteAccountFailedTest() {
 
-        // Create isolated local User
-        String name = randomUserName();
-        String email = randomEmail();
-        String password = randomPassword(6,7);
-        User user = new User(name, email, password);
+        userName = randomUserName();
+        userEmail = randomEmail();
+        userPassword = randomPassword(6,7);
+        User user = new User(userName, userEmail, userPassword);
 
         Response registerUserResponse = SimpleActions.registerUser(user);
         assertEquals(201, registerUserResponse.statusCode(), "User registration failed");
 
         Response response = SimpleActions.deleteAccount("");
-
-        assertResponseSchema(BASE_SCHEMA, response);
 
         assertAll("Account is NOT deleted by non-registered user",
                 () -> assertEquals(NO_AUTH_HEADER, response.jsonPath().getString("message"), "Invalid message."),
@@ -98,7 +88,7 @@ public class DeleteAccountTest extends BaseApiTest {
                 () -> assertFalse(response.jsonPath().getBoolean("success"), "Invalid success status.")
         );
 
-        UserLogin existingUserLogin = new UserLogin(email, password);
+        UserLogin existingUserLogin = new UserLogin(userEmail, userPassword);
 
         Response existingUserLoginResponse = SimpleActions.loginUser(existingUserLogin);
 

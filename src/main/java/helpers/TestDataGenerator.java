@@ -1,4 +1,4 @@
-package classes;
+package helpers;
 
 import com.github.javafaker.Faker;
 

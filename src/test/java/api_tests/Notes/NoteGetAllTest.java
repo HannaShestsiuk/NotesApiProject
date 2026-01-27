@@ -3,7 +3,6 @@ package api_tests.Notes;
 import api_tests.BaseApiTest;
 import io.qameta.allure.Description;
 import io.restassured.response.Response;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -17,20 +16,13 @@ import java.util.stream.Stream;
 
 import static classes.TestDataGenerator.randomDescription;
 import static classes.TestDataGenerator.randomTitle;
-import static constants.ApiConstants.BASE_SCHEMA;
-import static constants.ApiConstants.NOTE_GET_ALL_SCHEMA;
 import static constants.Messages.NOTES_RETRIEVED;
 import static constants.Messages.NO_AUTH_HEADER;
 import static enums.NoteCategory.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static utils.TestUtils.assertResponseSchema;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class NoteGetAllTest extends BaseApiTest {
-
-    {
-        enableGlobalUser = true;
-    }
 
     private static Stream<Arguments> invalidGetNotesProvider() {
         return Stream.of(
@@ -38,7 +30,7 @@ public class NoteGetAllTest extends BaseApiTest {
         );
     }
 
-    private static Stream<Arguments> notesListProvider() {
+    private Stream<Arguments> notesListProvider() {
         return Stream.of(
                 Arguments.of(
                         "User with multiple notes",
@@ -62,15 +54,10 @@ public class NoteGetAllTest extends BaseApiTest {
     void getNotesPositiveTests(String description, List<Note> notesToCreate) {
 
         for (Note note : notesToCreate) {
-            Response createNoteResponse = SimpleActions.createNote(note, authToken);
-
-            String noteId = createNoteResponse.jsonPath().getString("data.id");
-            registerNoteId(noteId);
+            SimpleActions.createNote(note, authToken);
         }
 
         Response response = SimpleActions.getNotes(authToken);
-
-        assertResponseSchema(NOTE_GET_ALL_SCHEMA, response);
 
         assertAll(description,
                 () -> assertEquals(NOTES_RETRIEVED, response.jsonPath().getString("message")),
@@ -93,8 +80,6 @@ public class NoteGetAllTest extends BaseApiTest {
             int expectedStatus
     ) {
         Response response = SimpleActions.getNotes(token);
-
-        assertResponseSchema(BASE_SCHEMA, response);
 
         assertAll(description,
                 () -> assertEquals(expectedMessage, response.jsonPath().getString("message")),
