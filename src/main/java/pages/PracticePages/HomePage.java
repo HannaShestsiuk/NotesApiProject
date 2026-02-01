@@ -1,4 +1,4 @@
-package pages.NotesApp;
+package pages.PracticePages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
@@ -15,21 +15,30 @@ public class HomePage extends BasePage {
         return "/";
     }
 
-    private Locator createAccountButton() {
-        return page.locator("[data-testid='open-register-view']");
+    private Locator registerPageButton() {
+        return page.locator("a[href='/register']");
     }
 
-    private Locator loginButton() {
-        return page.locator("[data-testid='open-login-view']");
+    private Locator loginPageButton() {
+        return page.locator("a[href='/login']");
     }
 
-    public NotesAppRegistrationPage clickCreateAccountButton() {
-        createAccountButton().click();
-        return new NotesAppRegistrationPage(page);
+    private Locator forgotPasswordPageButton() {
+        return page.locator("a[href='/forgot-password']");
     }
 
-    public NotesAppLoginPage clickLoginButton() {
-        loginButton().click();
-        return new NotesAppLoginPage(page);
+    public RegisterPage registerPageClick() {
+        registerPageButton().click();
+        return new RegisterPage(page);
+    }
+
+    public LoginPage loginPageClick() {
+        loginPageButton().click();
+        return new LoginPage(page);
+    }
+
+    public ForgotPasswordPage forgotPasswordPageClick() {
+        forgotPasswordPageButton().click();
+        return new ForgotPasswordPage(page);
     }
 }
