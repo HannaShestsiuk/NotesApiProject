@@ -5,9 +5,9 @@ import com.microsoft.playwright.Page;
 import pages.BasePage;
 import records.UiUser;
 
-public class RegistrationPage extends BasePage {
+public class NotesAppRegistrationPage extends BasePage {
 
-    public RegistrationPage(Page page) {
+    public NotesAppRegistrationPage(Page page) {
         super(page);
     }
 
@@ -36,7 +36,7 @@ public class RegistrationPage extends BasePage {
         return page.locator("[data-testid='register-submit']");
     }
 
-    public RegistrationPage fillForm(UiUser user) {
+    public NotesAppRegistrationPage fillForm(UiUser user) {
         emailAddressField().fill(user.email());
         nameField().fill(user.name());
         passwordField().fill(user.password());

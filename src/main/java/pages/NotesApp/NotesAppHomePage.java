@@ -4,9 +4,9 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import pages.BasePage;
 
-public class HomePage extends BasePage {
+public class NotesAppHomePage extends BasePage {
 
-    public HomePage(Page page) {
+    public NotesAppHomePage(Page page) {
         super(page);
     }
 
@@ -23,13 +23,13 @@ public class HomePage extends BasePage {
         return page.locator("[data-testid='open-login-view']");
     }
 
-    public RegistrationPage clickCreateAccountButton() {
+    public NotesAppRegistrationPage clickCreateAccountButton() {
         createAccountButton().click();
-        return new RegistrationPage(page);
+        return new NotesAppRegistrationPage(page);
     }
 
-    public LoginPage clickLoginButton() {
+    public NotesAppLoginPage clickLoginButton() {
         loginButton().click();
-        return new LoginPage(page);
+        return new NotesAppLoginPage(page);
     }
 }
