@@ -1,7 +1,8 @@
-package pages;
+package pages.NotesApp;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import pages.BasePage;
 import records.UiUser;
 
 public class RegistrationPage extends BasePage {
