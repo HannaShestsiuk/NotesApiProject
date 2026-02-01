@@ -2,8 +2,8 @@ package ui_tests;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.provider.Arguments;
-import pages.HomePage;
-import pages.RegistrationPage;
+import pages.NotesApp.HomePage;
+import pages.NotesApp.RegistrationPage;
 import records.UiUser;
 import records.User;
 
