@@ -2,8 +2,8 @@ package ui_tests;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.provider.Arguments;
-import pages.NotesApp.HomePage;
-import pages.NotesApp.RegistrationPage;
+import pages.NotesApp.NotesAppHomePage;
+import pages.NotesApp.NotesAppRegistrationPage;
 import records.UiUser;
 import records.User;
 
@@ -28,9 +28,9 @@ public class RegistrationTests extends BaseTest {
         String password = randomPassword(8, 10);
         UiUser user = new UiUser(randomEmail(), randomUserName(), password, password);
 
-        HomePage homePage = new HomePage(page()).open();
+        NotesAppHomePage homePage = new NotesAppHomePage(page()).open();
 
-        RegistrationPage registrationPage = homePage.clickCreateAccountButton();
+        NotesAppRegistrationPage registrationPage = homePage.clickCreateAccountButton();
 
         registrationPage.fillForm(user).register();
 

@@ -5,9 +5,9 @@ import com.microsoft.playwright.Page;
 import pages.BasePage;
 import records.UiUser;
 
-public class LoginPage extends BasePage {
+public class NotesAppLoginPage extends BasePage {
 
-    public LoginPage(Page page) {
+    public NotesAppLoginPage(Page page) {
         super(page);
     }
 
@@ -28,7 +28,7 @@ public class LoginPage extends BasePage {
         return page.locator("[data-testid='login-submit']");
     }
 
-    public LoginPage fillForm(UiUser user) {
+    public NotesAppLoginPage fillForm(UiUser user) {
         emailAddressField().fill(user.email());
         passwordField().fill(user.password());
         return this;
