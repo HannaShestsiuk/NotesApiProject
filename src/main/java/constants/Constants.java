@@ -1,7 +1,16 @@
 package constants;
 
 public final class Constants {
-    public static String BASE_URI = "https://practice.expandtesting.com/notes/api";
+
+    // URLs for Automation Testing Practice
+    public static final String BASE_URL = "https://practice.expandtesting.com/";
+    public static final String REGISTER_PAGE = "/register";
+    public static final String LOGIN_PAGE = "/login";
+    public static final String FORGOT_PASSWORD_PAGE = "/forgot-password";
+
+    // URLs for Notes App
+
+    public static String BASE_URL_NOTES = "https://practice.expandtesting.com/notes/api";
     public static String HEALTH_CHECK = "/health-check";
     public static String REGISTER_USER = "/users/register";
     public static String LOGIN_USER = "/users/login";
