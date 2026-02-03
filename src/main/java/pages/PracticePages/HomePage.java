@@ -16,15 +16,15 @@ public class HomePage extends BasePage {
     }
 
     private Locator registerPageButton() {
-        return page.locator("a[href='/register']");
+        return page.locator("a[href='/register']").first();
     }
 
     private Locator loginPageButton() {
-        return page.locator("a[href='/login']");
+        return page.locator("a[href='/login']").first();
     }
 
     private Locator forgotPasswordPageButton() {
-        return page.locator("a[href='/forgot-password']");
+        return page.locator("a[href='/forgot-password']").first();
     }
 
     public RegisterPage registerPageClick() {

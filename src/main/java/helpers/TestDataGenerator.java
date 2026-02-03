@@ -48,4 +48,9 @@ public class TestDataGenerator {
     public static String randomCompany(int length) {
         return faker.lorem().characters(length);
     }
+
+    public static String randomName() {
+        return "user" + System.currentTimeMillis();
+    }
+
 }

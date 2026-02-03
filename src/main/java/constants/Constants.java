@@ -3,7 +3,7 @@ package constants;
 public final class Constants {
 
     // URLs for Automation Testing Practice
-    public static final String BASE_URL = "https://practice.expandtesting.com/";
+    public static final String BASE_URL = "https://practice.expandtesting.com";
     public static final String REGISTER_PAGE = "/register";
     public static final String LOGIN_PAGE = "/login";
     public static final String FORGOT_PASSWORD_PAGE = "/forgot-password";

@@ -4,6 +4,8 @@ public final class Messages {
     private Messages() {
     }
 
+    // NoteApp API tests messages
+
     public static final String HEALTH_CHECK = "Notes API is Running";
     public static final String ACCOUNT_CREATED = "User account created successfully";
     public static final String UNIQUE_EMAIL_REQUIRED = "An account already exists with the same email address";
@@ -42,4 +44,18 @@ public final class Messages {
     public static final String NOTE_UPDATED = "Note successfully Updated";
     public static final String NOTE_DELETED = "Note successfully deleted";
     public static final String INVALID_REQUEST = "Invalid Request";
+
+    // Practice UI messages
+
+    public static final String SUCCESSFUL_REGISTRATION = "Successfully registered, you can log in now.";
+    public static final String USERNAME_IS_TAKEN = "Username is already taken.";
+    public static final String FIELDS_REQUIRED = "All fields are required.";
+    public static final String PASSWORDS_NOT_MATCH = "Passwords do not match.";
+    public static final String REGISTRATION_ERROR = "An error occurred during registration. Please try again.";
+    public static final String SUCCESSFUL_LOGIN = "You logged into a secure area!";
+    public static final String LOGIN_INVALID_USERNAME = "Your username is invalid!";
+    public static final String LOGIN_INVALID_PASSWORD = "Your password is invalid!";
+    public static final String PASSWORD_RESET_SENT = "An e-mail has been sent to you which explains how to reset your password.";
+    public static final String INVALID_EMAIL = "Please enter a valid email address.";
+
 }

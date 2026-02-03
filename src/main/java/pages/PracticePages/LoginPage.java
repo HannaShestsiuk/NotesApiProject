@@ -4,7 +4,7 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
 import pages.BasePage;
-import records.UiUser;
+import records.PracticeRecords.PracticeUiUser;
 
 public class LoginPage extends BasePage {
     public LoginPage(Page page) {
@@ -14,6 +14,10 @@ public class LoginPage extends BasePage {
     @Override
     protected String path() {
         return "/login";
+    }
+
+    public boolean isAt() {
+        return page.url().endsWith("/login");
     }
 
     private Locator usernameField() {
@@ -28,8 +32,20 @@ public class LoginPage extends BasePage {
         return page.locator("button:has-text('Login')");
     }
 
-    public Locator loginMessage() {
-        return page.locator("b:has-text('You logged into a secure area')");
+    public Locator flashMessage() {
+        return page.locator("#flash-message b");
+    }
+
+    public String getFlashMessage() {
+        return flashMessage().textContent().trim();
+    }
+
+    public Locator successMessage() {
+        return page.locator("b:has-text('Successfully registered, you can log in now.')");
+    }
+
+    public String loginPageTitle() {
+        return page.locator("h1").textContent().trim();
     }
 
     public Locator usernameInvalidMessage() {
@@ -40,8 +56,8 @@ public class LoginPage extends BasePage {
         return page.locator("b:has-text('Your password is invalid')");
     }
 
-    @Step("Login user: {user.name()}")
-    public LoginPage login(UiUser user) {
+    @Step("Login user: {user}")
+    public LoginPage login(PracticeUiUser user) {
         usernameField().fill(user.name());
         passwordField().fill(user.password());
         loginButton().click();

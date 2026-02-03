@@ -1,12 +1,12 @@
 package config;
 
-public final class AppConfig {
+import static constants.Constants.BASE_URL;
 
-    public static final String BASE_WEB_URL = "https://practice.expandtesting.com/notes/app/";
+public final class AppConfig {
 
     private AppConfig() {}
 
     public static String baseUrl() {
-        return System.getProperty("baseUrl", BASE_WEB_URL);
+        return System.getProperty("baseUrl", BASE_URL);
     }
 }
