@@ -4,13 +4,14 @@ import com.microsoft.playwright.*;
 import helpers.AdBlocker;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import records.PracticeRecords.PracticeUiUser;
 
 
 import java.nio.file.Paths;
 
 import static com.microsoft.playwright.options.WaitForSelectorState.VISIBLE;
-import static config.AppConfig.BASE_WEB_URL;
-import static constants.Locators.WELCOME_TEXT;
+import static constants.Constants.BASE_URL;
+import static constants.Locators.HOME_PAGE_TEXT;
 
 
 public class BaseTest {
@@ -21,7 +22,7 @@ public class BaseTest {
 
     @BeforeEach
     public void beforeEach() {
-        Boolean isHeadless = Boolean.parseBoolean(
+        boolean isHeadless = Boolean.parseBoolean(
                 System.getenv().getOrDefault("HEADLESS", "true")
         );
 
@@ -57,10 +58,15 @@ public class BaseTest {
         page.set(pg);
         AdBlocker.killInterstitialAds(pg);
 
-        pg.navigate(BASE_WEB_URL);
-        pg.locator(WELCOME_TEXT)
+        pg.navigate(BASE_URL);
+        pg.locator(HOME_PAGE_TEXT)
                 .waitFor(new Locator.WaitForOptions().setState(VISIBLE));
     }
+
+    // Global user credentials
+    protected static final PracticeUiUser globalUser =
+            new PracticeUiUser("practice", "SuperSecretPassword!", "SuperSecretPassword!");
+
 
     @AfterEach
     public void afterEach() {

@@ -1,4 +1,4 @@
-package ui_tests;
+package ui_tests.NotesApp;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.provider.Arguments;
@@ -6,6 +6,7 @@ import pages.NotesApp.NotesAppHomePage;
 import pages.NotesApp.NotesAppRegistrationPage;
 import records.UiUser;
 import records.User;
+import ui_tests.BaseTest;
 
 import java.util.stream.Stream;
 

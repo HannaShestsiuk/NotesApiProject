@@ -4,7 +4,7 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
 import pages.BasePage;
-import records.UiUser;
+import records.PracticeRecords.PracticeUiUser;
 
 public class RegisterPage extends BasePage {
     public RegisterPage(Page page) {
@@ -32,22 +32,27 @@ public class RegisterPage extends BasePage {
         return page.locator("button:has-text('Register')");
     }
 
-    private Locator successMessage() {
-        return page.locator("b:has-text('Successfully registered')");
+    public Locator flashMessage() {
+        return page.locator("#flash-message b");
     }
 
-    private Locator errorMessage() {
+    public String getFlashMessage() {
+        return flashMessage().textContent().trim();
+    }
+
+    public Locator errorMessage() {
         return page.locator("b:has-text('An error occurred during registration')");
     }
 
-    @Step("Fill registration form for user: {user.name()}")
-    public RegisterPage fillForm(UiUser user) {
+    @Step("Fill registration form for user: {user}")
+    public RegisterPage fillForm(PracticeUiUser user) {
         usernameField().fill(user.name());
         passwordField().fill(user.password());
         confirmPasswordField().fill(user.confirmPassword());
         return this;
     }
 
+    @Step("Click Register button")
     public void register() {
         registerButton().click();
     }
