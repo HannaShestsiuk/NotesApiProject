@@ -4,7 +4,7 @@ import com.microsoft.playwright.*;
 import helpers.AdBlocker;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import records.PracticeRecords.PracticeUiUser;
+import records.practiceRecords.PracticeUiUser;
 
 
 import java.nio.file.Paths;
