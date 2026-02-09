@@ -111,7 +111,7 @@ public class UpdateUserProfileTest extends BaseApiTest {
                         401
                 ),
                 Arguments.of(
-                        "Missing name",
+                        "Missing userName",
                         new UserProfile(
                                 null,
                                 randomPhone(10),
@@ -122,7 +122,7 @@ public class UpdateUserProfileTest extends BaseApiTest {
                         400
                 ),
                 Arguments.of(
-                        "Empty name",
+                        "Empty userName",
                         new UserProfile(
                                 "",
                                 randomPhone(10),
@@ -239,7 +239,7 @@ public class UpdateUserProfileTest extends BaseApiTest {
                 () -> assertEquals(USER_PROFILE_UPDATED, response.jsonPath().getString("message"), "Invalid message."),
                 () -> assertEquals(200, response.jsonPath().getInt("status"), "Invalid Status Code."),
                 () -> assertTrue(response.jsonPath().getBoolean("success"), "Invalid success status."),
-                () -> assertEquals(userProfile.name(), response.jsonPath().getString("data.name"), "Invalid name."),
+                () -> assertEquals(userProfile.name(), response.jsonPath().getString("data.userName"), "Invalid userName."),
                 () -> assertEquals(userProfile.phone(), response.jsonPath().getString("data.phone"), "Invalid phone."),
                 () -> assertEquals(userProfile.company(), response.jsonPath().getString("data.company"), "Invalid company."),
                 () -> assertEquals(userId, response.jsonPath().getString("data.id"), "Invalid user id.")
@@ -248,7 +248,7 @@ public class UpdateUserProfileTest extends BaseApiTest {
         Response getProfileResponse = SimpleActions.getUserProfile(authToken);
 
         assertAll(description,
-                () -> assertEquals(response.jsonPath().getString("data.name"), getProfileResponse.jsonPath().getString("data.name"), "Invalid name."),
+                () -> assertEquals(response.jsonPath().getString("data.userName"), getProfileResponse.jsonPath().getString("data.userName"), "Invalid userName."),
                 () -> assertEquals(response.jsonPath().getString("data.phone"), getProfileResponse.jsonPath().getString("data.phone"),  "Invalid phone."),
                 () -> assertEquals(response.jsonPath().getString("data.company"), getProfileResponse.jsonPath().getString("data.company"), "Invalid company.")
         );

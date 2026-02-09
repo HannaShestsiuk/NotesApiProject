@@ -7,6 +7,7 @@ public final class Constants {
     public static final String REGISTER_PAGE = "/register";
     public static final String LOGIN_PAGE = "/login";
     public static final String FORGOT_PASSWORD_PAGE = "/forgot-password";
+    public static final String SECURE_PAGE =  "/secure";
 
     // URLs for Notes App
 

@@ -10,7 +10,7 @@ public final class Messages {
     public static final String ACCOUNT_CREATED = "User account created successfully";
     public static final String UNIQUE_EMAIL_REQUIRED = "An account already exists with the same email address";
     public static final String VALID_EMAIL_REQUIRED = "A valid email address is required";
-    public static final String VALID_USERNAME_REQUIRED = "User name must be between 4 and 30 characters";
+    public static final String VALID_USERNAME_REQUIRED = "User userName must be between 4 and 30 characters";
     public static final String VALID_PASSWORD_REQUIRED = "Password must be between 6 and 30 characters";
     public static final String LOGIN_SUCCESS = "Login successful";
     public static final String LOGIN_INVALID_EMAIL_OR_PASSWORD = "Incorrect email address or password";
@@ -18,7 +18,7 @@ public final class Messages {
     public static final String USER_PROFILE = "Profile successful";
     public static final String USER_PROFILE_UPDATED = "Profile updated successful";
     public static final String INVALID_PHONE = "Phone number should be between 8 and 20 digits";
-    public static final String INVALID_COMPANY = "Company name must be between 4 and 30 characters";
+    public static final String INVALID_COMPANY = "Company userName must be between 4 and 30 characters";
     public static final String PASSWORD_RESET_LINK_SENT = "Password reset link successfully sent to %s. Please verify by clicking on the given link";
 
     public static String passwordResetLinkSent(String email) {
@@ -53,8 +53,9 @@ public final class Messages {
     public static final String PASSWORDS_NOT_MATCH = "Passwords do not match.";
     public static final String REGISTRATION_ERROR = "An error occurred during registration. Please try again.";
     public static final String SUCCESSFUL_LOGIN = "You logged into a secure area!";
-    public static final String LOGIN_INVALID_USERNAME = "Your username is invalid!";
+    public static final String LOGIN_INVALID_USERNAME = "Your userName is invalid!";
     public static final String LOGIN_INVALID_PASSWORD = "Your password is invalid!";
+    public static final String LOGOUT_MESSAGE = "You logged out of the secure area!";
     public static final String PASSWORD_RESET_SENT = "An e-mail has been sent to you which explains how to reset your password.";
     public static final String INVALID_EMAIL = "Please enter a valid email address.";
 

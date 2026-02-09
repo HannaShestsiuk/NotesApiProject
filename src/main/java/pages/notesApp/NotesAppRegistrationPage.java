@@ -21,7 +21,7 @@ public class NotesAppRegistrationPage extends BasePage {
     }
 
     private Locator nameField() {
-        return page.locator("[data-testid='register-name']");
+        return page.locator("[data-testid='register-userName']");
     }
 
     private Locator passwordField() {
