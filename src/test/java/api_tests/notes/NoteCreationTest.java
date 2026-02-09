@@ -14,9 +14,9 @@ import requests.SimpleActions;
 
 import java.util.stream.Stream;
 
-import static classes.TestDataGenerator.randomDescription;
-import static classes.TestDataGenerator.randomTitle;
 import static constants.Messages.*;
+import static helpers.TestDataGenerator.randomDescription;
+import static helpers.TestDataGenerator.randomTitle;
 import static org.junit.jupiter.api.Assertions.*;
 import static enums.NoteCategory.*;
 

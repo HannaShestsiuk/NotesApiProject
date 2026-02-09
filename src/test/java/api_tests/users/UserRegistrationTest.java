@@ -10,12 +10,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import records.User;
-import records.UserProfile;
 import requests.SimpleActions;
 
 import java.util.stream.Stream;
 
-import static classes.TestDataGenerator.*;
+import static helpers.TestDataGenerator.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static constants.Messages.*;
 
@@ -81,7 +80,7 @@ public class UserRegistrationTest extends BaseApiTest {
                 () -> assertEquals(ACCOUNT_CREATED, response.jsonPath().getString("message"), "Invalid message."),
                 () -> assertEquals(201, response.jsonPath().getInt("status"), "Invalid Status Code."),
                 () -> assertTrue(response.jsonPath().getBoolean("success"), "Invalid success status."),
-                () -> assertEquals(user.name(), response.jsonPath().getString("data.name"), "Invalid name."),
+                () -> assertEquals(user.userName(), response.jsonPath().getString("data.name"), "Invalid name."),
                 () -> assertEquals(user.email(), response.jsonPath().getString("data.email"), "Invalid email.")
         );
     }
@@ -107,7 +106,7 @@ public class UserRegistrationTest extends BaseApiTest {
                 () -> assertEquals(201, response.jsonPath().getInt("status"), "Invalid Status Code."),
                 () -> assertNotNull(response.jsonPath().getString("data.id"), "User id is set to NULL."),
                 () -> assertNotEquals("", response.jsonPath().getString("data.id"), "User id is set to empty string."),
-                () -> assertEquals(user.name(), response.jsonPath().getString("data.name"), "Invalid user name."),
+                () -> assertEquals(user.userName(), response.jsonPath().getString("data.name"), "Invalid user name."),
                 () -> assertEquals(user.email(), response.jsonPath().getString("data.email"), "Invalid user email.")
         );
 

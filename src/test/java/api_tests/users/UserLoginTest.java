@@ -10,9 +10,9 @@ import records.UserLogin;
 import records.User;
 import requests.SimpleActions;
 
-import static classes.TestDataGenerator.*;
 import static constants.ApiConstants.*;
 import static constants.Messages.*;
+import static helpers.TestDataGenerator.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static utils.TestUtils.assertResponseSchema;
 
@@ -60,8 +60,6 @@ public class UserLoginTest extends BaseApiTest {
                 () -> assertEquals(userLogin.email(), response.jsonPath().getString("data.email"), "Invalid user name."),
                 () -> assertEquals(userId, response.jsonPath().getString("data.id"), "Invalid user id.")
        );
-
-        registerLoggedInUser(token);
     }
 
     @DisplayName("[API. User]. POST Method. User login with Invalid password")
@@ -80,7 +78,6 @@ public class UserLoginTest extends BaseApiTest {
         );
 
         Response registerUserResponse = SimpleActions.registerUser(user);
-        registerLoggedOutUser(user.email(), user.password());
 
         assertResponseSchema(BASE_SCHEMA, registerUserResponse);
 

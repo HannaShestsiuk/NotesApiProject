@@ -43,7 +43,7 @@ public class ForgotPasswordPageTest extends BaseTest {
         Email email = new Email("practice@example.com");
 
         HomePage home = new HomePage(page()).open();
-        ForgotPasswordPage forgotPasswordPage = home.forgotPasswordPageClick();
+        ForgotPasswordPage forgotPasswordPage = home.goToForgotPasswordPage();
 
         forgotPasswordPage.retrievePassword(email);
 
@@ -73,7 +73,7 @@ public class ForgotPasswordPageTest extends BaseTest {
     void forgotPasswordNegativeTest(String testName, Email email, String expectedMessage) {
 
         HomePage home = new HomePage(page()).open();
-        ForgotPasswordPage forgotPasswordPage = home.forgotPasswordPageClick();
+        ForgotPasswordPage forgotPasswordPage = home.goToForgotPasswordPage();
 
         forgotPasswordPage.retrievePassword(email);
 

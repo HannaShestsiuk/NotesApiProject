@@ -7,7 +7,7 @@ import records.User;
 import records.UserLogin;
 import requests.SimpleActions;
 
-import static classes.TestDataGenerator.*;
+import static helpers.TestDataGenerator.*;
 import static io.restassured.config.EncoderConfig.encoderConfig;
 import static io.restassured.http.ContentType.URLENC;
 import static org.junit.jupiter.api.Assertions.assertEquals;
