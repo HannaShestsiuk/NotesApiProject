@@ -1,18 +1,18 @@
 package records.practiceRecords;
 
 public record PracticeUiUser(
-        String name,
+        String userName,
         String password,
         String confirmPassword
 ) {
-    public PracticeUiUser(String name, String password, String confirmPassword) {
-        this.name = name;
+    public PracticeUiUser(String userName, String password, String confirmPassword) {
+        this.userName = userName;
         this.password = password;
         this.confirmPassword = confirmPassword;
     }
 
-    public String getName() {
-        return name;
+    public String getUserName() {
+        return userName;
     }
 
     public String getPassword() {
@@ -23,9 +23,8 @@ public record PracticeUiUser(
         return confirmPassword;
     }
 
-
     @Override
     public String toString() {
-        return name;
+        return userName;
     }
 }
