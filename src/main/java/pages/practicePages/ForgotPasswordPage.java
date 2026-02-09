@@ -2,10 +2,17 @@ package pages.practicePages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import pages.BasePage;
 import records.Email;
+import records.practiceRecords.PracticeUiUser;
+
+import static constants.Constants.FORGOT_PASSWORD_PAGE;
+import static constants.Constants.SECURE_PAGE;
+import static constants.Messages.INVALID_EMAIL;
+import static constants.Messages.PASSWORD_RESET_SENT;
 
 public class ForgotPasswordPage extends BasePage {
 
@@ -15,54 +22,49 @@ public class ForgotPasswordPage extends BasePage {
 
     @Override
     protected String path() {
-        return "/forgot-password";
+        return FORGOT_PASSWORD_PAGE;
     }
 
-    public boolean isAt() {
-        return page.url().endsWith("/forgot-password");
-    }
-
-    private Locator emailField() {
+    private Locator emailInput() {
         return page.locator("#email");
     }
 
     private Locator retrievePasswordButton() {
-        return page.locator("button:has-text('Retrieve password')");
+        return page.getByRole(AriaRole.BUTTON,
+                new Page.GetByRoleOptions().setName("Retrieve password")
+        );
     }
 
-    public Locator emailSentMessage() {
-        return page.locator("#confirmation-alert p");
-    }
+    public Locator emailSentMessage = page.locator("#confirmation-alert p");
 
-    public Locator invalidEmailMessage() {
-        return page.locator("div.invalid-feedback");
-    }
+    public Locator invalidEmailMessage = page.locator(".invalid-feedback");
 
     private String normalize(String text) {
         return text.replaceAll("\\s+", " ").trim();
     }
 
-    public String getEmailSentMessage() {
-        return normalize(emailSentMessage().textContent());
-    }
-
-    public String getInvalidEmailMessage() {
-        return invalidEmailMessage().textContent().trim();
-    }
-
     public void waitForEmailSentMessage() {
-        emailSentMessage().waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+        emailSentMessage.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
     }
 
     public void waitForInvalidEmailMessage() {
-        invalidEmailMessage().waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+        invalidEmailMessage.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
     }
 
+    @Step("Fill Email")
+    public void fillEmail(String email){
+        emailInput().fill(email);
+    }
 
-    @Step("Retrieve password")
-    public ForgotPasswordPage retrievePassword(Email email) {
-        emailField().fill(email.email());
+    @Step("Click 'Retrieve password' button")
+    public ForgotPasswordPage clickRetrievePassword(){
         retrievePasswordButton().click();
-        return this;
+        page.waitForURL("**" + FORGOT_PASSWORD_PAGE);
+        return new ForgotPasswordPage(page);
+    }
+
+    public ForgotPasswordPage fillForgotPasswordForm(String email){
+        fillEmail(email);
+        return clickRetrievePassword();
     }
 }

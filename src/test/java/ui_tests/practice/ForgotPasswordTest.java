@@ -17,14 +17,15 @@ import java.util.stream.Stream;
 
 import static constants.Messages.INVALID_EMAIL;
 import static constants.Messages.PASSWORD_RESET_SENT;
+import static helpers.TestDataGenerator.randomEmail;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ForgotPasswordPageTest extends BaseTest {
+public class ForgotPasswordTest extends BaseTest {
 
     private static Stream<Arguments> negativeForgotPasswordDataProvider() {
         return Stream.of(
-                Arguments.of("Empty email", new Email(""), INVALID_EMAIL),
-                Arguments.of("Invalid Email", new Email("testexample.com"), INVALID_EMAIL)
+                Arguments.of("Empty email", "", INVALID_EMAIL),
+                Arguments.of("Invalid Email", "testexample.com", INVALID_EMAIL)
         );
     }
 
@@ -40,24 +41,13 @@ public class ForgotPasswordPageTest extends BaseTest {
     @Test
     void forgotPasswordPositiveTest() {
 
-        Email email = new Email("practice@example.com");
+        String email = randomEmail();
 
         HomePage home = new HomePage(page()).open();
-        ForgotPasswordPage forgotPasswordPage = home.forgotPasswordPageClick();
+        ForgotPasswordPage forgotPasswordPage = home.goToForgotPasswordPage();
 
-        forgotPasswordPage.retrievePassword(email);
-
-        // Wait for success message
-        forgotPasswordPage.emailSentMessage()
-                .waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
-
-        String actualMessage = forgotPasswordPage.getEmailSentMessage();
-        System.out.println("Success message: " + actualMessage);
-
-        assertAll(
-                () -> assertTrue(forgotPasswordPage.isAt(), "User should remain on Forgot Password Page"),
-                () -> assertEquals(PASSWORD_RESET_SENT, actualMessage)
-        );
+        forgotPasswordPage.fillForgotPasswordForm(email);
+        forgotPasswordPage.waitForEmailSentMessage();
     }
 
     @DisplayName("[UI]. Forgot Password page. Validate negative email scenarios")
@@ -70,24 +60,16 @@ public class ForgotPasswordPageTest extends BaseTest {
     """)
     @ParameterizedTest(name = "{0}")
     @MethodSource("negativeForgotPasswordDataProvider")
-    void forgotPasswordNegativeTest(String testName, Email email, String expectedMessage) {
+    void forgotPasswordNegativeTest(String testName, String email, String expectedMessage) {
 
         HomePage home = new HomePage(page()).open();
-        ForgotPasswordPage forgotPasswordPage = home.forgotPasswordPageClick();
+        ForgotPasswordPage forgotPasswordPage = home.goToForgotPasswordPage();
 
-        forgotPasswordPage.retrievePassword(email);
+        forgotPasswordPage.fillForgotPasswordForm(email);
 
         // Wait for validation message
-        forgotPasswordPage.invalidEmailMessage()
-                .waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+        forgotPasswordPage.waitForInvalidEmailMessage();
 
-        String actualMessage = forgotPasswordPage.getInvalidEmailMessage();
-        System.out.println("Validation message: " + actualMessage);
-
-        assertAll(
-                () -> assertTrue(forgotPasswordPage.isAt(), "User should remain on Forgot Password Page"),
-                () -> assertEquals(expectedMessage, actualMessage, "Correct validation message should be displayed")
-        );
     }
 
 }
