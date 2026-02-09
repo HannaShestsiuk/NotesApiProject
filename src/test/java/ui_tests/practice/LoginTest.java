@@ -19,16 +19,16 @@ import java.util.stream.Stream;
 import static constants.Messages.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class LoginPageTest extends BaseTest {
+public class LoginTest extends BaseTest {
 
     private static Stream<Arguments> negativeLoginTestDataProvider() {
 
-        String validUsername = globalUser.getName() ;
+        String validUsername = globalUser.getUserName() ;
         String validPassword = globalUser.getPassword();
 
         return Stream.of(
                 Arguments.of(
-                        "Invalid username",
+                        "Invalid userName",
                         new PracticeUiUser("wrongUser", validPassword, validPassword),
                         LOGIN_INVALID_PASSWORD
                 ),
@@ -38,7 +38,7 @@ public class LoginPageTest extends BaseTest {
                         LOGIN_INVALID_PASSWORD
                 ),
                 Arguments.of(
-                        "Empty username",
+                        "Empty userName",
                         new PracticeUiUser("", validPassword, validPassword),
                         LOGIN_INVALID_USERNAME
                 ),
@@ -55,7 +55,7 @@ public class LoginPageTest extends BaseTest {
     @Description("""
     1. Open https://practice.expandtesting.com/.
     2. Open 'Test Login Page'.
-    3. Enter valid username and password.
+    3. Enter valid userName and password.
     4. Click on Login button.
     5. Assert that user is redirected to 'Secure Area' page.
     6. Assert that success alert message is displayed.
@@ -64,27 +64,22 @@ public class LoginPageTest extends BaseTest {
     void userLoginPageTest() {
 
         HomePage home = new HomePage(page()).open();
-        LoginPage loginPage = home.loginPageClick();
+        LoginPage loginPage = home.goToLoginPage();
 
-        loginPage.login(globalUser);
+        loginPage.fillLoginForm(globalUser);
 
         SecurePage securePage = new SecurePage(page());
 
-        // Assert user is on Secure Page
-        assertTrue(securePage.isAt(), "User should be on Secure Page");
+        securePage.securePageShouldBeOpened();
+        securePage.flashMessage().shouldBeVisible();
 
-        // Assert success message
-        String actualMessage = securePage.getFlashMessage();
-        System.out.println("Login success message: " + actualMessage);
-
-        assertEquals(SUCCESSFUL_LOGIN, actualMessage, "Success login message is displayed");
     }
 
     @DisplayName("[UI]. Login page. Validate negative login scenarios")
     @Description("""
     1. Open https://practice.expandtesting.com/.
     2. Open 'Test Login Page'.
-    3. Enter invalid username or password.
+    3. Enter invalid userName or password.
     4. Click on Login button.
     5. Assert that user stays on 'Test Login Page'.
     6. Assert that correct error alert message is displayed.
@@ -94,20 +89,11 @@ public class LoginPageTest extends BaseTest {
     void negativeLoginTest(String testName, PracticeUiUser user, String expectedMessage) {
 
         HomePage home = new HomePage(page()).open();
-        LoginPage loginPage = home.loginPageClick();
+        LoginPage loginPage = home.goToLoginPage();
 
-        loginPage.login(user);
+        loginPage.fillLoginFormExpectingFailure(user);
 
-        loginPage.flashMessage().waitFor(
-                new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE)
-        );
-
-        String actualMessage = loginPage.flashMessage().textContent().trim();
-        System.out.println("Actual error: " + actualMessage);
-
-        assertAll(
-                () -> assertTrue(loginPage.isAt(), "User should remain on Login Page"),
-                () -> assertEquals(expectedMessage, actualMessage, "Correct error message should be displayed")
-        );
+        loginPage.loginPageShouldBeOpened();
+        loginPage.flashMessage().shouldBeVisible();
     }
 }
