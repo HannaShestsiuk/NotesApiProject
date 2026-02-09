@@ -80,7 +80,7 @@ public class UserRegistrationTest extends BaseApiTest {
                 () -> assertEquals(ACCOUNT_CREATED, response.jsonPath().getString("message"), "Invalid message."),
                 () -> assertEquals(201, response.jsonPath().getInt("status"), "Invalid Status Code."),
                 () -> assertTrue(response.jsonPath().getBoolean("success"), "Invalid success status."),
-                () -> assertEquals(user.userName(), response.jsonPath().getString("data.name"), "Invalid name."),
+                () -> assertEquals(user.name(), response.jsonPath().getString("data.name"), "Invalid name."),
                 () -> assertEquals(user.email(), response.jsonPath().getString("data.email"), "Invalid email.")
         );
     }
@@ -106,7 +106,7 @@ public class UserRegistrationTest extends BaseApiTest {
                 () -> assertEquals(201, response.jsonPath().getInt("status"), "Invalid Status Code."),
                 () -> assertNotNull(response.jsonPath().getString("data.id"), "User id is set to NULL."),
                 () -> assertNotEquals("", response.jsonPath().getString("data.id"), "User id is set to empty string."),
-                () -> assertEquals(user.userName(), response.jsonPath().getString("data.name"), "Invalid user name."),
+                () -> assertEquals(user.name(), response.jsonPath().getString("data.name"), "Invalid user name."),
                 () -> assertEquals(user.email(), response.jsonPath().getString("data.email"), "Invalid user email.")
         );
 

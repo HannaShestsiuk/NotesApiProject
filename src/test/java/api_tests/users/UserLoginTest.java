@@ -57,7 +57,7 @@ public class UserLoginTest extends BaseApiTest {
                 () -> assertEquals(LOGIN_SUCCESS, response.jsonPath().getString("message"), "Invalid message."),
                 () -> assertEquals(200, response.jsonPath().getInt("status"), "Invalid Status Code."),
                 () -> assertTrue(response.jsonPath().getBoolean("success"), "Invalid success status."),
-                () -> assertEquals(userLogin.email(), response.jsonPath().getString("data.email"), "Invalid user name."),
+                () -> assertEquals(userLogin.email(), response.jsonPath().getString("data.email"), "Invalid user userName."),
                 () -> assertEquals(userId, response.jsonPath().getString("data.id"), "Invalid user id.")
        );
     }
