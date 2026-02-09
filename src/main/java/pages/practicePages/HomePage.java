@@ -2,9 +2,32 @@ package pages.practicePages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.AriaRole;
+import com.microsoft.playwright.options.WaitForSelectorState;
+import io.qameta.allure.Step;
 import pages.BasePage;
 
+import static constants.Constants.*;
+
 public class HomePage extends BasePage {
+
+    private final Locator registerPageLink = page.getByRole(
+            AriaRole.LINK,
+            new Page.GetByRoleOptions()
+                    .setName("Test Register Page")
+    );
+
+    private final Locator loginPageLink = page.getByRole(
+            AriaRole.LINK,
+            new Page.GetByRoleOptions()
+                    .setName("Test Login Page")
+    );
+
+    private final Locator forgotPasswordPageLink = page.getByRole(
+            AriaRole.LINK,
+            new Page.GetByRoleOptions()
+                    .setName("Forgot Password Form")
+    );
 
     public HomePage(Page page) {
         super(page);
@@ -15,30 +38,57 @@ public class HomePage extends BasePage {
         return "/";
     }
 
-    private Locator registerPageButton() {
-        return page.locator("a[href='/register']").first();
+    private void safeClickAndWait(Locator element, String urlPattern, String headerText){
+        element.waitFor(new Locator.WaitForOptions()
+                .setState(WaitForSelectorState.VISIBLE)
+                .setTimeout(5000));
+
+        element.click(new Locator.ClickOptions().setNoWaitAfter(true));
+
+        page.waitForLoadState();
+
+        page.waitForURL(urlPattern,
+                new Page.WaitForURLOptions().setTimeout(5000));
+
+        page.waitForSelector("//h1[contains(.,'" + headerText + "')]",
+                new Page.WaitForSelectorOptions()
+                        .setState(WaitForSelectorState.VISIBLE)
+                        .setTimeout(5000));
     }
 
-    private Locator loginPageButton() {
-        return page.locator("a[href='/login']").first();
+    protected void shouldBeVisible(Locator locator) {
+        locator.waitFor(new Locator.WaitForOptions()
+                .setState(WaitForSelectorState.VISIBLE)
+                .setTimeout(5000));
     }
 
-    private Locator forgotPasswordPageButton() {
-        return page.locator("a[href='/forgot-password']").first();
+    protected Locator visible(Locator locator) {
+        shouldBeVisible(locator);
+        return locator;
     }
 
-    public RegisterPage registerPageClick() {
-        registerPageButton().click();
+
+    @Step("Open Register Page")
+    public RegisterPage goToRegisterPage() {
+        safeClickAndWait(registerPageLink,
+                "**" + REGISTER_PAGE,
+                "Test Register page");
         return new RegisterPage(page);
     }
 
-    public LoginPage loginPageClick() {
-        loginPageButton().click();
+    @Step("Open Login Page")
+    public LoginPage goToLoginPage() {
+        safeClickAndWait(loginPageLink,
+                "**" + LOGIN_PAGE,
+                "Test Login page");
         return new LoginPage(page);
     }
 
-    public ForgotPasswordPage forgotPasswordPageClick() {
-        forgotPasswordPageButton().click();
+    @Step("Open Forgot Password Form")
+    public ForgotPasswordPage goToForgotPasswordPage() {
+        safeClickAndWait(forgotPasswordPageLink,
+                "**" + FORGOT_PASSWORD_PAGE,
+                "Forgot Password form");
         return new ForgotPasswordPage(page);
     }
 }
