@@ -3,6 +3,7 @@ package pages;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import config.AppConfig;
+import helpers.VisibleLocator;
 
 import static com.microsoft.playwright.options.WaitForSelectorState.VISIBLE;
 
@@ -37,4 +38,9 @@ public abstract class BasePage {
         page.locator(locator)
                 .waitFor(new Locator.WaitForOptions().setState(VISIBLE));
     }
+
+    protected VisibleLocator should(Locator locator) {
+        return new VisibleLocator(locator);
+    }
+
 }
