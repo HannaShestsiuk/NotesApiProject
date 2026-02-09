@@ -2,9 +2,14 @@ package pages.practicePages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.AriaRole;
+import helpers.VisibleLocator;
 import io.qameta.allure.Step;
 import pages.BasePage;
 import records.practiceRecords.PracticeUiUser;
+
+import static constants.Constants.LOGIN_PAGE;
+import static constants.Constants.REGISTER_PAGE;
 
 public class RegisterPage extends BasePage {
     public RegisterPage(Page page) {
@@ -12,48 +17,77 @@ public class RegisterPage extends BasePage {
     }
 
     @Override
-    protected String path() {
-        return "/register";
+    public String path() {
+        return REGISTER_PAGE;
     }
 
-    private Locator usernameField() {
+    private Locator usernameInput() {
         return page.locator("#username");
     }
 
-    private Locator passwordField() {
+    private Locator passwordInput() {
         return page.locator("#password");
     }
 
-    private Locator confirmPasswordField() {
+    private Locator confirmPasswordInput() {
         return page.locator("#confirmPassword");
     }
 
     private Locator registerButton() {
-        return page.locator("button:has-text('Register')");
+        return page.getByRole(AriaRole.BUTTON,
+                new Page.GetByRoleOptions().setName("Register")
+        );
     }
 
-    public Locator flashMessage() {
-        return page.locator("#flash-message b");
+    public VisibleLocator flashMessage() {
+        return should(page.locator("#flash-message b"));
     }
 
-    public String getFlashMessage() {
-        return flashMessage().textContent().trim();
-    }
 
     public Locator errorMessage() {
         return page.locator("b:has-text('An error occurred during registration')");
     }
 
-    @Step("Fill registration form for user: {user}")
-    public RegisterPage fillForm(PracticeUiUser user) {
-        usernameField().fill(user.name());
-        passwordField().fill(user.password());
-        confirmPasswordField().fill(user.confirmPassword());
+    @Step("Fill username input with {username}")
+    public void fillUserName(String username){
+        usernameInput().fill(username);
+    }
+
+    @Step("Fill password")
+    public void fillPassword(String password){
+        passwordInput().fill(password);
+    }
+
+    @Step("Fill confirmPassword")
+    public void fillConfirmPassword(String confirmPassword){
+        confirmPasswordInput().fill(confirmPassword);
+    }
+
+    @Step("Click 'Register' button")
+    public LoginPage clickRegister(){
+        registerButton().click();
+        page.waitForURL("**" + LOGIN_PAGE);
+        return new LoginPage(page);
+    }
+
+    @Step("Click 'Register' button (expecting validation error)")
+    public RegisterPage clickRegisterExpectingFailure() {
+        registerButton().click();
         return this;
     }
 
-    @Step("Click Register button")
-    public void register() {
-        registerButton().click();
+    public LoginPage fillRegisterForm(PracticeUiUser user){
+        fillUserName(user.getUserName());
+        fillPassword(user.getPassword());
+        fillConfirmPassword(user.getConfirmPassword());
+        return clickRegister();
     }
+
+    public RegisterPage fillRegisterFormExpectingFailure(PracticeUiUser user){
+        fillUserName(user.getUserName());
+        fillPassword(user.getPassword());
+        fillConfirmPassword(user.getConfirmPassword());
+        return clickRegisterExpectingFailure();
+    }
+
 }
