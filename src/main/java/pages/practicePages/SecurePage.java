@@ -2,12 +2,8 @@ package pages.practicePages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
-import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import pages.BasePage;
-
-import static constants.Constants.LOGIN_PAGE;
-import static constants.Constants.SECURE_PAGE;
 
 public class SecurePage extends BasePage {
     public SecurePage(Page page) {
@@ -37,15 +33,6 @@ public class SecurePage extends BasePage {
 
     private Locator logoutButton() {
         return page.locator("button:has-text('Logout')");
-    }
-
-    @Step("Assert that Login Page is opened")
-    public void securePageShouldBeOpened() {
-        page.waitForURL("**" + SECURE_PAGE);
-
-        page.getByRole(AriaRole.HEADING,
-                        new Page.GetByRoleOptions().setName("Secure Area page"))
-                .waitFor();
     }
 
     @Step("Logout user: {user.name()}")
