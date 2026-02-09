@@ -19,7 +19,7 @@ import static constants.Messages.*;
 import static helpers.TestDataGenerator.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class RegisterPageTest extends BaseTest {
+public class RegisterTest extends BaseTest {
 
     private static Stream<Arguments> negativeRegistrationTestDataProvider() {
 
@@ -48,7 +48,7 @@ public class RegisterPageTest extends BaseTest {
                         PASSWORDS_NOT_MATCH
                 ),
                 Arguments.of(
-                        "Existing username",
+                        "Existing userName",
                         new PracticeUiUser("practice", validPassword, validPassword),
                         USERNAME_IS_TAKEN
                 )
@@ -71,43 +71,19 @@ public class RegisterPageTest extends BaseTest {
     void userRegistrationPageTest() {
 
         String password = randomPassword(8, 10);
-        String username = randomName();
-        PracticeUiUser user = new PracticeUiUser(username, password, password);
-
-        System.out.println(user);
+        String userName = randomName();
+        PracticeUiUser user = new PracticeUiUser(userName, password, password);
 
         HomePage home = new HomePage(page()).open();
-        RegisterPage registerPage = home.registerPageClick();
+        RegisterPage registerPage = home.goToRegisterPage();
 
-        registerPage.fillForm(user)
-                .register();
+        LoginPage loginPage = registerPage.fillRegisterForm(user);
 
-        // If registration failed → stop test
-        if (registerPage.flashMessage().isVisible()) {
-            String error = registerPage.getFlashMessage();
-            System.out.println("Registration error: " + error);
-            fail("Registration failed");
-        }
+        loginPage.loginPageShouldBeOpened();
+        loginPage.flashMessage().shouldBeVisible();
 
-        LoginPage loginPage = new LoginPage(page());
-
-        String success = loginPage.getFlashMessage();
-        System.out.println("Registration success: " + success);
-
-        assertAll(
-                () -> assertTrue(loginPage.isAt(), "User should be on Login Page"),
-                () -> assertEquals(SUCCESSFUL_REGISTRATION, success, "Success registration message is displayed")
-        );
-
-        if (!loginPage.isAt() && !loginPage.successMessage().isVisible()) {
-            fail("Registration failed, login step is skipped");
-        }
-
-        loginPage.login(user);
-
-        SecurePage securePage = new SecurePage(page());
-        String successLogin = securePage.getFlashMessage();
-        assertEquals(SUCCESSFUL_LOGIN, successLogin, "Success login message is displayed");
+        SecurePage securePage = loginPage.fillLoginForm(user);
+        securePage.securePageShouldBeOpened();
     }
 
     @DisplayName("[UI]. Registration page. Validate negative registration scenarios")
@@ -115,11 +91,11 @@ public class RegisterPageTest extends BaseTest {
     1. Open https://practice.expandtesting.com/.
     2. Open 'Test Register Page' page.
     3. Fill in the registration form with invalid data:
-       - Empty username
+       - Empty userName
        - Empty password
        - Empty confirm password
        - Password and confirm password do not match
-       - Existing username ('practice')
+       - Existing userName ('practice')
     4. Click on Register button.
     5. Assert that the displayed error message matches the expected one.
     """)
@@ -128,13 +104,10 @@ public class RegisterPageTest extends BaseTest {
     void negativeRegistrationTest(String testName, PracticeUiUser user, String expectedMessage) {
 
         HomePage home = new HomePage(page()).open();
-        RegisterPage registerPage = home.registerPageClick();
+        RegisterPage registerPage = home.goToRegisterPage();
 
-        registerPage.fillForm(user).register();
+        registerPage.fillRegisterFormExpectingFailure(user);
 
-        String actualMessage = registerPage.getFlashMessage();
-        System.out.println("Actual error: " + actualMessage);
-
-        assertEquals(expectedMessage, actualMessage, "Correct error message should be displayed");
+        registerPage.flashMessage().shouldBeVisible();
     }
 }
