@@ -20,6 +20,16 @@ public class ForgotPasswordPage extends BasePage {
         return FORGOT_PASSWORD_PAGE;
     }
 
+    @Override
+    public void isAlertVisible(String text) {
+        page.locator("div.invalid-feedback")
+                .getByText(text)
+                .waitFor(
+                new Locator.WaitForOptions()
+                        .setState(WaitForSelectorState.VISIBLE)
+        );
+    }
+
     private Locator emailInput() {
         return page.locator("#email");
     }
@@ -52,14 +62,14 @@ public class ForgotPasswordPage extends BasePage {
     }
 
     @Step("Click 'Retrieve password' button")
-    public ForgotPasswordPage clickRetrievePassword(){
+    public void clickRetrievePassword(){
         retrievePasswordButton().click();
         page.waitForURL("**" + FORGOT_PASSWORD_PAGE);
-        return new ForgotPasswordPage(page);
+        //return new ForgotPasswordPage(page);
     }
 
-    public ForgotPasswordPage fillForgotPasswordForm(String email){
+    public void fillForgotPasswordForm(String email){
         fillEmail(email);
-        return clickRetrievePassword();
+        clickRetrievePassword();
     }
 }
