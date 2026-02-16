@@ -4,7 +4,6 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.WaitForSelectorState;
-import helpers.VisibleLocator;
 import io.qameta.allure.Step;
 import pages.BasePage;
 import records.practice_records.PracticeUiUser;
