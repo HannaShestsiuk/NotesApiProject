@@ -83,14 +83,12 @@ public class LoginTest extends BaseTest {
     """)
     @ParameterizedTest(name = "{0}")
     @MethodSource("negativeLoginTestDataProvider")
-    void negativeLoginTest(String testName, PracticeUiUser user, String expectedMessage) {
-
+    void negativeLoginTest(String testName,
+                           PracticeUiUser user,
+                           String expectedMessage) {
         HomePage home = new HomePage(page()).open();
         LoginPage loginPage = home.goToLoginPage();
-
         loginPage.fillLoginFormExpectingFailure(user);
-
-        loginPage.loginPageShouldBeOpened();
-        loginPage.flashMessage().shouldBeVisible();
+        loginPage.isAlertVisible(expectedMessage);
     }
 }

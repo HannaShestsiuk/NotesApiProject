@@ -53,7 +53,7 @@ public final class Messages {
     public static final String PASSWORDS_NOT_MATCH = "Passwords do not match.";
     public static final String REGISTRATION_ERROR = "An error occurred during registration. Please try again.";
     public static final String SUCCESSFUL_LOGIN = "You logged into a secure area!";
-    public static final String LOGIN_INVALID_USERNAME = "Your userName is invalid!";
+    public static final String LOGIN_INVALID_USERNAME = "Your username is invalid!";
     public static final String LOGIN_INVALID_PASSWORD = "Your password is invalid!";
     public static final String LOGOUT_MESSAGE = "You logged out of the secure area!";
     public static final String PASSWORD_RESET_SENT = "An e-mail has been sent to you which explains how to reset your password.";
