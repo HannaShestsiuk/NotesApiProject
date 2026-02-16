@@ -58,7 +58,7 @@ public class LoginTest extends BaseTest {
     6. Assert that success alert message is displayed.
     """)
     @Test
-    void userLoginPageTest() {
+    void userLoginTest() {
 
         HomePage home = new HomePage(page()).open();
         LoginPage loginPage = home.goToLoginPage();
