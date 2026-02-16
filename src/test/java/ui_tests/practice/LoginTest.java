@@ -1,23 +1,20 @@
 package ui_tests.practice;
 
-import com.microsoft.playwright.Locator;
-import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Description;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import pages.practicePages.HomePage;
-import pages.practicePages.LoginPage;
-import pages.practicePages.SecurePage;
-import records.practiceRecords.PracticeUiUser;
+import pages.practice_pages.HomePage;
+import pages.practice_pages.LoginPage;
+import pages.practice_pages.SecurePage;
+import records.practice_records.PracticeUiUser;
 import ui_tests.BaseTest;
 
 import java.util.stream.Stream;
 
 import static constants.Messages.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 public class LoginTest extends BaseTest {
 

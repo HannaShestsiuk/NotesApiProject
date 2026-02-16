@@ -1,4 +1,4 @@
-package records.practiceRecords;
+package records.practice_records;
 
 public record PracticeUiUser(
         String userName,
