@@ -71,9 +71,8 @@ public class RegisterPage extends BasePage {
     }
 
     @Step("Click 'Register' button (expecting validation error)")
-    public RegisterPage clickRegisterExpectingFailure() {
+    public void clickRegisterExpectingFailure() {
         registerButton().click();
-        return this;
     }
 
     public LoginPage fillRegisterForm(PracticeUiUser user){
@@ -83,11 +82,10 @@ public class RegisterPage extends BasePage {
         return clickRegister();
     }
 
-    public RegisterPage fillRegisterFormExpectingFailure(PracticeUiUser user){
+    public void fillRegisterFormExpectingFailure(PracticeUiUser user){
         fillUserName(user.getUserName());
         fillPassword(user.getPassword());
         fillConfirmPassword(user.getConfirmPassword());
-        return clickRegisterExpectingFailure();
+        clickRegisterExpectingFailure();
     }
-
 }
