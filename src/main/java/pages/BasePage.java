@@ -2,6 +2,7 @@ package pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.WaitForSelectorState;
 import config.AppConfig;
 import helpers.VisibleLocator;
 
@@ -9,6 +10,7 @@ import static com.microsoft.playwright.options.WaitForSelectorState.VISIBLE;
 
 public abstract class BasePage {
     protected final Page page;
+    public final String ALERT = "//div[contains(@class,'alert') and contains(.,'%s')]";
     public BasePage(Page page) {
         this.page = page;
     }
@@ -31,12 +33,15 @@ public abstract class BasePage {
     }
 
     public void fill(String locator, String value){
-        page.locator(locator).click();
+        page.locator(locator).fill(value);
     }
 
     public void waitVisible(String locator){
         page.locator(locator)
                 .waitFor(new Locator.WaitForOptions().setState(VISIBLE));
+    }
+
+    public void isAlertVisible(String text) {
     }
 
     protected VisibleLocator should(Locator locator) {
