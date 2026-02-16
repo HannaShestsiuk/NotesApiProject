@@ -67,7 +67,7 @@ public class RegisterTest extends BaseTest {
     8. Assert that registered user is logged-in.
     """)
     @Test
-    void userRegistrationPageTest() {
+    void userRegistrationTest() {
 
         String password = randomPassword(8, 10);
         String userName = randomName();
@@ -100,7 +100,7 @@ public class RegisterTest extends BaseTest {
     """)
     @ParameterizedTest(name = "{0}")
     @MethodSource("negativeRegistrationTestDataProvider")
-    void negativeRegistrationTest(String testName,
+    void negativeUserRegistrationTest(String testName,
                                   PracticeUiUser user,
                                   String expectedMessage) {
         HomePage home = new HomePage(page()).open();
