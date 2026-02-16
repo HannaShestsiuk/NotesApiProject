@@ -55,16 +55,12 @@ public class ForgotPasswordTest extends BaseTest {
     """)
     @ParameterizedTest(name = "{0}")
     @MethodSource("negativeForgotPasswordDataProvider")
-    void forgotPasswordNegativeTest(String testName, String email, String expectedMessage) {
-
+    void forgotPasswordNegativeTest(String testName,
+                                    String email,
+                                    String expectedMessage) {
         HomePage home = new HomePage(page()).open();
         ForgotPasswordPage forgotPasswordPage = home.goToForgotPasswordPage();
-
         forgotPasswordPage.fillForgotPasswordForm(email);
-
-        // Wait for validation message
-        forgotPasswordPage.waitForInvalidEmailMessage();
-
+        forgotPasswordPage.isAlertVisible(expectedMessage);
     }
-
 }
