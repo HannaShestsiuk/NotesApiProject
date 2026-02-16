@@ -100,13 +100,12 @@ public class RegisterTest extends BaseTest {
     """)
     @ParameterizedTest(name = "{0}")
     @MethodSource("negativeRegistrationTestDataProvider")
-    void negativeRegistrationTest(String testName, PracticeUiUser user, String expectedMessage) {
-
+    void negativeRegistrationTest(String testName,
+                                  PracticeUiUser user,
+                                  String expectedMessage) {
         HomePage home = new HomePage(page()).open();
         RegisterPage registerPage = home.goToRegisterPage();
-
         registerPage.fillRegisterFormExpectingFailure(user);
-
-        registerPage.flashMessage().shouldBeVisible();
+        registerPage.isAlertVisible(expectedMessage);
     }
 }

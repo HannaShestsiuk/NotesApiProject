@@ -3,6 +3,7 @@ package pages.practice_pages;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
+import com.microsoft.playwright.options.WaitForSelectorState;
 import helpers.VisibleLocator;
 import io.qameta.allure.Step;
 import pages.BasePage;
@@ -21,6 +22,14 @@ public class RegisterPage extends BasePage {
         return REGISTER_PAGE;
     }
 
+    @Override
+    public void isAlertVisible(String text) {
+        page.locator(String.format(ALERT, text)).waitFor(
+                new Locator.WaitForOptions()
+                        .setState(WaitForSelectorState.VISIBLE)
+        );
+    }
+
     private Locator usernameInput() {
         return page.locator("#username");
     }
@@ -37,15 +46,6 @@ public class RegisterPage extends BasePage {
         return page.getByRole(AriaRole.BUTTON,
                 new Page.GetByRoleOptions().setName("Register")
         );
-    }
-
-    public VisibleLocator flashMessage() {
-        return should(page.locator("#flash-message b"));
-    }
-
-
-    public Locator errorMessage() {
-        return page.locator("b:has-text('An error occurred during registration')");
     }
 
     @Step("Fill username input with {username}")
