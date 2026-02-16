@@ -42,18 +42,8 @@ public class ForgotPasswordPage extends BasePage {
 
     public Locator emailSentMessage = page.locator("#confirmation-alert p");
 
-    public Locator invalidEmailMessage = page.locator(".invalid-feedback");
-
-    private String normalize(String text) {
-        return text.replaceAll("\\s+", " ").trim();
-    }
-
     public void waitForEmailSentMessage() {
         emailSentMessage.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
-    }
-
-    public void waitForInvalidEmailMessage() {
-        invalidEmailMessage.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
     }
 
     @Step("Fill Email")
@@ -65,7 +55,6 @@ public class ForgotPasswordPage extends BasePage {
     public void clickRetrievePassword(){
         retrievePasswordButton().click();
         page.waitForURL("**" + FORGOT_PASSWORD_PAGE);
-        //return new ForgotPasswordPage(page);
     }
 
     public void fillForgotPasswordForm(String email){
