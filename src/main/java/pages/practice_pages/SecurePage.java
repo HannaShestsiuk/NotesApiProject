@@ -1,4 +1,4 @@
-package pages.practicePages;
+package pages.practice_pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;

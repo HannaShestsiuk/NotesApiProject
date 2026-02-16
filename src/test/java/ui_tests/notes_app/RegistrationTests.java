@@ -1,9 +1,9 @@
-package ui_tests.notesApp;
+package ui_tests.notes_app;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.provider.Arguments;
-import pages.notesApp.NotesAppHomePage;
-import pages.notesApp.NotesAppRegistrationPage;
+import pages.notes_app.NotesAppHomePage;
+import pages.notes_app.NotesAppRegistrationPage;
 import records.UiUser;
 import records.User;
 import ui_tests.BaseTest;

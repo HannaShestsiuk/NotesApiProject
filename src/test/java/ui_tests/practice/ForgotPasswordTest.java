@@ -1,24 +1,19 @@
 package ui_tests.practice;
 
-import com.microsoft.playwright.Locator;
-import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Description;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import pages.practicePages.ForgotPasswordPage;
-import pages.practicePages.HomePage;
-import records.Email;
+import pages.practice_pages.ForgotPasswordPage;
+import pages.practice_pages.HomePage;
 import ui_tests.BaseTest;
 
 import java.util.stream.Stream;
 
 import static constants.Messages.INVALID_EMAIL;
-import static constants.Messages.PASSWORD_RESET_SENT;
 import static helpers.TestDataGenerator.randomEmail;
-import static org.junit.jupiter.api.Assertions.*;
 
 public class ForgotPasswordTest extends BaseTest {
 

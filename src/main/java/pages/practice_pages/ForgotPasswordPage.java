@@ -1,4 +1,4 @@
-package pages.practicePages;
+package pages.practice_pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
@@ -6,13 +6,8 @@ import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import pages.BasePage;
-import records.Email;
-import records.practiceRecords.PracticeUiUser;
 
 import static constants.Constants.FORGOT_PASSWORD_PAGE;
-import static constants.Constants.SECURE_PAGE;
-import static constants.Messages.INVALID_EMAIL;
-import static constants.Messages.PASSWORD_RESET_SENT;
 
 public class ForgotPasswordPage extends BasePage {
 

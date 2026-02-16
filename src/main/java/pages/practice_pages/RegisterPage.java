@@ -1,4 +1,4 @@
-package pages.practicePages;
+package pages.practice_pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
@@ -6,7 +6,7 @@ import com.microsoft.playwright.options.AriaRole;
 import helpers.VisibleLocator;
 import io.qameta.allure.Step;
 import pages.BasePage;
-import records.practiceRecords.PracticeUiUser;
+import records.practice_records.PracticeUiUser;
 
 import static constants.Constants.LOGIN_PAGE;
 import static constants.Constants.REGISTER_PAGE;
