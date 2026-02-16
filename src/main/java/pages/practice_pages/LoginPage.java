@@ -3,6 +3,7 @@ package pages.practice_pages;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
+import com.microsoft.playwright.options.WaitForSelectorState;
 import helpers.VisibleLocator;
 import io.qameta.allure.Step;
 import pages.BasePage;
@@ -22,6 +23,14 @@ public class LoginPage extends BasePage {
         return LOGIN_PAGE;
     }
 
+    @Override
+    public void isAlertVisible(String text) {
+        page.locator(String.format(ALERT, text)).waitFor(
+                new Locator.WaitForOptions()
+                        .setState(WaitForSelectorState.VISIBLE)
+        );
+    }
+
     private Locator usernameInput() {
         return page.locator("#username");
     }
@@ -39,12 +48,6 @@ public class LoginPage extends BasePage {
     public VisibleLocator flashMessage() {
         return should(page.locator("#flash-message b"));
     }
-
-    public Locator successRegisteredMessage = page.getByText(SUCCESSFUL_REGISTRATION);
-
-    public Locator invalidUserNameMessage = page.getByText(LOGIN_INVALID_USERNAME);
-
-    public Locator invalidPasswordMessage = page.getByText(LOGIN_INVALID_PASSWORD);
 
     public Locator logoutMessage = page.getByText(LOGOUT_MESSAGE);
 
@@ -66,9 +69,8 @@ public class LoginPage extends BasePage {
     }
 
     @Step("Click 'Login' button (expecting validation error)")
-    public LoginPage clickLoginExpectingFailure() {
+    public void clickLoginExpectingFailure() {
         loginButton().click();
-        return this;
     }
 
     public SecurePage fillLoginForm(PracticeUiUser user){
@@ -77,10 +79,10 @@ public class LoginPage extends BasePage {
         return clickLogin();
     }
 
-    public LoginPage fillLoginFormExpectingFailure(PracticeUiUser user){
+    public void fillLoginFormExpectingFailure(PracticeUiUser user){
         fillUserName(user.getUserName());
         fillPassword(user.getPassword());
-        return clickLoginExpectingFailure();
+        clickLoginExpectingFailure();
     }
 
     @Step("Assert that Login Page is opened")
