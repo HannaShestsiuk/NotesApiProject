@@ -42,6 +42,7 @@ public class ForgotPasswordPage extends BasePage {
 
     public Locator emailSentMessage = page.locator("#confirmation-alert p");
 
+    @Step("Wait for email sent confirmation message")
     public void waitForEmailSentMessage() {
         emailSentMessage.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
     }

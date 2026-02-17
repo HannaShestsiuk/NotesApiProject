@@ -1,6 +1,5 @@
 package testdata;
 
-import records.User;
 import records.practice_records.PracticeUiUser;
 
 public class TestUsers {
