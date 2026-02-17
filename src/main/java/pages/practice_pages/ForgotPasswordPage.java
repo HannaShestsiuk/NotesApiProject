@@ -8,6 +8,7 @@ import io.qameta.allure.Step;
 import pages.BasePage;
 
 import static constants.Constants.FORGOT_PASSWORD_PAGE;
+import static constants.Messages.PASSWORD_RESET_SENT;
 
 public class ForgotPasswordPage extends BasePage {
 
@@ -40,11 +41,15 @@ public class ForgotPasswordPage extends BasePage {
         );
     }
 
-    public Locator emailSentMessage = page.locator("#confirmation-alert p");
+    private Locator emailSentMessage() {
+        return page.getByRole(AriaRole.ALERT)
+                .filter(new Locator.FilterOptions().setHasText(PASSWORD_RESET_SENT)
+        );
+    }
 
     @Step("Wait for email sent confirmation message")
     public void waitForEmailSentMessage() {
-        emailSentMessage.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+        emailSentMessage().waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
     }
 
     @Step("Fill Email")
