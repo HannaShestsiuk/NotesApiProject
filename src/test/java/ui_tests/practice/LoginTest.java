@@ -61,12 +61,11 @@ public class LoginTest extends BaseTest {
     void userLoginTest() {
 
         HomePage home = new HomePage(page()).open();
-        LoginPage loginPage = home.goToLoginPage();
 
+        LoginPage loginPage = home.goToLoginPage();
         loginPage.fillLoginForm(globalUser);
 
         SecurePage securePage = new SecurePage(page());
-
         securePage.securePageShouldBeOpened();
         securePage.flashMessage().shouldBeVisible();
 

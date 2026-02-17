@@ -77,12 +77,16 @@ public class RegisterTest extends BaseTest {
         RegisterPage registerPage = home.goToRegisterPage();
 
         LoginPage loginPage = registerPage.fillRegisterForm(user);
-
         loginPage.loginPageShouldBeOpened();
-        loginPage.flashMessage().shouldBeVisible();
+        loginPage.isAlertVisible(SUCCESSFUL_REGISTRATION);
 
         SecurePage securePage = loginPage.fillLoginForm(user);
         securePage.securePageShouldBeOpened();
+        securePage.isAlertVisible(SUCCESSFUL_LOGIN);
+
+        LoginPage loginPageAfterLogout = securePage.logout();
+        loginPageAfterLogout.loginPageShouldBeOpened();
+        loginPageAfterLogout.isAlertVisible(LOGOUT_MESSAGE);
     }
 
     @DisplayName("[UI]. Registration page. Validate negative registration scenarios")
