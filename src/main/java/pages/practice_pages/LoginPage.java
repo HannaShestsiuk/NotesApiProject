@@ -45,12 +45,6 @@ public class LoginPage extends BasePage {
         );
     }
 
-    public VisibleLocator flashMessage() {
-        return should(page.locator("#flash-message b"));
-    }
-
-    public Locator logoutMessage = page.getByText(LOGOUT_MESSAGE);
-
     @Step("Fill userName input with {username}")
     public void fillUserName(String username){
         usernameInput().fill(username);

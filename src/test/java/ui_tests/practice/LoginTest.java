@@ -67,8 +67,11 @@ public class LoginTest extends BaseTest {
 
         SecurePage securePage = new SecurePage(page());
         securePage.securePageShouldBeOpened();
-        securePage.flashMessage().shouldBeVisible();
+        securePage.isAlertVisible(SUCCESSFUL_LOGIN);
 
+        LoginPage loginPageAfterLogout = securePage.logout();
+        loginPageAfterLogout.loginPageShouldBeOpened();
+        loginPageAfterLogout.isAlertVisible(LOGOUT_MESSAGE);
     }
 
     @DisplayName("[UI]. Login page. Validate negative login scenarios")
