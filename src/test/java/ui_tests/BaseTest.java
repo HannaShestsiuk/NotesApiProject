@@ -23,7 +23,7 @@ public class BaseTest {
     @BeforeEach
     public void beforeEach() {
         boolean isHeadless = Boolean.parseBoolean(
-                System.getenv().getOrDefault("HEADLESS", "true")
+                System.getenv().getOrDefault("HEADLESS", "false")
         );
 
         Playwright pw = Playwright.create();
@@ -62,11 +62,6 @@ public class BaseTest {
         pg.locator(HOME_PAGE_TEXT)
                 .waitFor(new Locator.WaitForOptions().setState(VISIBLE));
     }
-
-    // Global user credentials
-    protected static final PracticeUiUser globalUser =
-            new PracticeUiUser("practice", "SuperSecretPassword!", "SuperSecretPassword!");
-
 
     @AfterEach
     public void afterEach() {
