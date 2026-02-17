@@ -25,10 +25,8 @@ public class SecurePage extends BasePage {
         return should(page.locator("#flash-message b"));
     }
 
-    public Locator loginMessage = page.getByText(SUCCESSFUL_LOGIN);
-
     private Locator logoutButton() {
-        return page.getByRole(AriaRole.BUTTON,
+        return page.getByRole(AriaRole.LINK,
                 new Page.GetByRoleOptions().setName("Logout")
         );
     }
@@ -42,7 +40,7 @@ public class SecurePage extends BasePage {
 
     @Step("Logout user")
     public LoginPage logout() {
-        logoutButton().click();
+        clickLogout();
         return new LoginPage(page);
     }
 
@@ -51,7 +49,7 @@ public class SecurePage extends BasePage {
         page.waitForURL("**" + SECURE_PAGE);
 
         page.getByRole(AriaRole.HEADING,
-                        new Page.GetByRoleOptions().setName("Secure Area page"))
-                .waitFor();
+                        new Page.GetByRoleOptions().setName("Secure Area page")
+                ).waitFor();
     }
 }
