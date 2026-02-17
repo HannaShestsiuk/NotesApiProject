@@ -10,6 +10,7 @@ import pages.practice_pages.HomePage;
 import pages.practice_pages.LoginPage;
 import pages.practice_pages.SecurePage;
 import records.practice_records.PracticeUiUser;
+import testdata.TestUsers;
 import ui_tests.BaseTest;
 
 import java.util.stream.Stream;
@@ -18,10 +19,12 @@ import static constants.Messages.*;
 
 public class LoginTest extends BaseTest {
 
+    static PracticeUiUser user = TestUsers.practiceUser();
+
     private static Stream<Arguments> negativeLoginTestDataProvider() {
 
-        String validUsername = globalUser.getUserName() ;
-        String validPassword = globalUser.getPassword();
+        String validUsername = user.getUserName() ;
+        String validPassword = user.getPassword();
 
         return Stream.of(
                 Arguments.of(
@@ -63,7 +66,7 @@ public class LoginTest extends BaseTest {
         HomePage home = new HomePage(page()).open();
 
         LoginPage loginPage = home.goToLoginPage();
-        loginPage.fillLoginForm(globalUser);
+        loginPage.fillLoginForm(user);
 
         SecurePage securePage = new SecurePage(page());
         securePage.securePageShouldBeOpened();
