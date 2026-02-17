@@ -2,11 +2,15 @@ package ui_tests;
 
 import com.microsoft.playwright.*;
 import helpers.AdBlocker;
+import io.qameta.allure.Allure;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import records.practice_records.PracticeUiUser;
 
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static com.microsoft.playwright.options.WaitForSelectorState.VISIBLE;
@@ -65,9 +69,20 @@ public class BaseTest {
 
     @AfterEach
     public void afterEach() {
+        Path videoPath = page.get().video().path();
+
         context.get().close();
         browser.get().close();
         playwright.get().close();
+
+        if (videoPath != null && Files.exists(videoPath)) {
+            try {
+                Allure.addAttachment("Test Video", "video/webm",
+                        new ByteArrayInputStream(Files.readAllBytes(videoPath)), ".webm");
+            } catch (IOException e) {
+                System.err.println("Failed to attach video to Allure: " + e.getMessage());
+            }
+        }
 
         page.remove();
         context.remove();
