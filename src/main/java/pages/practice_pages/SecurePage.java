@@ -3,7 +3,6 @@ package pages.practice_pages;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
-import helpers.VisibleLocator;
 import io.qameta.allure.Step;
 import pages.BasePage;
 
@@ -19,10 +18,6 @@ public class SecurePage extends BasePage {
     @Override
     protected String path() {
         return SECURE_PAGE;
-    }
-
-    public VisibleLocator flashMessage() {
-        return should(page.locator("#flash-message b"));
     }
 
     private Locator logoutButton() {

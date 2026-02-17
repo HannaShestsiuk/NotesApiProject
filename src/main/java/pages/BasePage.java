@@ -2,9 +2,7 @@ package pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
-import com.microsoft.playwright.options.WaitForSelectorState;
 import config.AppConfig;
-import helpers.VisibleLocator;
 
 import static com.microsoft.playwright.options.WaitForSelectorState.VISIBLE;
 
@@ -43,9 +41,4 @@ public abstract class BasePage {
 
     public void isAlertVisible(String text) {
     }
-
-    protected VisibleLocator should(Locator locator) {
-        return new VisibleLocator(locator);
-    }
-
 }
