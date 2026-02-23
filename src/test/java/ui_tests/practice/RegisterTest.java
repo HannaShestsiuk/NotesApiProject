@@ -65,6 +65,9 @@ public class RegisterTest extends BaseTest {
     6. Assert that alert message is displayed.
     7. Login as the registered user.
     8. Assert that registered user is logged-in.
+    9. Log user out.
+    10. Assert that user is redirected to 'Test Login Page' page.
+    11. Assert then success logout alert message is displayed.
     """)
     @Test
     void userRegistrationTest() {
