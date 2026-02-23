@@ -3,6 +3,7 @@ package api_tests.Notes;
 import api_tests.BaseApiTest;
 import io.qameta.allure.Description;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -15,14 +16,20 @@ import java.util.stream.Stream;
 
 import static classes.TestDataGenerator.randomDescription;
 import static classes.TestDataGenerator.randomTitle;
+import static constants.ApiConstants.BASE_SCHEMA;
 import static constants.Messages.*;
 import static enums.NoteCategory.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static utils.TestUtils.assertResponseSchema;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class NoteDeleteTest extends BaseApiTest {
 
-    private Stream<Arguments> validDeleteProvider() {
+    {
+        enableGlobalUser = true;
+    }
+
+    private static Stream<Arguments> validDeleteProvider() {
         return Stream.of(
                 Arguments.of(
                         "Delete existing note",
@@ -35,7 +42,7 @@ public class NoteDeleteTest extends BaseApiTest {
         );
     }
 
-    private Stream<Arguments> invalidDeleteProvider() {
+    private static Stream<Arguments> invalidDeleteProvider() {
         return Stream.of(
                 Arguments.of(
                         "No Auth",
@@ -47,14 +54,14 @@ public class NoteDeleteTest extends BaseApiTest {
                 Arguments.of(
                         "Non existing Note",
                         "69483cee294a09029728a111",
-                        authToken,
+                        "USE_VALID_TOKEN",
                         NOTE_NOT_FOUND,
                         404
                 ),
                 Arguments.of(
                         "Invalid ID format",
                         "invalid-id",
-                        authToken,
+                        "USE_VALID_TOKEN",
                         NOTE_INVALID_ID,
                         400
                 )
@@ -74,9 +81,12 @@ public class NoteDeleteTest extends BaseApiTest {
     void deleteNotePositiveTests(String description, Note note) {
 
         Response createResponse = SimpleActions.createNote(note, authToken);
+
         String noteId = createResponse.jsonPath().getString("data.id");
 
         Response deleteResponse = SimpleActions.deleteNote(noteId, authToken);
+
+        assertResponseSchema(BASE_SCHEMA, deleteResponse);
 
         assertAll(description,
                 () -> assertEquals(NOTE_DELETED, deleteResponse.jsonPath().getString("message")),
@@ -103,11 +113,16 @@ public class NoteDeleteTest extends BaseApiTest {
     void deleteNoteNegativeTests(
             String description,
             String noteId,
-            String authToken,
+            String token,
             String expectedMessage,
             int expectedStatus
     ) {
-        Response response = SimpleActions.deleteNote(noteId, authToken);
+        // Replace placeholders
+        String tokenToUse = token.equals("USE_VALID_TOKEN") ? authToken : token;
+
+        Response response = SimpleActions.deleteNote(noteId, tokenToUse);
+
+        assertResponseSchema(BASE_SCHEMA, response);
 
         assertAll(description,
                 () -> assertEquals(expectedMessage, response.jsonPath().getString("message")),

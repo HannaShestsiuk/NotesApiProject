@@ -16,13 +16,16 @@ import requests.SimpleActions;
 import java.util.stream.Stream;
 
 import static classes.TestDataGenerator.*;
+import static constants.ApiConstants.BASE_SCHEMA;
+import static constants.ApiConstants.USER_REGISTER_SCHEMA;
 import static org.junit.jupiter.api.Assertions.*;
 import static constants.Messages.*;
+import static utils.TestUtils.assertResponseSchema;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UserRegistrationTest extends BaseApiTest {
 
-    private Stream<Arguments> validUserProfileProvider(){
+    private static Stream<Arguments> validUserProfileProvider(){
         return Stream.of(
                 Arguments.of(
                         "Valid User Profile",
@@ -77,6 +80,8 @@ public class UserRegistrationTest extends BaseApiTest {
     void registerUserPositiveTests(String description, User user) {
         Response response = SimpleActions.registerUser(user);
 
+        assertResponseSchema(USER_REGISTER_SCHEMA, response);
+
         assertAll(description,
                 () -> assertEquals(ACCOUNT_CREATED, response.jsonPath().getString("message"), "Invalid message."),
                 () -> assertEquals(201, response.jsonPath().getInt("status"), "Invalid Status Code."),
@@ -113,11 +118,15 @@ public class UserRegistrationTest extends BaseApiTest {
 
         Response secondResponse = SimpleActions.registerUser(user);
 
+        assertResponseSchema(BASE_SCHEMA, secondResponse);
+
         assertAll("Registration with existing email is failed",
                 () -> assertEquals(UNIQUE_EMAIL_REQUIRED, secondResponse.jsonPath().getString("message"), "Invalid message."),
                 () -> assertEquals(409, secondResponse.jsonPath().getInt("status"), "Invalid Status Code."),
                 () -> assertFalse(secondResponse.jsonPath().getBoolean("success"), "Invalid success status.")
         );
+
+        registerLoggedOutUser(user.email(), user.password());
     }
 
     @DisplayName("[API. User]. POST Method. Register user without email")

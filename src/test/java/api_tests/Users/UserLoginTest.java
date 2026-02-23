@@ -1,17 +1,23 @@
 package api_tests.Users;
 
+import api_tests.BaseApiTest;
 import io.qameta.allure.Description;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import records.UserLogin;
 import records.User;
 import requests.SimpleActions;
 
+import static classes.TestDataGenerator.*;
+import static constants.ApiConstants.*;
 import static constants.Messages.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static utils.TestUtils.assertResponseSchema;
 
-public class UserLoginTest {
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+public class UserLoginTest extends BaseApiTest {
 
     @DisplayName("[API. User]. POST Method. User login")
     @Description("""
@@ -23,9 +29,9 @@ public class UserLoginTest {
     @Test
     void loginRegisteredUserTest() {
         User user = new User(
-                "Test User",
-                System.currentTimeMillis() + "@mail.com",
-                "Strong123!"
+                randomUserName(),
+                randomEmail(),
+                randomPassword(8,10)
         );
 
         Response registerUserResponse = SimpleActions.registerUser(user);
@@ -43,6 +49,9 @@ public class UserLoginTest {
         );
 
         Response response = SimpleActions.loginUser(userLogin);
+        String token = response.jsonPath().getString("data.token");
+
+        assertResponseSchema(USER_LOGIN_SCHEMA, response);
 
         assertAll("Registered user is logged in",
                 () -> assertEquals(LOGIN_SUCCESS, response.jsonPath().getString("message"), "Invalid message."),
@@ -51,6 +60,8 @@ public class UserLoginTest {
                 () -> assertEquals(userLogin.email(), response.jsonPath().getString("data.email"), "Invalid user name."),
                 () -> assertEquals(userId, response.jsonPath().getString("data.id"), "Invalid user id.")
        );
+
+        registerLoggedInUser(token);
     }
 
     @DisplayName("[API. User]. POST Method. User login with Invalid password")
@@ -63,12 +74,15 @@ public class UserLoginTest {
     @Test
     void loginWithInvalidPasswordTest() {
         User user = new User(
-                "Test User",
-                System.currentTimeMillis() + "@mail.com",
-                "Strong123!"
+                randomUserName(),
+                randomEmail(),
+                randomPassword(8,10)
         );
 
         Response registerUserResponse = SimpleActions.registerUser(user);
+        registerLoggedOutUser(user.email(), user.password());
+
+        assertResponseSchema(BASE_SCHEMA, registerUserResponse);
 
         assertAll("Successful user registration response validation",
                 () -> assertEquals(ACCOUNT_CREATED, registerUserResponse.jsonPath().getString("message"), "Invalid message."),
@@ -99,9 +113,9 @@ public class UserLoginTest {
     @Test
     void loginWithEmptyPasswordTest() {
         User user = new User(
-                "Test User",
-                System.currentTimeMillis() + "@mail.com",
-                "Strong123!"
+                randomUserName(),
+                randomEmail(),
+                randomPassword(8,10)
         );
 
         Response registerUserResponse = SimpleActions.registerUser(user);
@@ -135,9 +149,9 @@ public class UserLoginTest {
     @Test
     void loginWithoutPasswordTest() {
         User user = new User(
-                "Test User",
-                System.currentTimeMillis() + "@mail.com",
-                "Strong123!"
+                randomUserName(),
+                randomEmail(),
+                randomPassword(8,10)
         );
 
         Response registerUserResponse = SimpleActions.registerUser(user);
@@ -171,8 +185,8 @@ public class UserLoginTest {
     @Test
     void loginWithNonRegisteredEmailTest() {
         UserLogin userLogin = new UserLogin(
-                System.currentTimeMillis() + "@mail.com",
-                "Strong123!"
+                randomEmail(),
+                randomPassword(8,10)
         );
 
         Response response = SimpleActions.loginUser(userLogin);
@@ -195,7 +209,7 @@ public class UserLoginTest {
     void loginWithInvalidEmailTest() {
         UserLogin userLogin = new UserLogin(
                 System.currentTimeMillis() + "mail.com",
-                "Strong123!"
+                randomPassword(8,10)
         );
 
         Response response = SimpleActions.loginUser(userLogin);

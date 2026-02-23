@@ -3,6 +3,7 @@ package api_tests.Notes;
 import api_tests.BaseApiTest;
 import io.qameta.allure.Description;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,21 +17,28 @@ import java.util.stream.Stream;
 
 import static classes.TestDataGenerator.randomDescription;
 import static classes.TestDataGenerator.randomTitle;
+import static constants.ApiConstants.BASE_SCHEMA;
+import static constants.ApiConstants.NOTE_PATCH_STATUS_SCHEMA;
 import static constants.Messages.*;
 import static enums.NoteCategory.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static utils.TestUtils.assertResponseSchema;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class NotePatchStatusTest extends BaseApiTest {
 
-    private Stream<Arguments> validPatchProvider() {
+    {
+        enableGlobalUser = true;
+    }
+
+    private static Stream<Arguments> validPatchProvider() {
         return Stream.of(
                 Arguments.of("Mark note as completed", true),
                 Arguments.of("Mark note as not completed", false)
         );
     }
 
-    private Stream<Arguments> invalidPatchProvider() {
+    private static Stream<Arguments> invalidPatchProvider() {
         return Stream.of(
                 Arguments.of(
                         "No Auth",
@@ -44,7 +52,7 @@ public class NotePatchStatusTest extends BaseApiTest {
                         "Invalid ID",
                         "invalid-id",
                         new NoteStatus(true),
-                        authToken,
+                        "USE_VALID_TOKEN",
                         NOTE_INVALID_ID,
                         400
                 )
@@ -69,22 +77,27 @@ public class NotePatchStatusTest extends BaseApiTest {
                 HOME.getLabel()
         );
 
-        Response createResponse = SimpleActions.createNote(original, authToken);
-        String noteId = createResponse.jsonPath().getString("data.id");
+        Response createNoteResponse = SimpleActions.createNote(original, authToken);
+
+        String noteId = createNoteResponse.jsonPath().getString("data.id");
 
         NoteStatus statusUpdate = new NoteStatus(newStatus);
-        Response patchResponse = SimpleActions.completeNote(noteId, statusUpdate, authToken);
+        Response patchNoteResponse = SimpleActions.completeNote(noteId, statusUpdate, authToken);
+
+        assertResponseSchema(NOTE_PATCH_STATUS_SCHEMA, patchNoteResponse);
 
         assertAll(description,
-                () -> assertEquals(NOTE_UPDATED, patchResponse.jsonPath().getString("message")),
-                () -> assertEquals(200, patchResponse.jsonPath().getInt("status")),
-                () -> assertTrue(patchResponse.jsonPath().getBoolean("success")),
-                () -> assertEquals(newStatus, patchResponse.jsonPath().getBoolean("data.completed")),
-                () -> assertEquals(original.title(), patchResponse.jsonPath().getString("data.title")),
-                () -> assertEquals(original.description(), patchResponse.jsonPath().getString("data.description")),
-                () -> assertEquals(original.category(), patchResponse.jsonPath().getString("data.category")),
-                () -> assertEquals(userId, patchResponse.jsonPath().getString("data.user_id"))
+                () -> assertEquals(NOTE_UPDATED, patchNoteResponse.jsonPath().getString("message")),
+                () -> assertEquals(200, patchNoteResponse.jsonPath().getInt("status")),
+                () -> assertTrue(patchNoteResponse.jsonPath().getBoolean("success")),
+                () -> assertEquals(newStatus, patchNoteResponse.jsonPath().getBoolean("data.completed")),
+                () -> assertEquals(original.title(), patchNoteResponse.jsonPath().getString("data.title")),
+                () -> assertEquals(original.description(), patchNoteResponse.jsonPath().getString("data.description")),
+                () -> assertEquals(original.category(), patchNoteResponse.jsonPath().getString("data.category")),
+                () -> assertEquals(userId, patchNoteResponse.jsonPath().getString("data.user_id"))
         );
+
+        registerNoteId(noteId);
     }
 
     @DisplayName("[API. Notes]. PATCH Method. Update Note's completed status")
@@ -102,7 +115,12 @@ public class NotePatchStatusTest extends BaseApiTest {
             String expectedMessage,
             int expectedStatus
     ) {
-        Response response = SimpleActions.completeNote(noteId, statusUpdate, token);
+        // Replace placeholders
+        String tokenToUse = token.equals("USE_VALID_TOKEN") ? authToken : token;
+
+        Response response = SimpleActions.completeNote(noteId, statusUpdate, tokenToUse);
+
+        assertResponseSchema(BASE_SCHEMA, response);
 
         assertAll(description,
                 () -> assertEquals(expectedMessage, response.jsonPath().getString("message")),
