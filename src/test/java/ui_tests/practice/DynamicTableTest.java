@@ -8,7 +8,7 @@ import ui_tests.BaseTest;
 public class DynamicTableTest extends BaseTest {
 
     @Test
-    void validateChromeCpuUsage() {
+    void validateChromeCpuUsageTest() {
         HomePage home = new HomePage(page()).open();
         DynamicTablePage dynamicTablePage = home.goToDynamicTablePage();
 
