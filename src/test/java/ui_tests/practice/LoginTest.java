@@ -59,6 +59,9 @@ public class LoginTest extends BaseTest {
     4. Click on Login button.
     5. Assert that user is redirected to 'Secure Area' page.
     6. Assert that success alert message is displayed.
+    7. Log user out.
+    8. Assert that user is redirected to 'Test Login Page' page.
+    9. Assert then success logout alert message is displayed.
     """)
     @Test
     void userLoginTest() {
