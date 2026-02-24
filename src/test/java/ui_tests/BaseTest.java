@@ -27,7 +27,7 @@ public class BaseTest {
     @BeforeEach
     public void beforeEach() {
         boolean isHeadless = Boolean.parseBoolean(
-                System.getenv().getOrDefault("HEADLESS", "false")
+                System.getenv().getOrDefault("HEADLESS", "true")
         );
 
         Playwright pw = Playwright.create();

@@ -9,6 +9,7 @@ public final class Constants {
     public static final String FORGOT_PASSWORD_PAGE = "/forgot-password";
     public static final String SECURE_PAGE =  "/secure";
     public static final String DYNAMIC_TABLE_PAGE =  "/dynamic-table";
+    public static final String WEB_INPUT_PAGE = "/inputs";
 
     // URLs for Notes App
 

@@ -2,8 +2,6 @@ package helpers;
 
 import com.github.javafaker.Faker;
 
-import java.util.UUID;
-
 public class TestDataGenerator {
     private static final Faker faker = new Faker();
 
@@ -32,7 +30,7 @@ public class TestDataGenerator {
     }
 
     public static String randomEmail() {
-        return UUID.randomUUID() + "@mail.com";
+        return faker.internet().emailAddress();
     }
 
     public static String randomPassword(int minLength, int maxLength) {
@@ -44,8 +42,7 @@ public class TestDataGenerator {
     }
 
     public static String randomCompany() {
-        String value = faker.company().industry();
-        return value.length() > 30 ? value.substring(0, 30) : value;
+        return faker.company().industry();
     }
 
     public static String randomCompany(int length) {

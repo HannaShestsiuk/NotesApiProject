@@ -25,7 +25,6 @@
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
       <version>5.10.0</version>
-      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -38,7 +37,6 @@
       <groupId>io.rest-assured</groupId>
       <artifactId>rest-assured</artifactId>
       <version>6.0.0</version>
-      <scope>test</scope>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/io.rest-assured/json-schema-validator -->
@@ -87,7 +85,6 @@
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
       <version>5.10.0</version>
-      <scope>test</scope>
     </dependency>
 
     <dependency>
