@@ -35,6 +35,12 @@ public class HomePage extends BasePage {
                     .setName("Dynamic Table")
     );
 
+    private final Locator webInputPageLink = page.getByRole(
+            AriaRole.LINK,
+            new Page.GetByRoleOptions()
+                    .setName("Web inputs")
+    );
+
     public HomePage(Page page) {
         super(page);
     }
@@ -104,5 +110,13 @@ public class HomePage extends BasePage {
                 "**" + DYNAMIC_TABLE_PAGE,
                 "Dynamic Table");
         return new DynamicTablePage(page);
+    }
+
+    @Step("Open Forgot Password Form")
+    public WebInputsPage goToWebInputsPage() {
+        safeClickAndWait(webInputPageLink,
+                "**" + WEB_INPUT_PAGE,
+                "Web inputs page");
+        return new WebInputsPage(page);
     }
 }
