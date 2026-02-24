@@ -4,12 +4,7 @@ import io.qameta.allure.Description;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import pages.practice_pages.*;
-import records.practice_records.PracticeUiUser;
 import ui_tests.BaseTest;
-
-import static constants.Messages.*;
-import static helpers.TestDataGenerator.randomName;
-import static helpers.TestDataGenerator.randomPassword;
 
 public class WebInputsTest extends BaseTest {
 

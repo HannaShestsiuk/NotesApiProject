@@ -93,12 +93,11 @@ public class WebInputsPage extends BasePage {
         displayInputsButton().click();
     }
 
-    public WebInputsPage fillForm() {
+    public void fillForm() {
         fillNumber();
         fillText();
         fillPassword();
         fillDate();
-        return this;
     }
 
     public String getOutputNumber() {
