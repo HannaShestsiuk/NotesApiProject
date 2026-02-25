@@ -41,10 +41,16 @@ public class HomePage extends BasePage {
                     .setName("Web inputs")
     );
 
-    private final Locator otpLoginLink = page.getByRole(
+    private final Locator otpLoginPageLink = page.getByRole(
             AriaRole.LINK,
             new Page.GetByRoleOptions()
                     .setName("OTP: One Time Password")
+    );
+
+    private final Locator radioButtonsPageLink = page.getByRole(
+            AriaRole.LINK,
+            new Page.GetByRoleOptions()
+                    .setName("Radio Buttons")
     );
 
     public HomePage(Page page) {
@@ -128,9 +134,17 @@ public class HomePage extends BasePage {
 
     @Step("Open OTP Login page")
     public OTPLoginPage goToOtpLoginPage() {
-        safeClickAndWait(otpLoginLink,
+        safeClickAndWait(otpLoginPageLink,
                 "**" + ONE_TIME_PASSWORD_PAGE,
                 "OTP Login page");
         return new OTPLoginPage(page);
+    }
+
+    @Step("Open Radio Buttons page")
+    public RadioButtonsPage goToRadioButtonsPage() {
+        safeClickAndWait(radioButtonsPageLink,
+                "**" + RADIO_BUTTONS_PAGE,
+                "Radio Buttons page");
+        return new RadioButtonsPage(page);
     }
 }
