@@ -8,7 +8,7 @@ import ui_tests.BaseTest;
 
 public class WebInputsTest extends BaseTest {
 
-    @DisplayName("[UI]. Registration page. Validate successful user registration")
+    @DisplayName("[UI]. Web Inputs page. Validate successful user registration")
     @Description("""
     1. Open https://practice.expandtesting.com/.
     2. Open 'Web Inputs Page' page.

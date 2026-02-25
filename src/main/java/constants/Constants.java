@@ -11,6 +11,7 @@ public final class Constants {
     public static final String DYNAMIC_TABLE_PAGE =  "/dynamic-table";
     public static final String WEB_INPUT_PAGE = "/inputs";
     public static final String ONE_TIME_PASSWORD_PAGE = "otp-login";
+    public static final String RADIO_BUTTONS_PAGE = "/radio-buttons";
 
     // URLs for Notes App
 
