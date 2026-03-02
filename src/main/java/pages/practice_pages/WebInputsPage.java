@@ -9,7 +9,6 @@ import pages.BasePage;
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static constants.Constants.WEB_INPUT_PAGE;
 import static helpers.TestDataGenerator.*;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Page Object for the Web Inputs practice page.
@@ -134,65 +133,7 @@ public class WebInputsPage extends BasePage {
         fillDate();
     }
 
-    // --- Data Retrieval ---
-
-    /** @return The trimmed text currently displayed in the number output field. */
-    public String getOutputNumber() {
-        return numberOutput().innerText().trim();
-    }
-
-    /** @return The trimmed text currently displayed in the text output field. */
-    public String getOutputText() {
-        return textOutput().innerText().trim();
-    }
-
-    /** @return The trimmed text currently displayed in the password output field. */
-    public String getOutputPassword() {
-        return passwordOutput().innerText().trim();
-    }
-
-    /** @return The trimmed text currently displayed in the date output field. */
-    public String getOutputDate() {
-        return dateOutput().innerText().trim();
-    }
-
-    // --- Assertions & Validations ---
-
-    /**
-     * Compares the current value in the Number input field with its corresponding output display.
-     * @return true if the input and output values match.
-     */
-    @Step("Validate that the Number output value matches the input value")
-    public boolean isNumberOutputsEqualsInput() {
-        return numberInput().inputValue().equals(getOutputNumber());
-    }
-
-    /**
-     * Compares the current value in the Text input field with its corresponding output display.
-     * @return true if the input and output values match.
-     */
-    @Step("Validate that the Text output value matches the input value")
-    public boolean isTextOutputsEqualsInput() {
-        return textInput().inputValue().equals(getOutputText());
-    }
-
-    /**
-     * Compares the current value in the Password input field with its corresponding output display.
-     * @return true if the input and output values match.
-     */
-    @Step("Validate that the Password output value matches the input value")
-    public boolean isPasswordOutputsEqualsInput() {
-        return passwordInput().inputValue().equals(getOutputPassword());
-    }
-
-    /**
-     * Compares the current value in the Date input field with its corresponding output display.
-     * @return true if the input and output values match.
-     */
-    @Step("Validate that the Date output value matches the input value")
-    public boolean isDateOutputsEqualsInput() {
-        return dateInput().inputValue().equals(getOutputDate());
-    }
+    // --- Assertions ---
 
     /**
      * Performs a full validation of all output fields against their respective inputs using Playwright's
