@@ -21,7 +21,7 @@ public class RadioButtonsTest extends BaseTest {
         6. Verify that the 'Tennis' radio button is selected by default in the Sport section.
         7. Select the 'Football' radio button and verify it is selected while 'Tennis' becomes unselected.
         """)
-    void testRadioButtons() {
+    void radioButtonsTest() {
         HomePage home = new HomePage(page()).open();
         RadioButtonsPage radioButtonsPage = home.goToRadioButtonsPage();
 

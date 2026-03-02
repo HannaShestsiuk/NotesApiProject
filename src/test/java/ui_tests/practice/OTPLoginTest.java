@@ -13,7 +13,7 @@ import ui_tests.BaseTest;
 import static constants.Messages.LOGOUT_MESSAGE;
 import static constants.Messages.SUCCESSFUL_LOGIN;
 
-public class VerifyOTPTest extends BaseTest {
+public class OTPLoginTest extends BaseTest {
     @Test
     @DisplayName("[UI]. OTP page. Verify successful login with valid OTP")
     @Description("""
@@ -27,7 +27,7 @@ public class VerifyOTPTest extends BaseTest {
         8. Assert that the user is redirected back to the 'Login Page'.
         9. Assert that the successful logout alert message is displayed.
         """)
-    void testSuccessfulOtpLogin() {
+    void loginWithOneTimePasswordTest() {
 
         OneTimePasswordData validData = OneTimePasswordData.defaultOtp();
 
