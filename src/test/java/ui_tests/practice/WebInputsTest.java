@@ -8,24 +8,30 @@ import ui_tests.BaseTest;
 
 public class WebInputsTest extends BaseTest {
 
-    @DisplayName("[UI]. Web Inputs page. Validate successful user registration")
+    @DisplayName("[UI]. Web Inputs page. Verify input data display and reset functionality")
     @Description("""
-    1. Open https://practice.expandtesting.com/.
-    2. Open 'Web Inputs Page' page.
-    3. Fill in Inputs form.
-    4. Click on Display Inputs button.
-    5. Validate outputs match input.
-    6. Clear Inputs form
+    1. Open the Home Page (https://practice.expandtesting.com/).
+    2. Navigate to the 'Web Inputs' page.
+    3. Fill the form with random Number, Text, Password, and Date.
+    4. Click the 'Display Inputs' button.
+    5. Validate that all output values match the entered input values.
+    6. Click the 'Clear Inputs' button.
+    7. Verify that all input fields are empty.
     """)
     @Test
     void webInputTest() {
 
         HomePage home = new HomePage(page()).open();
+        // Navigation and Data Entry
         WebInputsPage webInputsPage = home.goToWebInputsPage();
-
         webInputsPage.fillForm();
         webInputsPage.clickDisplayInputs();
+
+        // Validation of Output
         webInputsPage.validateOutput();
+
+        // Reset and Final Assertion
         webInputsPage.clickClearInputs();
+        webInputsPage.validateInputsAreEmpty();
     }
 }
