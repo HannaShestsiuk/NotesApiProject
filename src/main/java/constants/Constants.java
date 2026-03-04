@@ -14,6 +14,14 @@ public final class Constants {
     public static final String RADIO_BUTTONS_PAGE = "/radio-buttons";
 
     // URLs for Notes App
+    public static final String NOTES_WELCOME_PAGE = "/notes/app";
+    public static final String NOTES_REGISTER_PAGE = "/notes/app/register";
+    public static final String NOTES_LOGIN_PAGE = "/notes/app/login";
+    public static final String NOTES_HOME_PAGE = "/notes/app";
+    public static final String NOTES_PROFILE_PAGE = "/notes/app/profile";
+
+
+    // Paths for Notes App
 
     public static String BASE_URL_NOTES = "https://practice.expandtesting.com/notes/api";
     public static String HEALTH_CHECK = "/health-check";
