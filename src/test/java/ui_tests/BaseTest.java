@@ -34,7 +34,8 @@ public class BaseTest {
         Browser br = pw
                 .chromium()
                 .launch(new BrowserType.LaunchOptions()
-                        .setHeadless(isHeadless));
+                        .setHeadless(isHeadless)
+                        .setSlowMo(500));
         System.out.println(br.version());
         BrowserContext ctx = br.newContext(new Browser.NewContextOptions()
                 .setViewportSize(1920, 1080)

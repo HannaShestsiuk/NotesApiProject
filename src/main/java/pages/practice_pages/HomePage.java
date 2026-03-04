@@ -6,6 +6,7 @@ import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import pages.BasePage;
+import pages.notes_app.NotesAppWelcomePage;
 
 import static constants.Constants.*;
 
@@ -51,6 +52,12 @@ public class HomePage extends BasePage {
             AriaRole.LINK,
             new Page.GetByRoleOptions()
                     .setName("Radio Buttons")
+    );
+
+    private final Locator notesAppPageLink = page.getByRole(
+            AriaRole.LINK,
+            new Page.GetByRoleOptions()
+                    .setName("Notes App | React")
     );
 
     public HomePage(Page page) {
@@ -146,5 +153,13 @@ public class HomePage extends BasePage {
                 "**" + RADIO_BUTTONS_PAGE,
                 "Radio Buttons page");
         return new RadioButtonsPage(page);
+    }
+
+    @Step("Open Notes App page")
+    public NotesAppWelcomePage goToNotesAppWelcomePage() {
+        safeClickAndWait(notesAppPageLink,
+                "**" + NOTES_WELCOME_PAGE,
+                "Welcome to Notes App");
+        return new NotesAppWelcomePage(page);
     }
 }

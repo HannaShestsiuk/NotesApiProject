@@ -2,40 +2,98 @@ package pages.notes_app;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import io.qameta.allure.Step;
 import pages.BasePage;
-import records.UiUser;
 
+import java.util.regex.Pattern;
+
+import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+import static constants.Constants.*;
+
+/**
+ * Page Object for the Notes App Login page.
+ * Provides functionality for user authentication and navigation to
+ * password recovery or registration.
+ */
 public class NotesAppLoginPage extends BasePage {
 
+    /**
+     * Initializes the Notes App Login page.
+     * @param page The Playwright Page instance.
+     */
     public NotesAppLoginPage(Page page) {
         super(page);
     }
 
     @Override
     protected String path() {
-        return "/login"; // or whatever your app uses
+        return NOTES_LOGIN_PAGE;
     }
 
-    private Locator emailAddressField() {
-        return page.locator("[data-testid='login-email']");
+    // --- Locators ---
+
+    private Locator loginHeading() {
+        return page.locator("h1");
     }
 
-    private Locator passwordField() {
-        return page.locator("[data-testid='login-password']");
+    private Locator emailInput() {
+        return page.getByTestId("login-email");
+    }
+
+    private Locator passwordInput() {
+        return page.getByTestId("login-password");
     }
 
     private Locator loginButton() {
-        return page.locator("[data-testid='login-submit']");
+        return page.getByTestId("login-submit");
     }
 
-    public NotesAppLoginPage fillForm(UiUser user) {
-        emailAddressField().fill(user.email());
-        passwordField().fill(user.password());
+    private Locator forgotPasswordLink() {
+        return page.locator("#forgotPasswordLink");
+    }
+
+    private Locator alertMessage() {
+        return page.getByTestId("alert-message");
+    }
+
+    // --- Assertions & Validations ---
+
+    /**
+     * Verifies that the Login page is correctly loaded.
+     * @return This page instance.
+     */
+    @Step("Verify that Notes App Login page is loaded")
+    public NotesAppLoginPage loginPageShouldBeOpened() {
+        assertThat(page).hasURL(Pattern.compile(".*" + NOTES_LOGIN_PAGE));
+        assertThat(loginHeading()).hasText("Login");
+        assertThat(loginButton()).isVisible();
         return this;
     }
 
-    public void login() {
+    /**
+     * Specifically validates the message shown after a successful account deletion.
+     */
+    @Step("Verify 'account deleted' message is displayed")
+    public NotesAppLoginPage accountDeletedMessageShouldBeDisplayed() {
+        assertThat(alertMessage()).isVisible();
+        assertThat(alertMessage()).hasText("Your account has been deleted. You should create a new account to continue.");
+        return this;
+    }
+
+    // --- Actions ---
+
+    /**
+     * Performs the login operation.
+     * @param email    The registered user's email.
+     * @param password The user's password.
+     * @return A new instance of NotesAppHomePage after successful redirection.
+     */
+    @Step("Login with email: {email}")
+    public NotesAppHomePage login(String email, String password) {
+        emailInput().fill(email);
+        passwordInput().fill(password);
         loginButton().click();
+        page.waitForURL("**" + NOTES_HOME_PAGE);
+        return new NotesAppHomePage(page);
     }
 }
-
