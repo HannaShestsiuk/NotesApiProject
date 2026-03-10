@@ -4,6 +4,7 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
 import pages.BasePage;
+import records.User;
 
 import java.util.regex.Pattern;
 
@@ -85,11 +86,11 @@ public class NotesAppRegisterPage extends BasePage {
      * Fills and submits the registration form.
      */
     @Step("Register a new user with email: {email}")
-    public NotesAppRegisterPage register(String email, String name, String password) {
-        emailInput().fill(email);
-        nameInput().fill(name);
-        passwordInput().fill(password);
-        confirmPasswordInput().fill(password);
+    public NotesAppRegisterPage register(User user) {
+        emailInput().fill(user.email());
+        nameInput().fill(user.userName());
+        passwordInput().fill(user.password());
+        confirmPasswordInput().fill(user.password());
         registerButton().click();
         return this;
     }

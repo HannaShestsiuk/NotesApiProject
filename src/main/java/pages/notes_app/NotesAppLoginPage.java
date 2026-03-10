@@ -4,6 +4,7 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
 import pages.BasePage;
+import records.User;
 
 import java.util.regex.Pattern;
 
@@ -84,14 +85,13 @@ public class NotesAppLoginPage extends BasePage {
 
     /**
      * Performs the login operation.
-     * @param email    The registered user's email.
-     * @param password The user's password.
+     * @param user The {@link User} record containing email and password credentials.
      * @return A new instance of NotesAppHomePage after successful redirection.
      */
     @Step("Login with email: {email}")
-    public NotesAppHomePage login(String email, String password) {
-        emailInput().fill(email);
-        passwordInput().fill(password);
+    public NotesAppHomePage login(User user) {
+        emailInput().fill(user.email());
+        passwordInput().fill(user.password());
         loginButton().click();
         page.waitForURL("**" + NOTES_HOME_PAGE);
         return new NotesAppHomePage(page);

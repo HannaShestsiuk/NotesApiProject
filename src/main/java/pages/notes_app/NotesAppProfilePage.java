@@ -4,6 +4,7 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
 import pages.BasePage;
+import records.UserProfile;
 
 import java.util.regex.Pattern;
 
@@ -113,14 +114,29 @@ public class NotesAppProfilePage extends BasePage {
     // --- Actions ---
 
     /**
-     * Updates profile information.
+     * Updates the user profile information.
+     * @param profile The {@link UserProfile} record containing name, phone, and company.
+     * @return This page instance.
      */
-    @Step("Update profile with Name: {name}, Phone: {phone}, Company: {company}")
-    public NotesAppProfilePage updateProfile(String name, String phone, String company) {
-        userNameInput().fill(name);
-        userPhoneInput().fill(phone);
-        userCompanyInput().fill(company);
-        updateProfileButton().click();
+    @Step("Update profile with: {profile.name}")
+    public NotesAppProfilePage updateProfile(UserProfile profile) {
+        userNameInput().fill(profile.name());
+        userPhoneInput().fill(profile.phone());
+        userCompanyInput().fill(profile.company());
+        updateProfileButton().click(); // Assuming you have a save button locator
+        return this;
+    }
+
+    /**
+     * Asserts that the profile fields match the provided UserProfile data.
+     * @param expectedProfile The data we expect to see in the fields.
+     * @return This page instance.
+     */
+    @Step("Verify profile fields match the updated profile data")
+    public NotesAppProfilePage profileFieldsShouldMatch(UserProfile expectedProfile) {
+        assertThat(userNameInput()).hasValue(expectedProfile.name());
+        assertThat(userPhoneInput()).hasValue(expectedProfile.phone());
+        assertThat(userCompanyInput()).hasValue(expectedProfile.company());
         return this;
     }
 

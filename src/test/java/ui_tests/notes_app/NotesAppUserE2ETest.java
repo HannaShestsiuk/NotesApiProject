@@ -1,11 +1,13 @@
 package ui_tests.notes_app;
 
 import helpers.TestDataGenerator;
+import io.qameta.allure.Description;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import pages.notes_app.*;
 import pages.practice_pages.HomePage;
 import records.User;
+import records.UserProfile;
 import ui_tests.BaseTest;
 
 /**
@@ -15,48 +17,56 @@ import ui_tests.BaseTest;
 public class NotesAppUserE2ETest extends BaseTest {
 
     @Test
-    @DisplayName("User Lifecycle: Register -> Update Profile -> Delete Account")
-    void userAccountFlowTest() {
+    @DisplayName("[UI]. Notes App. User Lifecycle: Register -> Login -> Update Profile -> Delete Account")
+    @Description("""
+    1. Navigate to the practice home page and open the 'Notes App' landing page.
+    2. Verify that the Notes App Welcome page is successfully loaded.
+    3. Navigate to the Registration page and create a new account using unique dynamic data.
+    4. Confirm successful registration via the visibility of the success alert message.
+    5. Click the 'Login' link and authenticate using the newly created credentials.
+    6. Verify redirection to the Notes App Home/Dashboard.
+    7. Navigate to the User Profile settings.
+    8. Validate that security-sensitive fields (User ID and Email) are read-only/disabled.
+    9. Update profile information (Name, Phone, Company) and verify the update success alert and updated profile fields.
+    10. Initiate account deletion and verify the confirmation modal is displayed.
+    11. Confirm deletion and verify automatic redirection back to the Login page.
+    12. Assert that the 'Account Deleted' danger alert is correctly displayed on the Login page.
+    """)
+    void userCreateUpdateAndDeleteAccountTest() {
 
-        // 1. Generate unique User data using the Record and Faker helper
         User testUser = new User(
                 TestDataGenerator.randomUserName(),
                 TestDataGenerator.randomEmail(),
                 TestDataGenerator.randomPassword(8, 16)
         );
 
-        // 2. Navigate from the main Practice Home to the Notes App Welcome Page
         HomePage home = new HomePage(page()).open();
         NotesAppWelcomePage welcomePage = home.goToNotesAppWelcomePage();
         welcomePage.welcomePageShouldBeOpened();
 
-        // 3. Complete Registration and verify the success alert
         NotesAppRegisterPage registerPage = welcomePage.clickCreateAccount()
                 .registerPageShouldBeOpened()
-                .register(testUser.email(), testUser.userName(), testUser.password())
+                .register(testUser)
                 .successMessageShouldBeDisplayed();
 
-        // 4. Navigate to Login and authenticate with the new credentials
         NotesAppLoginPage loginPage = registerPage.clickLoginLink();
-        NotesAppHomePage notesHomePage = loginPage.login(testUser.email(), testUser.password());
+        NotesAppHomePage notesHomePage = loginPage.login(testUser);
 
-        // 5. Verify successful login to the Notes App Home/Dashboard
         notesHomePage.homePageShouldBeOpened();
 
-        // 6. Navigate to Profile Settings and perform updates
-        // Requirement: Verify that User ID and Email fields are read-only (disabled)
+        UserProfile updatedProfile = new UserProfile(
+                TestDataGenerator.randomUserName(),
+                TestDataGenerator.randomPhone(10),
+                TestDataGenerator.randomCompany()
+        );
+
         NotesAppProfilePage profilePage = notesHomePage.goToProfile();
         profilePage.profilePageShouldBeOpened()
                 .identityFieldsShouldBeDisabled()
-                .updateProfile(
-                        TestDataGenerator.randomUserName(),
-                        TestDataGenerator.randomPhone(10),
-                        TestDataGenerator.randomCompany()
-                )
-                .successMessageShouldBeDisplayed();
+                .updateProfile(updatedProfile)
+                .successMessageShouldBeDisplayed()
+                .profileFieldsShouldMatch(updatedProfile);
 
-        // 7. Execute Account Deletion flow and verify final redirection to Login
-        // Requirement: Modal confirmation must be visible before deletion
         profilePage.clickDeleteAccount()
                 .deleteModalShouldBeVisible()
                 .confirmDeletion()
