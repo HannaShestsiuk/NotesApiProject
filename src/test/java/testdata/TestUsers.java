@@ -1,5 +1,6 @@
 package testdata;
 
+import records.User;
 import records.practice_records.PracticeUiUser;
 
 public class TestUsers {
@@ -8,6 +9,14 @@ public class TestUsers {
                 "practice",
                 "SuperSecretPassword!",
                 "SuperSecretPassword!"
+        );
+    }
+
+    public static User notesAppUiUser(){
+        return new User(
+                "testuser987",
+                "testuser987@example.com",
+                "testuser987"
         );
     }
 }
