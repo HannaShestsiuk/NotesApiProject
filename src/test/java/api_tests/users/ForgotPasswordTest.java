@@ -13,8 +13,8 @@ import requests.SimpleActions;
 
 import java.util.stream.Stream;
 
+import static helpers.TestDataGenerator.*;
 import static constants.Messages.*;
-import static helpers.TestDataGenerator.randomEmail;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ForgotPasswordTest extends BaseApiTest {

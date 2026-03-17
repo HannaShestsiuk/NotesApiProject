@@ -9,8 +9,8 @@ import records.User;
 import records.UserLogin;
 import requests.SimpleActions;
 
-import static constants.Messages.*;
 import static helpers.TestDataGenerator.*;
+import static constants.Messages.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DeleteAccountTest extends BaseApiTest {

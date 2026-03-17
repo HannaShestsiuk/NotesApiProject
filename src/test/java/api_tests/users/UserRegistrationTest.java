@@ -80,7 +80,7 @@ public class UserRegistrationTest extends BaseApiTest {
                 () -> assertEquals(ACCOUNT_CREATED, response.jsonPath().getString("message"), "Invalid message."),
                 () -> assertEquals(201, response.jsonPath().getInt("status"), "Invalid Status Code."),
                 () -> assertTrue(response.jsonPath().getBoolean("success"), "Invalid success status."),
-                () -> assertEquals(user.name(), response.jsonPath().getString("data.name"), "Invalid name."),
+                () -> assertEquals(user.userName(), response.jsonPath().getString("data.userName"), "Invalid userName."),
                 () -> assertEquals(user.email(), response.jsonPath().getString("data.email"), "Invalid email.")
         );
     }
@@ -106,7 +106,7 @@ public class UserRegistrationTest extends BaseApiTest {
                 () -> assertEquals(201, response.jsonPath().getInt("status"), "Invalid Status Code."),
                 () -> assertNotNull(response.jsonPath().getString("data.id"), "User id is set to NULL."),
                 () -> assertNotEquals("", response.jsonPath().getString("data.id"), "User id is set to empty string."),
-                () -> assertEquals(user.name(), response.jsonPath().getString("data.name"), "Invalid user name."),
+                () -> assertEquals(user.userName(), response.jsonPath().getString("data.userName"), "Invalid user userName."),
                 () -> assertEquals(user.email(), response.jsonPath().getString("data.email"), "Invalid user email.")
         );
 
@@ -187,7 +187,7 @@ public class UserRegistrationTest extends BaseApiTest {
 
     @DisplayName("[API. User]. POST Method. Register user without Name")
     @Description("""
-            1. Register a new user without name.
+            1. Register a new user without userName.
             2. Assert the response.
             """)
     @Test
@@ -200,7 +200,7 @@ public class UserRegistrationTest extends BaseApiTest {
 
         Response response = SimpleActions.registerUser(user);
 
-        assertAll("Registration without name is failed",
+        assertAll("Registration without userName is failed",
                 () -> assertEquals(VALID_USERNAME_REQUIRED, response.jsonPath().getString("message"), "Invalid message."),
                 () -> assertEquals(400, response.jsonPath().getInt("status"), "Invalid Status Code."),
                 () -> assertFalse(response.jsonPath().getBoolean("success"), "Invalid success status.")
@@ -209,7 +209,7 @@ public class UserRegistrationTest extends BaseApiTest {
 
     @DisplayName("[API. User]. POST Method. Register user with empty Name")
     @Description("""
-            1. Register a new user with empty name.
+            1. Register a new user with empty userName.
             2. Assert the response.
             """)
     @Test
@@ -222,7 +222,7 @@ public class UserRegistrationTest extends BaseApiTest {
 
         Response response = SimpleActions.registerUser(user);
 
-        assertAll("Registration with empty or blank name is failed",
+        assertAll("Registration with empty or blank userName is failed",
                 () -> assertEquals(VALID_USERNAME_REQUIRED, response.jsonPath().getString("message"), "Invalid message."),
                 () -> assertEquals(400, response.jsonPath().getInt("status"), "Invalid Status Code."),
                 () -> assertFalse(response.jsonPath().getBoolean("success"), "Invalid success status.")
@@ -231,7 +231,7 @@ public class UserRegistrationTest extends BaseApiTest {
 
     @DisplayName("[API. User]. POST Method. Register user with invalid Name length")
     @Description("""
-            1. Register a new user with name length more than MAX(30).
+            1. Register a new user with userName length more than MAX(30).
             2. Assert the response.
             """)
     @Test
@@ -244,7 +244,7 @@ public class UserRegistrationTest extends BaseApiTest {
 
         Response response = SimpleActions.registerUser(user);
 
-        assertAll("Registration with invalid name is failed",
+        assertAll("Registration with invalid userName is failed",
                 () -> assertEquals(VALID_USERNAME_REQUIRED, response.jsonPath().getString("message"), "Invalid message."),
                 () -> assertEquals(400, response.jsonPath().getInt("status"), "Invalid Status Code."),
                 () -> assertFalse(response.jsonPath().getBoolean("success"), "Invalid success status.")

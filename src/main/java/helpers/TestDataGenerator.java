@@ -2,6 +2,10 @@ package helpers;
 
 import com.github.javafaker.Faker;
 
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.concurrent.TimeUnit;
+
 public class TestDataGenerator {
     private static final Faker faker = new Faker();
 
@@ -51,6 +55,23 @@ public class TestDataGenerator {
 
     public static String randomName() {
         return "user" + System.currentTimeMillis();
+    }
+
+    public static String randomNumber() {
+        return String.valueOf(faker.number().numberBetween(0, 1000000));
+    }
+
+    public static String randomString() {
+        return String.valueOf(faker.lorem().word());
+    }
+
+    public static String randomDate() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return faker.date().past(365, TimeUnit.DAYS)
+                .toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate()
+                .format(dtf);
     }
 
 }

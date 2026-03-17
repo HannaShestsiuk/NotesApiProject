@@ -14,11 +14,11 @@ import requests.SimpleActions;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static helpers.TestDataGenerator.randomDescription;
+import static helpers.TestDataGenerator.randomTitle;
 import static constants.Messages.NOTES_RETRIEVED;
 import static constants.Messages.NO_AUTH_HEADER;
 import static enums.NoteCategory.*;
-import static helpers.TestDataGenerator.randomDescription;
-import static helpers.TestDataGenerator.randomTitle;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)

@@ -8,7 +8,6 @@ import pages.BasePage;
 
 import static constants.Constants.LOGIN_PAGE;
 import static constants.Constants.SECURE_PAGE;
-import static constants.Messages.SUCCESSFUL_LOGIN;
 
 public class SecurePage extends BasePage {
     public SecurePage(Page page) {
@@ -35,16 +34,16 @@ public class SecurePage extends BasePage {
 
     @Step("Logout user")
     public LoginPage logout() {
-        clickLogout();
-        return new LoginPage(page);
+        return clickLogout();
     }
 
     @Step("Assert that Secure Page is opened")
     public void securePageShouldBeOpened() {
         page.waitForURL("**" + SECURE_PAGE);
 
-        page.getByRole(AriaRole.HEADING,
-                        new Page.GetByRoleOptions().setName("Secure Area page")
+        page.getByRole(
+                AriaRole.HEADING,
+                new Page.GetByRoleOptions().setName("Secure Area page")
                 ).waitFor();
     }
 }
