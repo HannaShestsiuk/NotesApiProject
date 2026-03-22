@@ -15,7 +15,6 @@ import records.User;
 import testdata.TestUsers;
 import ui_tests.BaseTest;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static helpers.TestDataGenerator.randomDescription;

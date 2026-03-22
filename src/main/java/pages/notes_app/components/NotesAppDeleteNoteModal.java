@@ -15,7 +15,6 @@ public class NotesAppDeleteNoteModal extends BaseComponent {
 
     private final Locator dialog = page.getByTestId("note-delete-dialog");
     private final Locator modalTitle = dialog.locator(".modal-title");
-    private final Locator modalBody = dialog.locator(".modal-body");
     private final Locator confirmDeleteButton = page.getByTestId("note-delete-confirm");
     private final Locator cancelButton = page.getByTestId("note-delete-cancel-2");
 

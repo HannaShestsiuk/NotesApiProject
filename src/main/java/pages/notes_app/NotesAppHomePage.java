@@ -56,9 +56,6 @@ public class NotesAppHomePage extends BasePage {
     private Locator addNoteButton() {
         return page.getByTestId("add-new-note");
     }
-    private Locator noteTitleList() {
-        return page.getByTestId("note-card-title");
-    }
     private final Locator loader = page.locator(".progress");
     private final Locator noteCards = page.getByTestId("note-card");
 
