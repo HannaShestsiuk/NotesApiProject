@@ -2,10 +2,13 @@ package pages.notes_app;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
-import enums.NoteCategory;
 import io.qameta.allure.Step;
 import pages.BasePage;
-import records.Note;
+import pages.notes_app.components.NotesAppAddNoteModal;
+import pages.notes_app.components.NotesAppDeleteNoteModal;
+import pages.notes_app.components.NotesAppEditNoteModal;
+import pages.notes_app.components.NotesAppNoteCardComponent;
+import records.NoteWithStatus;
 
 import java.util.regex.Pattern;
 
@@ -57,7 +60,7 @@ public class NotesAppHomePage extends BasePage {
         return page.getByTestId("note-card-title");
     }
     private final Locator loader = page.locator(".progress");
-    private final Locator noteCard = page.getByTestId("note-card");
+    private final Locator noteCards = page.getByTestId("note-card");
 
     // --- Assertions & Validations ---
 
@@ -92,16 +95,16 @@ public class NotesAppHomePage extends BasePage {
      * @return A new instance of NotesAppWelcomePage.
      */
     @Step("Click on 'Logout' button")
-    public NotesAppWelcomePage logout() {
+    public NotesAppWelcomePage userLogout() {
         logoutButton().click();
         page.waitForURL("**" + NOTES_WELCOME_PAGE);
         return new NotesAppWelcomePage(page);
     }
 
     @Step("Click on '+ Add Note' button")
-    public NotesAppNoteModal clickAddNote() {
+    public NotesAppAddNoteModal clickAddNote() {
         addNoteButton().click();
-        return new NotesAppNoteModal(page);
+        return new NotesAppAddNoteModal(page);
     }
 
     @Step("Wait for home page loader to disappear")
@@ -110,9 +113,19 @@ public class NotesAppHomePage extends BasePage {
         return this;
     }
 
+    /**
+     * Helper to wrap a specific card locator into a NoteCardComponent.
+     */
+    private NotesAppNoteCardComponent getNoteCardByTitle(String title) {
+        Locator note = noteCards.filter(new Locator.FilterOptions()
+                .setHas(page.getByTestId("note-card-title")
+                        .getByText(title, new Locator.GetByTextOptions().setExact(true))));
+        return new NotesAppNoteCardComponent(page, note);
+    }
+
     @Step("Verify that a note with title '{title}' is visible on the page")
     public NotesAppHomePage noteShouldBeVisible(String title) {
-        Locator targetCard = noteCard.filter(new Locator.FilterOptions().setHasText(title));
+        Locator targetCard = noteCards.filter(new Locator.FilterOptions().setHasText(title));
         assertThat(targetCard).isVisible();
         return this;
     }
@@ -121,25 +134,26 @@ public class NotesAppHomePage extends BasePage {
      * Finds a note card by title and validates all its properties.
      */
     @Step("Verify note details for title: {expectedNote.title}")
-    public NotesAppHomePage noteDetailsShouldMatch(Note expectedNote, boolean isCompleted) {
-
-        Locator targetCard = noteCard.filter(new Locator.FilterOptions().setHasText(expectedNote.title()));
-
-        assertThat(targetCard.getByTestId("note-card-title")).hasText(expectedNote.title());
-        assertThat(targetCard.getByTestId("note-card-description")).hasText(expectedNote.description());
-
-        String expectedColor = NoteCategory.getColorByLabel(expectedNote.category(), isCompleted);
-
-        assertThat(targetCard.getByTestId("note-card-title"))
-                .hasCSS("background-color", expectedColor);
-
-        if (isCompleted) {
-            assertThat(targetCard.getByTestId("toggle-note-switch")).isChecked();
-        } else {
-            assertThat(targetCard.getByTestId("toggle-note-switch")).not().isChecked();
-        }
-
+    public NotesAppHomePage noteDetailsShouldMatch(NoteWithStatus expectedNote) {
+        getNoteCardByTitle(expectedNote.title()).noteDetailsShouldMatch(expectedNote);
         return this;
+    }
+
+    @Step("Click edit button for note: {title}")
+    public NotesAppSingleNotePage viewNote(String title) {
+        getNoteCardByTitle(title).clickViewButton();
+        return new NotesAppSingleNotePage(page);
+    }
+
+    /**
+     * Opens the Edit Modal for a specific note.
+     * * @param title The current title of the note to be edited.
+     * @return A new instance of NotesAppEditNoteModal.
+     */
+    @Step("Click edit button for note: {title}")
+    public NotesAppEditNoteModal editNote(String title) {
+        getNoteCardByTitle(title).clickEditButton();
+        return new NotesAppEditNoteModal(page);
     }
 
     /**
@@ -152,16 +166,14 @@ public class NotesAppHomePage extends BasePage {
      * @return A new instance of {@link NotesAppDeleteNoteModal} to handle the confirmation dialog.
      */
     @Step("Click delete button for note: {title}")
-    public NotesAppDeleteNoteModal clickDeleteNote(String title) {
-        Locator targetCard = noteCard.filter(new Locator.FilterOptions().setHasText(title));
-        targetCard.getByTestId("note-delete").click();
-
+    public NotesAppDeleteNoteModal deleteNote(String title) {
+        getNoteCardByTitle(title).clickDeleteButton();
         return new NotesAppDeleteNoteModal(page);
     }
 
     @Step("Verify that note with title '{title}' is no longer visible")
     public NotesAppHomePage noteShouldBeDeleted(String title) {
-        Locator targetCard = noteCard.filter(new Locator.FilterOptions().setHasText(title));
+        Locator targetCard = noteCards.filter(new Locator.FilterOptions().setHasText(title));
         assertThat(targetCard).not().isVisible();
         return this;
     }
