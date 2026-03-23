@@ -1,19 +1,20 @@
-package pages.notes_app;
+package pages.notes_app.components;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
+import pages.notes_app.BaseComponent;
+import pages.notes_app.NotesAppHomePage;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
-public class NotesAppDeleteNoteModal extends BaseComponent{
+public class NotesAppDeleteNoteModal extends BaseComponent {
     public NotesAppDeleteNoteModal(Page page) {
         super(page);
     }
 
     private final Locator dialog = page.getByTestId("note-delete-dialog");
     private final Locator modalTitle = dialog.locator(".modal-title");
-    private final Locator modalBody = dialog.locator(".modal-body");
     private final Locator confirmDeleteButton = page.getByTestId("note-delete-confirm");
     private final Locator cancelButton = page.getByTestId("note-delete-cancel-2");
 

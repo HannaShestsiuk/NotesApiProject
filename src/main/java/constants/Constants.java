@@ -19,6 +19,7 @@ public final class Constants {
     public static final String NOTES_LOGIN_PAGE = "/notes/app/login";
     public static final String NOTES_HOME_PAGE = "/notes/app";
     public static final String NOTES_PROFILE_PAGE = "/notes/app/profile";
+    public static final String NOTES_SINGLE_NOTE_PAGE = "/notes/app/notes/";
 
 
     // Paths for Notes App

@@ -1,9 +1,13 @@
 package helpers;
 
 import com.github.javafaker.Faker;
+import enums.NoteCategory;
+import records.NoteWithStatus;
 
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class TestDataGenerator {
@@ -72,6 +76,19 @@ public class TestDataGenerator {
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate()
                 .format(dtf);
+    }
+
+    public static List<NoteWithStatus> generateRandomNotes(int count) {
+        List<NoteWithStatus> notes = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            notes.add(new NoteWithStatus(
+                    "Bulk Note " + (i + 1) + " " + randomTitle(3),
+                    randomDescription(),
+                    false,
+                    NoteCategory.random().getLabel()
+            ));
+        }
+        return notes;
     }
 
 }
