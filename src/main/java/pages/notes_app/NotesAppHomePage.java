@@ -2,6 +2,7 @@ package pages.notes_app;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import enums.NoteCategory;
 import io.qameta.allure.Step;
 import pages.BasePage;
 import pages.notes_app.components.NotesAppAddNoteModal;
@@ -57,7 +58,7 @@ public class NotesAppHomePage extends BasePage {
         return page.getByTestId("add-new-note");
     }
     private final Locator loader = page.locator(".progress");
-    private final Locator noteCards = page.getByTestId("note-card");
+    public final Locator noteCards = page.getByTestId("note-card");
 
     // --- Assertions & Validations ---
 
@@ -113,65 +114,10 @@ public class NotesAppHomePage extends BasePage {
     /**
      * Helper to wrap a specific card locator into a NoteCardComponent.
      */
-    private NotesAppNoteCardComponent getNoteCardByTitle(String title) {
+    public NotesAppNoteCardComponent getNoteCardByTitle(String title) {
         Locator note = noteCards.filter(new Locator.FilterOptions()
                 .setHas(page.getByTestId("note-card-title")
                         .getByText(title, new Locator.GetByTextOptions().setExact(true))));
         return new NotesAppNoteCardComponent(page, note);
-    }
-
-    @Step("Verify that a note with title '{title}' is visible on the page")
-    public NotesAppHomePage noteShouldBeVisible(String title) {
-        Locator targetCard = noteCards.filter(new Locator.FilterOptions().setHasText(title));
-        assertThat(targetCard).isVisible();
-        return this;
-    }
-
-    /**
-     * Finds a note card by title and validates all its properties.
-     */
-    @Step("Verify note details for title: {expectedNote.title}")
-    public NotesAppHomePage noteDetailsShouldMatch(NoteWithStatus expectedNote) {
-        getNoteCardByTitle(expectedNote.title()).noteDetailsShouldMatch(expectedNote);
-        return this;
-    }
-
-    @Step("Click edit button for note: {title}")
-    public NotesAppSingleNotePage viewNote(String title) {
-        getNoteCardByTitle(title).clickViewButton();
-        return new NotesAppSingleNotePage(page);
-    }
-
-    /**
-     * Opens the Edit Modal for a specific note.
-     * * @param title The current title of the note to be edited.
-     * @return A new instance of NotesAppEditNoteModal.
-     */
-    @Step("Click edit button for note: {title}")
-    public NotesAppEditNoteModal editNote(String title) {
-        getNoteCardByTitle(title).clickEditButton();
-        return new NotesAppEditNoteModal(page);
-    }
-
-    /**
-     * Initiates the deletion process for a specific note.
-     * <p>
-     * This method locates the note card containing the specified title and clicks
-     * the delete button within that specific card. This triggers the confirmation modal.
-     * </p>
-     * @param title The title of the note to be deleted, used to identify the correct card.
-     * @return A new instance of {@link NotesAppDeleteNoteModal} to handle the confirmation dialog.
-     */
-    @Step("Click delete button for note: {title}")
-    public NotesAppDeleteNoteModal deleteNote(String title) {
-        getNoteCardByTitle(title).clickDeleteButton();
-        return new NotesAppDeleteNoteModal(page);
-    }
-
-    @Step("Verify that note with title '{title}' is no longer visible")
-    public NotesAppHomePage noteShouldBeDeleted(String title) {
-        Locator targetCard = noteCards.filter(new Locator.FilterOptions().setHasText(title));
-        assertThat(targetCard).not().isVisible();
-        return this;
     }
 }

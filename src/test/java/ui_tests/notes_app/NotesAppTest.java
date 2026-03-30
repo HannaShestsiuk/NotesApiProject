@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import pages.notes_app.NotesAppHomePage;
 import pages.notes_app.NotesAppLoginPage;
 import pages.notes_app.NotesAppSingleNotePage;
+import pages.notes_app.components.NotesAppNoteCardComponent;
 import records.NoteWithStatus;
 import records.User;
 import testdata.TestUsers;
@@ -66,15 +67,18 @@ public class NotesAppTest extends BaseTest {
                 .modalShouldBeVisible()
                 .createNote(note);
 
-        notesHome.waitForLoaderToDisappear()
-                .noteShouldBeVisible(note.title())
+        NotesAppNoteCardComponent myNote = notesHome
+                .waitForLoaderToDisappear()
+                .getNoteCardByTitle(note.title());
+
+        myNote.shouldBeVisible()
                 .noteDetailsShouldMatch(note);
 
-        notesHome.deleteNote(note.title())
+        myNote.clickDeleteButton()
                 .modalShouldBeVisible()
                 .confirmDeletion();
 
-        notesHome.noteShouldBeDeleted(note.title());
+        myNote.shouldBeDeleted();
     }
 
     @Test
@@ -109,23 +113,24 @@ public class NotesAppTest extends BaseTest {
                 .modalShouldBeVisible()
                 .createNote(note);
 
-        notesHome.waitForLoaderToDisappear()
-                .noteShouldBeVisible(note.title())
+        NotesAppNoteCardComponent myNote = notesHome.waitForLoaderToDisappear()
+                .getNoteCardByTitle(note.title());
+
+        myNote.shouldBeVisible()
                 .noteDetailsShouldMatch(note);
 
-        notesHome.editNote(note.title())
-                .modalShouldBeVisible()
+        myNote.clickEditButton()
                 .updateNote(updatedNote);
 
-        notesHome.waitForLoaderToDisappear()
-                .noteShouldBeVisible(updatedNote.title())
+        myNote = notesHome.waitForLoaderToDisappear()
+                .getNoteCardByTitle(updatedNote.title())
                 .noteDetailsShouldMatch(updatedNote);
 
-        notesHome.deleteNote(updatedNote.title())
+        myNote.clickDeleteButton()
                 .modalShouldBeVisible()
                 .confirmDeletion();
 
-        notesHome.noteShouldBeDeleted(updatedNote.title());
+        myNote.shouldBeDeleted();
     }
 
     @Test
@@ -160,10 +165,14 @@ public class NotesAppTest extends BaseTest {
                 .modalShouldBeVisible()
                 .createNote(note);
 
-        NotesAppHomePage noteCard = notesHome.waitForLoaderToDisappear()
-                .noteShouldBeVisible(note.title());
+        NotesAppNoteCardComponent myNote = notesHome
+                .waitForLoaderToDisappear()
+                .getNoteCardByTitle(note.title());
 
-        NotesAppSingleNotePage singleNotePage = noteCard.viewNote(note.title());
+        myNote.shouldBeVisible()
+                .noteDetailsShouldMatch(note);
+
+        NotesAppSingleNotePage singleNotePage = myNote.clickViewButton();
 
         singleNotePage.noteDetailsShouldMatch(note);
 
@@ -174,11 +183,11 @@ public class NotesAppTest extends BaseTest {
         singleNotePage.waitForLoaderToDisappear()
                 .noteDetailsShouldMatch(updatedNote);
 
-        notesHome = singleNotePage.clickDelete()
+        singleNotePage.clickDelete()
                 .modalShouldBeVisible()
                 .confirmDeletion();
 
-        notesHome.noteShouldBeDeleted(updatedNote.title());
+        myNote.shouldBeDeleted();
     }
 
     @Test
@@ -199,16 +208,23 @@ public class NotesAppTest extends BaseTest {
             notesHome.clickAddNote()
                     .modalShouldBeVisible()
                     .createNote(note);
+
             notesHome.waitForLoaderToDisappear()
-                    .noteShouldBeVisible(note.title());
+                    .getNoteCardByTitle(note.title())
+                    .shouldBeVisible()
+                    .noteDetailsShouldMatch(note);
         });
 
         notesList.forEach(note -> {
-            notesHome.deleteNote(note.title())
+            NotesAppNoteCardComponent noteCard = notesHome.getNoteCardByTitle(note.title());
+
+            noteCard.clickDeleteButton()
                     .modalShouldBeVisible()
                     .confirmDeletion();
-            notesHome.waitForLoaderToDisappear()
-                    .noteShouldBeDeleted(note.title());
+
+            notesHome.waitForLoaderToDisappear();
+
+            noteCard.shouldBeDeleted();
         });
     }
 }

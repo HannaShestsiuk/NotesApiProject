@@ -14,6 +14,7 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
  * Represents a single Note Card component on the Home Page.
  */
 public class NotesAppNoteCardComponent extends BaseComponent {
+    private final Locator cardComponent;
     private final Locator title;
     private final Locator description;
     private final Locator completedCheckbox;
@@ -23,6 +24,7 @@ public class NotesAppNoteCardComponent extends BaseComponent {
 
     public NotesAppNoteCardComponent(Page page, Locator note) {
         super(page);
+        this.cardComponent = note;
         this.title = note.getByTestId("note-card-title");
         this.description = note.getByTestId("note-card-description");
         this.completedCheckbox = note.getByTestId("toggle-note-switch");
@@ -31,8 +33,19 @@ public class NotesAppNoteCardComponent extends BaseComponent {
         this.deleteButton = note.getByTestId("note-delete");
     }
 
+    @Step("Verify note card is visible")
+    public NotesAppNoteCardComponent shouldBeVisible() {
+        assertThat(cardComponent).isVisible();
+        return this;
+    }
+
+    @Step("Verify note card is deleted/hidden")
+    public void shouldBeDeleted() {
+        assertThat(cardComponent).not().isVisible();
+    }
+
     @Step("Verify note card details")
-    public void noteDetailsShouldMatch(NoteWithStatus expectedNote) {
+    public NotesAppNoteCardComponent noteDetailsShouldMatch(NoteWithStatus expectedNote) {
         assertThat(title).hasText(expectedNote.title());
         assertThat(description).hasText(expectedNote.description());
 
@@ -41,6 +54,8 @@ public class NotesAppNoteCardComponent extends BaseComponent {
 
         if (expectedNote.completed()) assertThat(completedCheckbox).isChecked();
         else assertThat(completedCheckbox).not().isChecked();
+
+        return this;
     }
 
     @Step("Set 'Completed' status to: {isCompleted}")
@@ -59,12 +74,14 @@ public class NotesAppNoteCardComponent extends BaseComponent {
     }
 
     @Step("Click 'Edit' on this note card")
-    public void clickEditButton() {
+    public NotesAppEditNoteModal clickEditButton() {
         editButton.click();
+        return new NotesAppEditNoteModal(page);
     }
 
     @Step("Click 'Delete' on this note card")
-    public void clickDeleteButton() {
+    public NotesAppDeleteNoteModal clickDeleteButton() {
         deleteButton.click();
+        return new NotesAppDeleteNoteModal(page);
     }
 }
