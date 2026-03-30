@@ -2,14 +2,10 @@ package pages.notes_app;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
-import enums.NoteCategory;
 import io.qameta.allure.Step;
 import pages.BasePage;
 import pages.notes_app.components.NotesAppAddNoteModal;
-import pages.notes_app.components.NotesAppDeleteNoteModal;
-import pages.notes_app.components.NotesAppEditNoteModal;
 import pages.notes_app.components.NotesAppNoteCardComponent;
-import records.NoteWithStatus;
 
 import java.util.regex.Pattern;
 
