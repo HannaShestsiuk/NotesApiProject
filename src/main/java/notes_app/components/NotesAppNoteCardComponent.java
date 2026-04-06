@@ -4,7 +4,6 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import enums.NoteCategory;
 import io.qameta.allure.Step;
-import notes_app.BaseComponent;
 import notes_app.pages.NotesAppSinglePage;
 import records.NoteWithStatus;
 
@@ -13,7 +12,10 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 /**
  * Represents a single Note Card component on the Home Page.
  */
-public class NotesAppNoteCardComponent extends BaseComponent {
+public class NotesAppNoteCardComponent {
+
+    private final Page page;
+
     private final Locator cardComponent;
     private final Locator title;
     private final Locator description;
@@ -23,8 +25,9 @@ public class NotesAppNoteCardComponent extends BaseComponent {
     private final Locator deleteButton;
 
     public NotesAppNoteCardComponent(Page page, Locator note) {
-        super(page);
+        this.page = page;
         this.cardComponent = note;
+
         this.title = note.getByTestId("note-card-title");
         this.description = note.getByTestId("note-card-description");
         this.completedCheckbox = note.getByTestId("toggle-note-switch");
