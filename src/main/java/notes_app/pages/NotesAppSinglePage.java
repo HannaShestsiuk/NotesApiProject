@@ -4,7 +4,7 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import enums.NoteCategory;
 import io.qameta.allure.Step;
-import pages.BasePage;
+import common.BasePage;
 import notes_app.components.NotesAppDeleteNoteModal;
 import notes_app.components.NotesAppEditNoteModal;
 import records.NoteWithStatus;

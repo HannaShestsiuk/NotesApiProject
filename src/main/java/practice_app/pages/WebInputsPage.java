@@ -4,7 +4,7 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
-import pages.BasePage;
+import common.BasePage;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static constants.Constants.WEB_INPUT_PAGE;

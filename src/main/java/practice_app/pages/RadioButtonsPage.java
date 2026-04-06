@@ -3,7 +3,7 @@ package practice_app.pages;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
-import pages.BasePage;
+import common.BasePage;
 
 import static constants.Constants.RADIO_BUTTONS_PAGE;
 

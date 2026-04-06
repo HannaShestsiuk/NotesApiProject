@@ -3,7 +3,7 @@ package notes_app.pages;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
-import pages.BasePage;
+import common.BasePage;
 import notes_app.components.NotesAppAddNoteModal;
 import notes_app.components.NotesAppNoteCardComponent;
 

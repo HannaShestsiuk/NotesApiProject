@@ -4,7 +4,7 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
-import pages.BasePage;
+import common.BasePage;
 import records.practice_records.OneTimePasswordData;
 
 import static constants.Constants.ONE_TIME_PASSWORD_PAGE;
