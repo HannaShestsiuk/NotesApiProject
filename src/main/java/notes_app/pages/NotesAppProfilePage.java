@@ -1,4 +1,4 @@
-package pages.notes_app;
+package notes_app.pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
@@ -10,7 +10,6 @@ import java.util.regex.Pattern;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static constants.Constants.NOTES_PROFILE_PAGE;
-import static constants.Constants.NOTES_WELCOME_PAGE;
 
 /**
  * Page Object for the Notes App Profile Settings page.

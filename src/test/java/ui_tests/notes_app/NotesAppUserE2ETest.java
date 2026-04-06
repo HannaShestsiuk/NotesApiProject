@@ -2,10 +2,10 @@ package ui_tests.notes_app;
 
 import helpers.TestDataGenerator;
 import io.qameta.allure.Description;
+import notes_app.pages.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import pages.notes_app.*;
-import pages.practice_pages.HomePage;
+import practice_app.pages.HomePage;
 import records.User;
 import records.UserProfile;
 import ui_tests.BaseTest;

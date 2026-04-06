@@ -1,4 +1,4 @@
-package pages.practice_pages;
+package practice_app.pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
@@ -6,7 +6,7 @@ import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import pages.BasePage;
-import pages.notes_app.NotesAppWelcomePage;
+import notes_app.pages.NotesAppWelcomePage;
 
 import static constants.Constants.*;
 

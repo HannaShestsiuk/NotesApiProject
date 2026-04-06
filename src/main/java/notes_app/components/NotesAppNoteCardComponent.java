@@ -1,11 +1,11 @@
-package pages.notes_app.components;
+package notes_app.components;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import enums.NoteCategory;
 import io.qameta.allure.Step;
-import pages.notes_app.BaseComponent;
-import pages.notes_app.NotesAppSinglePage;
+import notes_app.BaseComponent;
+import notes_app.pages.NotesAppSinglePage;
 import records.NoteWithStatus;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;

@@ -1,12 +1,12 @@
-package pages.notes_app;
+package notes_app.pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import enums.NoteCategory;
 import io.qameta.allure.Step;
 import pages.BasePage;
-import pages.notes_app.components.NotesAppDeleteNoteModal;
-import pages.notes_app.components.NotesAppEditNoteModal;
+import notes_app.components.NotesAppDeleteNoteModal;
+import notes_app.components.NotesAppEditNoteModal;
 import records.NoteWithStatus;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;

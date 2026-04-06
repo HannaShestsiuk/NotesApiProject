@@ -1,4 +1,4 @@
-package pages.notes_app;
+package notes_app;
 
 import com.microsoft.playwright.Page;
 

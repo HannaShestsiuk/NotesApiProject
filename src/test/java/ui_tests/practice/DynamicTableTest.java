@@ -3,8 +3,8 @@ package ui_tests.practice;
 import io.qameta.allure.Description;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import pages.practice_pages.DynamicTablePage;
-import pages.practice_pages.HomePage;
+import practice_app.pages.DynamicTablePage;
+import practice_app.pages.HomePage;
 import ui_tests.BaseTest;
 
 public class DynamicTableTest extends BaseTest {

@@ -6,8 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import pages.practice_pages.ForgotPasswordPage;
-import pages.practice_pages.HomePage;
+import practice_app.pages.ForgotPasswordPage;
+import practice_app.pages.HomePage;
 import ui_tests.BaseTest;
 
 import java.util.stream.Stream;

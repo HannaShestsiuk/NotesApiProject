@@ -1,8 +1,8 @@
-package pages.notes_app.components;
+package notes_app.components;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
-import pages.notes_app.BaseComponent;
+import notes_app.BaseComponent;
 import records.NoteWithStatus;
 
 /**

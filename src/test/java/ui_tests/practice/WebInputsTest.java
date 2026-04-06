@@ -3,7 +3,8 @@ package ui_tests.practice;
 import io.qameta.allure.Description;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import pages.practice_pages.*;
+import practice_app.pages.HomePage;
+import practice_app.pages.WebInputsPage;
 import ui_tests.BaseTest;
 
 public class WebInputsTest extends BaseTest {

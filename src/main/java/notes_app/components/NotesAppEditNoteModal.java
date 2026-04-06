@@ -1,8 +1,8 @@
-package pages.notes_app.components;
+package notes_app.components;
 
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
-import pages.notes_app.NotesAppHomePage;
+import notes_app.pages.NotesAppHomePage;
 import records.NoteWithStatus;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;

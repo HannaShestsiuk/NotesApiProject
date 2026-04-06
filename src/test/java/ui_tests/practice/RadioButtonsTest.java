@@ -3,8 +3,8 @@ package ui_tests.practice;
 import io.qameta.allure.Description;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import pages.practice_pages.HomePage;
-import pages.practice_pages.RadioButtonsPage;
+import practice_app.pages.HomePage;
+import practice_app.pages.RadioButtonsPage;
 import ui_tests.BaseTest;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;

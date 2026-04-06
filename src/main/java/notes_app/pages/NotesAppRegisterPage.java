@@ -1,4 +1,4 @@
-package pages.notes_app;
+package notes_app.pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;

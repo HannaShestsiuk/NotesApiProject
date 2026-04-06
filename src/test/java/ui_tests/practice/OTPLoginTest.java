@@ -3,10 +3,10 @@ package ui_tests.practice;
 import io.qameta.allure.Description;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import pages.practice_pages.HomePage;
-import pages.practice_pages.LoginPage;
-import pages.practice_pages.OTPLoginPage;
-import pages.practice_pages.SecurePage;
+import practice_app.pages.HomePage;
+import practice_app.pages.LoginPage;
+import practice_app.pages.OTPLoginPage;
+import practice_app.pages.SecurePage;
 import records.practice_records.OneTimePasswordData;
 import ui_tests.BaseTest;
 

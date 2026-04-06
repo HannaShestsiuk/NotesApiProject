@@ -1,11 +1,11 @@
-package pages.notes_app;
+package notes_app.pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
 import pages.BasePage;
-import pages.notes_app.components.NotesAppAddNoteModal;
-import pages.notes_app.components.NotesAppNoteCardComponent;
+import notes_app.components.NotesAppAddNoteModal;
+import notes_app.components.NotesAppNoteCardComponent;
 
 import java.util.regex.Pattern;
 
