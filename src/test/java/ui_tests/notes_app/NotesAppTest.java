@@ -227,4 +227,53 @@ public class NotesAppTest extends BaseTest {
             noteCard.shouldBeDeleted();
         });
     }
+
+    @Test
+    @DisplayName("[UI]. Notes App. Search: Create -> Filter -> Delete All")
+    @Description("""
+    1. Create 4 notes with randomized data.
+    2. Search by the first note's title and verify it is the only one visible.
+    3. Delete the filtered note from the search results.
+    4. Clear the search to reveal the remaining 3 notes.
+    5. Iterate through the remaining notes and delete them to leave a clean state.
+    """)
+    void searchNoteByTitleTest() {
+        List<NoteWithStatus> notesList = TestDataGenerator.generateRandomNotes(4);
+        notesList.forEach(note -> {
+            notesHome.clickAddNote()
+                    .createNote(note);
+            notesHome.waitForLoaderToDisappear();
+        });
+
+        String searchKeyword = notesList.getFirst().title();
+
+        notesHome.searchNotes(searchKeyword)
+                .waitForLoaderToDisappear()
+                .searchResultsShouldBeVisible(searchKeyword)
+                .countOfNotesShouldBe(1);
+
+        NotesAppNoteCardComponent filteredNote = notesHome.getNoteCardByTitle(searchKeyword);
+        filteredNote.shouldBeVisible()
+                .noteDetailsShouldMatch(notesList.getFirst());
+
+        filteredNote.clickDeleteButton()
+                .modalShouldBeVisible()
+                .confirmDeletion();
+
+        notesHome.waitForLoaderToDisappear()
+                .countOfNotesShouldBe(0)
+                .clearSearch()
+                .waitForLoaderToDisappear();
+
+        notesList.subList(1, notesList.size()).forEach(note -> {
+            NotesAppNoteCardComponent remainingNote = notesHome.getNoteCardByTitle(note.title());
+
+            remainingNote.clickDeleteButton()
+                    .modalShouldBeVisible()
+                    .confirmDeletion();
+
+            notesHome.waitForLoaderToDisappear();
+            remainingNote.shouldBeDeleted();
+        });
+    }
 }

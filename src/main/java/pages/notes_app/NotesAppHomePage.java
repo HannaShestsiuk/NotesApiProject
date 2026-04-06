@@ -53,6 +53,10 @@ public class NotesAppHomePage extends BasePage {
     private Locator addNoteButton() {
         return page.getByTestId("add-new-note");
     }
+
+    private final Locator searchInput = page.getByTestId("search-input");
+    private final Locator searchButton = page.getByTestId("search-btn");
+
     private final Locator loader = page.locator(".progress");
     public final Locator noteCards = page.getByTestId("note-card");
 
@@ -93,6 +97,57 @@ public class NotesAppHomePage extends BasePage {
         logoutButton().click();
         page.waitForURL("**" + NOTES_WELCOME_PAGE);
         return new NotesAppWelcomePage(page);
+    }
+
+    /**
+     * Verifies that the search results header is displayed and contains the expected query string.
+     *
+     * @param query The search term expected to appear in the results message.
+     * @return This {@link NotesAppHomePage} instance for method chaining.
+     */
+    @Step("Verify search results message contains: {query}")
+    public NotesAppHomePage searchResultsShouldBeVisible(String query) {
+        assertThat(page.locator("p >> text=Search Results for")).containsText(query);
+        return this;
+    }
+
+    /**
+     * Asserts that the number of note cards currently visible on the dashboard
+     * matches the expected count.
+     *
+     * @param count The expected number of visible notes.
+     * @return This {@link NotesAppHomePage} instance for method chaining.
+     */
+    @Step("Verify that exactly {count} notes are displayed")
+    public NotesAppHomePage countOfNotesShouldBe(int count) {
+        assertThat(noteCards).hasCount(count);
+        return this;
+    }
+
+    /**
+     * Performs a search operation by filling the search input and clicking the search button.
+     *
+     * @param query The string to search for within the notes.
+     * @return This {@link NotesAppHomePage} instance for method chaining.
+     */
+    @Step("Search for notes with query: {query}")
+    public NotesAppHomePage searchNotes(String query) {
+        searchInput.fill(query);
+        searchButton.click();
+        return this;
+    }
+
+    /**
+     * Clears the current text in the search input field and triggers a search
+     * to reset the view to show all notes.
+     *
+     * @return This {@link NotesAppHomePage} instance for method chaining.
+     */
+    @Step("Clear search input")
+    public NotesAppHomePage clearSearch() {
+        searchInput.clear();
+        searchButton.click();
+        return this;
     }
 
     @Step("Click on '+ Add Note' button")
