@@ -12,9 +12,9 @@ import records.NoteWithStatus;
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static constants.Constants.NOTES_SINGLE_NOTE_PAGE;
 
-public class NotesAppSingleNotePage extends BasePage {
+public class NotesAppSinglePage extends BasePage {
 
-    public NotesAppSingleNotePage(Page page) {
+    public NotesAppSinglePage(Page page) {
         super(page);
     }
 
@@ -33,7 +33,7 @@ public class NotesAppSingleNotePage extends BasePage {
 
     // --- Assertions ---
     @Step("Verify single note page details match: {expectedNote.title}")
-    public NotesAppSingleNotePage noteDetailsShouldMatch(NoteWithStatus expectedNote) {
+    public NotesAppSinglePage noteDetailsShouldMatch(NoteWithStatus expectedNote) {
         assertThat(title).hasText(expectedNote.title());
         assertThat(description).hasText(expectedNote.description());
 
@@ -65,7 +65,7 @@ public class NotesAppSingleNotePage extends BasePage {
     }
 
     @Step("Wait for home page loader to disappear")
-    public NotesAppSingleNotePage waitForLoaderToDisappear() {
+    public NotesAppSinglePage waitForLoaderToDisappear() {
         assertThat(loader).isHidden();
         return this;
     }

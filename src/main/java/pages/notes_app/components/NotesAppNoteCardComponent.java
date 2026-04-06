@@ -5,7 +5,7 @@ import com.microsoft.playwright.Page;
 import enums.NoteCategory;
 import io.qameta.allure.Step;
 import pages.notes_app.BaseComponent;
-import pages.notes_app.NotesAppSingleNotePage;
+import pages.notes_app.NotesAppSinglePage;
 import records.NoteWithStatus;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
@@ -68,9 +68,9 @@ public class NotesAppNoteCardComponent extends BaseComponent {
     }
 
     @Step("Click 'View' on this note card")
-    public NotesAppSingleNotePage clickViewButton() {
+    public NotesAppSinglePage clickViewButton() {
         viewButton.click();
-        return new NotesAppSingleNotePage(page);
+        return new NotesAppSinglePage(page);
     }
 
     @Step("Click 'Edit' on this note card")

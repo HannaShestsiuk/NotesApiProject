@@ -9,7 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import pages.notes_app.NotesAppHomePage;
 import pages.notes_app.NotesAppLoginPage;
-import pages.notes_app.NotesAppSingleNotePage;
+import pages.notes_app.NotesAppSinglePage;
 import pages.notes_app.components.NotesAppNoteCardComponent;
 import records.NoteWithStatus;
 import records.User;
@@ -172,7 +172,7 @@ public class NotesAppTest extends BaseTest {
         myNote.shouldBeVisible()
                 .noteDetailsShouldMatch(note);
 
-        NotesAppSingleNotePage singleNotePage = myNote.clickViewButton();
+        NotesAppSinglePage singleNotePage = myNote.clickViewButton();
 
         singleNotePage.noteDetailsShouldMatch(note);
 
