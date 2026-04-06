@@ -276,4 +276,56 @@ public class NotesAppTest extends BaseTest {
             remainingNote.shouldBeDeleted();
         });
     }
+
+    @Test
+    @DisplayName("[UI]. Notes App. Category Filtering: Create -> Filter -> Delete All")
+    @Description("""
+    1. Create 3 notes in different categories (Home, Work, Personal).
+    2. Apply the 'Work' category filter.
+    3. Verify only the 'Work' category note is visible.
+    4. Reset filter to 'All' and delete all created notes.
+    """)
+    void filterNotesByCategoryTest() {
+
+        NoteWithStatus homeNote = new NoteWithStatus(randomTitle(5), randomDescription(), false, NoteCategory.HOME.getLabel());
+        NoteWithStatus workNote = new NoteWithStatus(randomTitle(5), randomDescription(), false, NoteCategory.WORK.getLabel());
+        NoteWithStatus personalNote = new NoteWithStatus(randomTitle(5), randomDescription(), false, NoteCategory.PERSONAL.getLabel());
+
+        List<NoteWithStatus> allNotes = List.of(homeNote, workNote, personalNote);
+
+        allNotes.forEach(note -> {
+            notesHome.clickAddNote()
+                    .createNote(note);
+            notesHome.waitForLoaderToDisappear();
+        });
+
+        allNotes.forEach(expectedNote -> {
+            String category = expectedNote.category();
+
+            switch (category) {
+                case "Home" -> notesHome.filterByHome();
+                case "Work" -> notesHome.filterByWork();
+                case "Personal" -> notesHome.filterByPersonal();
+            }
+
+            notesHome.waitForLoaderToDisappear();
+
+            notesHome.progressInfoShouldContain("in the " + category.toLowerCase() + " category");
+
+            notesHome.countOfNotesShouldBe(1);
+
+            NotesAppNoteCardComponent card = notesHome.getNoteCardByTitle(expectedNote.title());
+            card.shouldBeVisible()
+                    .noteDetailsShouldMatch(expectedNote);
+        });
+
+        notesHome.filterByAll().waitForLoaderToDisappear();
+
+        allNotes.forEach(note -> {
+            NotesAppNoteCardComponent card = notesHome.getNoteCardByTitle(note.title());
+            card.clickDeleteButton().confirmDeletion();
+            notesHome.waitForLoaderToDisappear();
+            card.shouldBeDeleted();
+        });
+    }
 }

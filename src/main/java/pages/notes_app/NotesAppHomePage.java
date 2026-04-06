@@ -57,6 +57,24 @@ public class NotesAppHomePage extends BasePage {
     private final Locator searchInput = page.getByTestId("search-input");
     private final Locator searchButton = page.getByTestId("search-btn");
 
+    private Locator categoryAllButton() {
+        return page.getByTestId("category-all");
+    }
+
+    private Locator categoryHomeButton() {
+        return page.getByTestId("category-home");
+    }
+
+    private Locator categoryWorkButton() {
+        return page.getByTestId("category-work");
+    }
+
+    private Locator categoryPersonalButton() {
+        return page.getByTestId("category-personal");
+    }
+
+    private final Locator progressInfo = page.getByTestId("progress-info");
+
     private final Locator loader = page.locator(".progress");
     public final Locator noteCards = page.getByTestId("note-card");
 
@@ -147,6 +165,53 @@ public class NotesAppHomePage extends BasePage {
     public NotesAppHomePage clearSearch() {
         searchInput.clear();
         searchButton.click();
+        return this;
+    }
+
+    /**
+     * Filters notes by the 'All' category.
+     */
+    @Step("Filter notes by category: All")
+    public NotesAppHomePage filterByAll() {
+        categoryAllButton().click();
+        return this;
+    }
+
+    /**
+     * Filters notes by the 'Home' category.
+     */
+    @Step("Filter notes by category: Home")
+    public NotesAppHomePage filterByHome() {
+        categoryHomeButton().click();
+        return this;
+    }
+
+    /**
+     * Filters notes by the 'Work' category.
+     */
+    @Step("Filter notes by category: Work")
+    public NotesAppHomePage filterByWork() {
+        categoryWorkButton().click();
+        return this;
+    }
+
+    /**
+     * Filters notes by the 'Personal' category.
+     */
+    @Step("Filter notes by category: Personal")
+    public NotesAppHomePage filterByPersonal() {
+        categoryPersonalButton().click();
+        return this;
+    }
+
+    /**
+     * Verifies the progress info text matches the expected category and count.
+     * * @param expectedText The text expected in the info bar (e.g., "work category").
+     * @return This {@link NotesAppHomePage} instance.
+     */
+    @Step("Verify progress info displays: {expectedText}")
+    public NotesAppHomePage progressInfoShouldContain(String expectedText) {
+        assertThat(progressInfo).containsText(expectedText);
         return this;
     }
 
