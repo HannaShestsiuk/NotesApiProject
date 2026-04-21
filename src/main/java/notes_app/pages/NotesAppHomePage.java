@@ -58,6 +58,7 @@ public class NotesAppHomePage extends BasePage {
 
     private final Locator searchInput = page.getByTestId("search-input");
     private final Locator searchButton = page.getByTestId("search-btn");
+    private final Locator noNotesMessage = page.getByTestId("no-notes-message");
 
     private Locator categoryAllButton() {
         return page.getByTestId("category-all");
@@ -117,6 +118,19 @@ public class NotesAppHomePage extends BasePage {
         logoutButton().click();
         page.waitForURL("**" + NOTES_WELCOME_PAGE);
         return new NotesAppWelcomePage(page);
+    }
+
+    /**
+     * Verifies that the "no notes" placeholder message is visible and contains the expected text.
+     * @return This {@link NotesAppHomePage} instance.
+     */
+    @Step("Verify 'No notes' message is displayed")
+    public NotesAppHomePage noNotesMessageShouldBeVisible() {
+        assertThat(noNotesMessage)
+                .isVisible();
+        assertThat(noNotesMessage)
+                .hasText("You don't have any notes in all categories");
+        return this;
     }
 
     /**

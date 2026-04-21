@@ -1,6 +1,5 @@
 package ui_tests.notes_app;
 
-import com.microsoft.playwright.Locator;
 import enums.NoteCategory;
 import helpers.TestDataGenerator;
 import io.qameta.allure.Description;
@@ -241,11 +240,13 @@ public class NotesAppTest extends BaseTest {
         notesHome.waitForLoaderToDisappear()
                 .countOfNotesShouldBe(0)
                 .clearSearch()
+                .filterByAll()
                 .waitForLoaderToDisappear();
 
         notesHome.bulkDeleteAllVisibleNotes();
 
-        notesHome.countOfNotesShouldBe(0);
+        notesHome.countOfNotesShouldBe(0)
+                .noNotesMessageShouldBeVisible();
     }
 
     @Test
@@ -269,6 +270,7 @@ public class NotesAppTest extends BaseTest {
                 .waitForLoaderToDisappear()
                 .bulkDeleteAllVisibleNotes();
 
-        notesHome.countOfNotesShouldBe(0);
+        notesHome.countOfNotesShouldBe(0)
+                .noNotesMessageShouldBeVisible();
     }
 }
