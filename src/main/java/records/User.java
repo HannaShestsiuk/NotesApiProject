@@ -1,12 +1,12 @@
 package records;
 
 public record User(
-        String name,
+        String userName,
         String email,
         String password
 ) {
     public User {
-        name = name == null ? null : name.trim();
+        userName = userName == null ? null : userName.trim();
         email = email == null ? null : email.trim();
     }
 }

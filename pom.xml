@@ -15,8 +15,6 @@
     <allure.version>2.30.0</allure.version>
     <allure-maven.version>2.12.0</allure-maven.version>
     <aspectj.version>1.9.21</aspectj.version>
-    <maven.compiler.source>17</maven.compiler.source>
-    <maven.compiler.target>17</maven.compiler.target>
   </properties>
 
   <dependencies>
@@ -25,7 +23,6 @@
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
       <version>5.10.0</version>
-      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -38,16 +35,15 @@
       <groupId>io.rest-assured</groupId>
       <artifactId>rest-assured</artifactId>
       <version>6.0.0</version>
-      <scope>test</scope>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/io.rest-assured/json-schema-validator -->
-    <dependency>
-      <groupId>io.rest-assured</groupId>
-      <artifactId>json-schema-validator</artifactId>
-      <version>6.0.0</version>
-      <scope>test</scope>
-    </dependency>
+      <!-- https://mvnrepository.com/artifact/io.rest-assured/json-schema-validator -->
+      <dependency>
+          <groupId>io.rest-assured</groupId>
+          <artifactId>json-schema-validator</artifactId>
+          <version>6.0.0</version>
+          <scope>test</scope>
+      </dependency>
 
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
@@ -66,7 +62,6 @@
       <groupId>io.qameta.allure</groupId>
       <artifactId>allure-java-commons</artifactId>
       <version>2.32.0</version>
-      <scope>test</scope>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/io.qameta.allure/allure-junit5 -->
@@ -74,7 +69,6 @@
       <groupId>io.qameta.allure</groupId>
       <artifactId>allure-junit5</artifactId>
       <version>2.32.0</version>
-      <scope>test</scope>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/io.qameta.allure/allure-rest-assured -->
@@ -82,7 +76,6 @@
       <groupId>io.qameta.allure</groupId>
       <artifactId>allure-rest-assured</artifactId>
       <version>2.32.0</version>
-      <scope>test</scope>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
@@ -90,6 +83,13 @@
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
       <version>5.10.0</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-java</artifactId>
+      <version>4.39.0</version>
       <scope>test</scope>
     </dependency>
 
@@ -107,6 +107,12 @@
         <scope>test</scope>
     </dependency>
 
+    <dependency>
+      <groupId>com.microsoft.playwright</groupId>
+      <artifactId>playwright</artifactId>
+      <version>1.57.0</version>
+    </dependency>
+
   </dependencies>
     <build>
         <plugins>
@@ -117,6 +123,9 @@
                 <configuration>
                     <source>21</source>
                     <target>21</target>
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
 
@@ -134,20 +143,11 @@
                     <argLine>
                         -javaagent:${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar
                         -Dfile.encoding=UTF-8
-                        --add-opens java.base/sun.misc=ALL-UNNAMED
                     </argLine>
-                    <parallel>all</parallel>
-                    <threadCount>1</threadCount>
                     <systemPropertyVariables>
                         <allure.results.directory>target/allure-results</allure.results.directory>
                     </systemPropertyVariables>
                 </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-report-plugin</artifactId>
-                <version>3.2.5</version>
             </plugin>
         </plugins>
     </build>

@@ -1,7 +1,5 @@
 package records;
 
-import enums.NoteCategory;
-
 public record Note(
         String title,
         String description,

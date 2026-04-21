@@ -3,7 +3,7 @@ package requests;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 
-import static constants.ApiConstants.*;
+import static constants.Constants.*;
 import static requests.RequestLibrary.*;
 
 public interface SimpleActions {
