@@ -12,7 +12,7 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 /**
  * Represents a single Note Card component on the Home Page.
  */
-public class NotesAppNoteCardComponent {
+public class NoteCardComponent {
 
     private final Page page;
 
@@ -24,7 +24,7 @@ public class NotesAppNoteCardComponent {
     private final Locator editButton;
     private final Locator deleteButton;
 
-    public NotesAppNoteCardComponent(Page page, Locator note) {
+    public NoteCardComponent(Page page, Locator note) {
         this.page = page;
         this.cardComponent = note;
 
@@ -37,7 +37,7 @@ public class NotesAppNoteCardComponent {
     }
 
     @Step("Verify note card is visible")
-    public NotesAppNoteCardComponent shouldBeVisible() {
+    public NoteCardComponent shouldBeVisible() {
         assertThat(cardComponent).isVisible();
         return this;
     }
@@ -48,7 +48,7 @@ public class NotesAppNoteCardComponent {
     }
 
     @Step("Verify note card details")
-    public NotesAppNoteCardComponent noteDetailsShouldMatch(NoteWithStatus expectedNote) {
+    public NoteCardComponent noteDetailsShouldMatch(NoteWithStatus expectedNote) {
         assertThat(title).hasText(expectedNote.title());
         assertThat(description).hasText(expectedNote.description());
 
@@ -77,14 +77,14 @@ public class NotesAppNoteCardComponent {
     }
 
     @Step("Click 'Edit' on this note card")
-    public NotesAppEditNoteModal clickEditButton() {
+    public EditNoteModal clickEditButton() {
         editButton.click();
-        return new NotesAppEditNoteModal(page);
+        return new EditNoteModal(page);
     }
 
     @Step("Click 'Delete' on this note card")
-    public NotesAppDeleteNoteModal clickDeleteButton() {
+    public DeleteNoteModal clickDeleteButton() {
         deleteButton.click();
-        return new NotesAppDeleteNoteModal(page);
+        return new DeleteNoteModal(page);
     }
 }

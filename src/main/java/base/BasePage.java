@@ -1,4 +1,4 @@
-package common;
+package base;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;

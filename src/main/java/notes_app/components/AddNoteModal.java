@@ -15,9 +15,9 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
  * category selection, completion status, title, and description.
  * </p>
  */
-public class NotesAppAddNoteModal extends BaseNoteModal {
+public class AddNoteModal extends BaseNoteModal {
 
-    public NotesAppAddNoteModal(Page page) {
+    public AddNoteModal(Page page) {
         super(page);
     }
 
@@ -26,7 +26,7 @@ public class NotesAppAddNoteModal extends BaseNoteModal {
      * * @param page The Playwright Page object used to interact with the browser.
      */
     @Step("Verify that 'Add new note' modal is visible")
-    public NotesAppAddNoteModal modalShouldBeVisible() {
+    public AddNoteModal modalShouldBeVisible() {
         assertThat(modalTitle).hasText("Add new note");
         return this;
     }

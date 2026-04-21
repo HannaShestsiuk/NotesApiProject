@@ -5,7 +5,7 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
-import common.BasePage;
+import base.BasePage;
 import records.practice_records.PracticeUiUser;
 
 import static constants.Constants.LOGIN_PAGE;

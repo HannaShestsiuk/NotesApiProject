@@ -5,7 +5,7 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
-import common.BasePage;
+import base.BasePage;
 
 import static constants.Constants.FORGOT_PASSWORD_PAGE;
 import static constants.Messages.PASSWORD_RESET_SENT;

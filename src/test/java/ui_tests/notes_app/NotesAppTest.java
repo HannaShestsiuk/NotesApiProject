@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import notes_app.pages.NotesAppHomePage;
 import notes_app.pages.NotesAppLoginPage;
 import notes_app.pages.NotesAppSinglePage;
-import notes_app.components.NotesAppNoteCardComponent;
+import notes_app.components.NoteCardComponent;
 import records.NoteWithStatus;
 import records.User;
 import testdata.TestUsers;
@@ -67,7 +67,7 @@ public class NotesAppTest extends BaseTest {
                 .modalShouldBeVisible()
                 .createNote(note);
 
-        NotesAppNoteCardComponent myNote = notesHome
+        NoteCardComponent myNote = notesHome
                 .waitForLoaderToDisappear()
                 .getNoteCardByTitle(note.title());
 
@@ -113,7 +113,7 @@ public class NotesAppTest extends BaseTest {
                 .modalShouldBeVisible()
                 .createNote(note);
 
-        NotesAppNoteCardComponent myNote = notesHome.waitForLoaderToDisappear()
+        NoteCardComponent myNote = notesHome.waitForLoaderToDisappear()
                 .getNoteCardByTitle(note.title());
 
         myNote.shouldBeVisible()
@@ -165,7 +165,7 @@ public class NotesAppTest extends BaseTest {
                 .modalShouldBeVisible()
                 .createNote(note);
 
-        NotesAppNoteCardComponent myNote = notesHome
+        NoteCardComponent myNote = notesHome
                 .waitForLoaderToDisappear()
                 .getNoteCardByTitle(note.title());
 
@@ -216,7 +216,7 @@ public class NotesAppTest extends BaseTest {
         });
 
         notesList.forEach(note -> {
-            NotesAppNoteCardComponent noteCard = notesHome.getNoteCardByTitle(note.title());
+            NoteCardComponent noteCard = notesHome.getNoteCardByTitle(note.title());
 
             noteCard.clickDeleteButton()
                     .modalShouldBeVisible()
@@ -252,7 +252,7 @@ public class NotesAppTest extends BaseTest {
                 .searchResultsShouldBeVisible(searchKeyword)
                 .countOfNotesShouldBe(1);
 
-        NotesAppNoteCardComponent filteredNote = notesHome.getNoteCardByTitle(searchKeyword);
+        NoteCardComponent filteredNote = notesHome.getNoteCardByTitle(searchKeyword);
         filteredNote.shouldBeVisible()
                 .noteDetailsShouldMatch(notesList.getFirst());
 
@@ -266,7 +266,7 @@ public class NotesAppTest extends BaseTest {
                 .waitForLoaderToDisappear();
 
         notesList.subList(1, notesList.size()).forEach(note -> {
-            NotesAppNoteCardComponent remainingNote = notesHome.getNoteCardByTitle(note.title());
+            NoteCardComponent remainingNote = notesHome.getNoteCardByTitle(note.title());
 
             remainingNote.clickDeleteButton()
                     .modalShouldBeVisible()
@@ -314,7 +314,7 @@ public class NotesAppTest extends BaseTest {
 
             notesHome.countOfNotesShouldBe(1);
 
-            NotesAppNoteCardComponent card = notesHome.getNoteCardByTitle(expectedNote.title());
+            NoteCardComponent card = notesHome.getNoteCardByTitle(expectedNote.title());
             card.shouldBeVisible()
                     .noteDetailsShouldMatch(expectedNote);
         });
@@ -322,7 +322,7 @@ public class NotesAppTest extends BaseTest {
         notesHome.filterByAll().waitForLoaderToDisappear();
 
         allNotes.forEach(note -> {
-            NotesAppNoteCardComponent card = notesHome.getNoteCardByTitle(note.title());
+            NoteCardComponent card = notesHome.getNoteCardByTitle(note.title());
             card.clickDeleteButton().confirmDeletion();
             notesHome.waitForLoaderToDisappear();
             card.shouldBeDeleted();

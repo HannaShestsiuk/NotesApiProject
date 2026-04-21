@@ -7,7 +7,7 @@ import notes_app.pages.NotesAppHomePage;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
-public class NotesAppDeleteNoteModal {
+public class DeleteNoteModal {
 
     private final Page page;
 
@@ -16,7 +16,7 @@ public class NotesAppDeleteNoteModal {
     private final Locator confirmDeleteButton;
     private final Locator cancelButton;
 
-    public NotesAppDeleteNoteModal(Page page) {
+    public DeleteNoteModal(Page page) {
 
         this.page = page;
 
@@ -27,7 +27,7 @@ public class NotesAppDeleteNoteModal {
     }
 
     @Step("Verify delete confirmation modal is visible")
-    public NotesAppDeleteNoteModal modalShouldBeVisible() {
+    public DeleteNoteModal modalShouldBeVisible() {
         assertThat(modalTitle).hasText("Delete note?");
         return this;
     }

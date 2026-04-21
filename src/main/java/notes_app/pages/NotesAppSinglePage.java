@@ -4,9 +4,9 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import enums.NoteCategory;
 import io.qameta.allure.Step;
-import common.BasePage;
-import notes_app.components.NotesAppDeleteNoteModal;
-import notes_app.components.NotesAppEditNoteModal;
+import base.BasePage;
+import notes_app.components.DeleteNoteModal;
+import notes_app.components.EditNoteModal;
 import records.NoteWithStatus;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
@@ -59,9 +59,9 @@ public class NotesAppSinglePage extends BasePage {
     }
 
     @Step("Click 'Edit' from the single note page")
-    public NotesAppEditNoteModal clickEdit() {
+    public EditNoteModal clickEdit() {
         editButton.click();
-        return new NotesAppEditNoteModal(page);
+        return new EditNoteModal(page);
     }
 
     @Step("Wait for home page loader to disappear")
@@ -71,8 +71,8 @@ public class NotesAppSinglePage extends BasePage {
     }
 
     @Step("Click 'Delete' from the single note page")
-    public NotesAppDeleteNoteModal clickDelete() {
+    public DeleteNoteModal clickDelete() {
         deleteButton.click();
-        return new NotesAppDeleteNoteModal(page);
+        return new DeleteNoteModal(page);
     }
 }

@@ -3,7 +3,7 @@ package notes_app.pages;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
-import common.BasePage;
+import base.BasePage;
 import records.UserProfile;
 
 import java.util.regex.Pattern;

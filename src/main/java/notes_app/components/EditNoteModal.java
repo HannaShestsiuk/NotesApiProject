@@ -10,14 +10,14 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 /**
  * Page Object for the Edit Note Modal.
  */
-public class NotesAppEditNoteModal extends BaseNoteModal {
+public class EditNoteModal extends BaseNoteModal {
 
-    public NotesAppEditNoteModal(Page page) {
+    public EditNoteModal(Page page) {
         super(page);
     }
 
     @Step("Verify that 'Edit note' modal is visible")
-    public NotesAppEditNoteModal modalShouldBeVisible() {
+    public EditNoteModal modalShouldBeVisible() {
         assertThat(modalTitle).hasText("Edit note");
         return this;
     }
