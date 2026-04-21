@@ -6,7 +6,9 @@ import io.qameta.allure.Step;
 import base.BasePage;
 import notes_app.components.AddNoteModal;
 import notes_app.components.NoteCardComponent;
+import records.NoteWithStatus;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
@@ -235,5 +237,83 @@ public class NotesAppHomePage extends BasePage {
                 .setHas(page.getByTestId("note-card-title")
                         .getByText(title, new Locator.GetByTextOptions().setExact(true))));
         return new NoteCardComponent(page, note);
+    }
+
+    /**
+     * Creates multiple notes sequentially.
+     */
+    @Step("Bulk create notes")
+    public NotesAppHomePage bulkCreateNotes(List<NoteWithStatus> notes) {
+        notes.forEach(note -> {
+            this.clickAddNote().createNote(note);
+            this.waitForLoaderToDisappear();
+        });
+        return this;
+    }
+
+    /**
+     * Verifies that each note in the list is visible and its details match the provided data.
+     */
+    @Step("Verify details for all provided notes")
+    public NotesAppHomePage bulkVerifyNotesDetails(List<NoteWithStatus> notes) {
+        notes.forEach(note -> {
+            this.getNoteCardByTitle(note.title())
+                    .shouldBeVisible()
+                    .noteDetailsShouldMatch(note);
+        });
+        return this;
+    }
+
+    /**
+     * Deletes all visible notes on the page, one by one.
+     * This iterates over the DOM elements directly, making it safer
+     * than relying on a static list of data.
+     * * @return This {@link NotesAppHomePage} instance.
+     */
+    @Step("Bulk delete all visible notes")
+    public NotesAppHomePage bulkDeleteAllVisibleNotes() {
+        page.waitForTimeout(500);
+
+        while (noteCards.count() > 0) {
+            Locator firstCardLocator = noteCards.first();
+
+            NoteCardComponent card = new NoteCardComponent(page, firstCardLocator);
+
+            card.clickDeleteButton()
+                    .confirmDeletion();
+
+            this.waitForLoaderToDisappear();
+        }
+        return this;
+    }
+
+    /**
+     * Iterates through a list of notes, applies the filter for each note's category,
+     * and verifies that only that specific note is visible with correct details.
+     * * @param notes List of notes to verify against the filtering logic.
+     * @return This {@link NotesAppHomePage} instance.
+     */
+    @Step("Verify filtering for each category")
+    public NotesAppHomePage bulkVerifyCategoryFiltering(List<NoteWithStatus> notes) {
+        notes.forEach(expectedNote -> {
+            String category = expectedNote.category();
+
+            switch (category) {
+                case "Home" -> this.filterByHome();
+                case "Work" -> this.filterByWork();
+                case "Personal" -> this.filterByPersonal();
+                default -> throw new IllegalArgumentException("Unknown category: " + category);
+            }
+
+            this.waitForLoaderToDisappear();
+
+            this.progressInfoShouldContain("in the " + category.toLowerCase() + " category")
+                    .countOfNotesShouldBe(1);
+
+            this.getNoteCardByTitle(expectedNote.title())
+                    .shouldBeVisible()
+                    .noteDetailsShouldMatch(expectedNote);
+        });
+        return this;
     }
 }

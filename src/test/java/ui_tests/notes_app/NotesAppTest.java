@@ -1,5 +1,6 @@
 package ui_tests.notes_app;
 
+import com.microsoft.playwright.Locator;
 import enums.NoteCategory;
 import helpers.TestDataGenerator;
 import io.qameta.allure.Description;
@@ -193,39 +194,23 @@ public class NotesAppTest extends BaseTest {
     @Test
     @DisplayName("[UI]. Notes App. Bulk Operations for  multiple notes: Create -> Delete")
     @Description("""
-        1. Login to the application with a pre-registered user.
-        2. Generate a dynamic list of 10 Note objects.
-        3. Iterate through the list to Create each note and verify its immediate visibility.
-        4. Iterate through the list to Delete each note via the confirmation modal.
-        5. Verify each note is successfully removed.
-        6. Perform a clean logout to terminate the session.
+            1. Login to the application with a pre-registered user.
+            2. Generate a dynamic list of 10 Note objects.
+            3. Perform a bulk creation of all notes in the list.
+            4. Perform a bulk verification to ensure every note card matches the expected data (Title, Description, Color).
+            5. Execute a UI-driven bulk deletion of all visible notes.
+            6. Verify the dashboard is empty.
+            7. Log the user out to clean up the session.
         """)
     void bulkNoteOperationsTest() {
 
         List<NoteWithStatus> notesList = TestDataGenerator.generateRandomNotes(10);
 
-        notesList.forEach(note -> {
-            notesHome.clickAddNote()
-                    .modalShouldBeVisible()
-                    .createNote(note);
+        notesHome.bulkCreateNotes(notesList)
+                .bulkVerifyNotesDetails(notesList)
+                .bulkDeleteAllVisibleNotes();
 
-            notesHome.waitForLoaderToDisappear()
-                    .getNoteCardByTitle(note.title())
-                    .shouldBeVisible()
-                    .noteDetailsShouldMatch(note);
-        });
-
-        notesList.forEach(note -> {
-            NoteCardComponent noteCard = notesHome.getNoteCardByTitle(note.title());
-
-            noteCard.clickDeleteButton()
-                    .modalShouldBeVisible()
-                    .confirmDeletion();
-
-            notesHome.waitForLoaderToDisappear();
-
-            noteCard.shouldBeDeleted();
-        });
+        notesHome.countOfNotesShouldBe(0);
     }
 
     @Test
@@ -239,25 +224,18 @@ public class NotesAppTest extends BaseTest {
     """)
     void searchNoteByTitleTest() {
         List<NoteWithStatus> notesList = TestDataGenerator.generateRandomNotes(4);
-        notesList.forEach(note -> {
-            notesHome.clickAddNote()
-                    .createNote(note);
-            notesHome.waitForLoaderToDisappear();
-        });
+        notesHome.bulkCreateNotes(notesList);
 
         String searchKeyword = notesList.getFirst().title();
-
         notesHome.searchNotes(searchKeyword)
                 .waitForLoaderToDisappear()
                 .searchResultsShouldBeVisible(searchKeyword)
                 .countOfNotesShouldBe(1);
 
-        NoteCardComponent filteredNote = notesHome.getNoteCardByTitle(searchKeyword);
-        filteredNote.shouldBeVisible()
-                .noteDetailsShouldMatch(notesList.getFirst());
-
-        filteredNote.clickDeleteButton()
-                .modalShouldBeVisible()
+        notesHome.getNoteCardByTitle(searchKeyword)
+                .shouldBeVisible()
+                .noteDetailsShouldMatch(notesList.getFirst())
+                .clickDeleteButton()
                 .confirmDeletion();
 
         notesHome.waitForLoaderToDisappear()
@@ -265,67 +243,32 @@ public class NotesAppTest extends BaseTest {
                 .clearSearch()
                 .waitForLoaderToDisappear();
 
-        notesList.subList(1, notesList.size()).forEach(note -> {
-            NoteCardComponent remainingNote = notesHome.getNoteCardByTitle(note.title());
+        notesHome.bulkDeleteAllVisibleNotes();
 
-            remainingNote.clickDeleteButton()
-                    .modalShouldBeVisible()
-                    .confirmDeletion();
-
-            notesHome.waitForLoaderToDisappear();
-            remainingNote.shouldBeDeleted();
-        });
+        notesHome.countOfNotesShouldBe(0);
     }
 
     @Test
     @DisplayName("[UI]. Notes App. Category Filtering: Create -> Filter -> Delete All")
     @Description("""
     1. Create 3 notes in different categories (Home, Work, Personal).
-    2. Apply the 'Work' category filter.
-    3. Verify only the 'Work' category note is visible.
-    4. Reset filter to 'All' and delete all created notes.
+    2. Sequentially apply each category filter.
+    3. Verify that for each filter, only the matching note is visible and details are correct.
+    4. Reset filter to 'All' and perform a bulk deletion.
     """)
     void filterNotesByCategoryTest() {
-
         NoteWithStatus homeNote = new NoteWithStatus(randomTitle(5), randomDescription(), false, NoteCategory.HOME.getLabel());
         NoteWithStatus workNote = new NoteWithStatus(randomTitle(5), randomDescription(), false, NoteCategory.WORK.getLabel());
         NoteWithStatus personalNote = new NoteWithStatus(randomTitle(5), randomDescription(), false, NoteCategory.PERSONAL.getLabel());
 
         List<NoteWithStatus> allNotes = List.of(homeNote, workNote, personalNote);
 
-        allNotes.forEach(note -> {
-            notesHome.clickAddNote()
-                    .createNote(note);
-            notesHome.waitForLoaderToDisappear();
-        });
+        notesHome.bulkCreateNotes(allNotes)
+                .bulkVerifyCategoryFiltering(allNotes)
+                .filterByAll()
+                .waitForLoaderToDisappear()
+                .bulkDeleteAllVisibleNotes();
 
-        allNotes.forEach(expectedNote -> {
-            String category = expectedNote.category();
-
-            switch (category) {
-                case "Home" -> notesHome.filterByHome();
-                case "Work" -> notesHome.filterByWork();
-                case "Personal" -> notesHome.filterByPersonal();
-            }
-
-            notesHome.waitForLoaderToDisappear();
-
-            notesHome.progressInfoShouldContain("in the " + category.toLowerCase() + " category");
-
-            notesHome.countOfNotesShouldBe(1);
-
-            NoteCardComponent card = notesHome.getNoteCardByTitle(expectedNote.title());
-            card.shouldBeVisible()
-                    .noteDetailsShouldMatch(expectedNote);
-        });
-
-        notesHome.filterByAll().waitForLoaderToDisappear();
-
-        allNotes.forEach(note -> {
-            NoteCardComponent card = notesHome.getNoteCardByTitle(note.title());
-            card.clickDeleteButton().confirmDeletion();
-            notesHome.waitForLoaderToDisappear();
-            card.shouldBeDeleted();
-        });
+        notesHome.countOfNotesShouldBe(0);
     }
 }
